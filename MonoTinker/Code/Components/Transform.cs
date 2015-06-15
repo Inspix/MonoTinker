@@ -43,6 +43,12 @@ namespace MonoTinker.Code.Components
 
         #region Properties
 
+        public Vector2 Position
+        {
+            get { return this._position; }
+            set { this._position = value; }
+        }
+
         public float PosX
         {
             get { return this._position.X; }

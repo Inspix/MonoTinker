@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{77337EC1-3E52-454F-B242-E932CEC2F518}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MonoTinker</RootNamespace>
     <AssemblyName>MonoTinker</AssemblyName>
@@ -37,9 +37,15 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
+    <Compile Include="Code\Player.cs" />
+    <Compile Include="Code\Tile.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

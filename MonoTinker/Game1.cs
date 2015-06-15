@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoTinker.Code;
+using MonoTinker.Code.Components;
 
 namespace MonoTinker
 {
@@ -11,6 +13,9 @@ namespace MonoTinker
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Tile tile;
+        private Player player;
+        private Texture2D textureSheet;
 
         public Game1()
         {
@@ -27,7 +32,6 @@ namespace MonoTinker
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -39,6 +43,10 @@ namespace MonoTinker
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            textureSheet = Content.Load<Texture2D>("textures");
+
+            player = new Player(new Sprite(textureSheet,new Rectangle(22,42,55,55)));
+            tile = new Tile(new Sprite(textureSheet,new Rectangle(83,40,55,55)),Vector2.One *200);
 
             // TODO: use this.Content to load your game content here
         }
@@ -61,9 +69,9 @@ namespace MonoTinker
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            player.Update(gameTime);
             // TODO: Add your update logic here
-
+            player.Collider.Collide(tile.BoxCollider);
             base.Update(gameTime);
         }
 
@@ -75,6 +83,10 @@ namespace MonoTinker
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
+            player.Draw(spriteBatch);
+            tile.Draw(spriteBatch);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
