@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Code\Components\Animation.cs" />
     <Compile Include="Code\Components\BoxCollider.cs" />
+    <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
     <Compile Include="Code\Player.cs" />

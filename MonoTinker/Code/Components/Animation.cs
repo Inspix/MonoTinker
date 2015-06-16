@@ -73,5 +73,14 @@ namespace MonoTinker.Code.Components
 
             }
         }
+
+        public void Reset()
+        {
+            frame = 0;
+            Row = 0;
+            RowFrame = 0;
+            SourceX = 0;
+            SourceY = 0;
+        }
     }
 }
