@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 namespace MonoTinker.Code.Components
 {
-    class BoxCollider
+    public class BoxCollider
     {
         private Vector2 position;
 

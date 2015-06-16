@@ -7,12 +7,14 @@ using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code
 {
-    class Player : IMovable
+    public class Player : IMovable
     {
         private Animation animation;
         private Vector2 velocity;
         private float normalSpeed = 2;
         private bool flip;
+        public bool grounded = true;
+        private bool jumped;
 
         public Transform Transform;
         public BoxCollider Collider;
@@ -45,6 +47,9 @@ namespace MonoTinker.Code
 
         public float Speed { get; set; }
 
+        public Vector2 SpriteCenter { get { return this.animation.Center; } }
+
+        public Vector2 SpriteSize { get { return this.animation.Size; } }
 
         public void Update(GameTime gameTime)
         {
@@ -88,18 +93,21 @@ namespace MonoTinker.Code
                 animation.Reset();
             }
 
-            if (ks.IsKeyDown(Keys.W))
+            if (!jumped && ks.IsKeyDown(Keys.Space))
             {
-                VelocityY = -1;
+                jumped = true;
+                Transform.PosY -= 10f;
+                VelocityY = -5f;
             }
-            else if (ks.IsKeyDown(Keys.S))
-            {
-                VelocityY = 1;
-            }
-            else
+            if (!jumped)
             {
                 VelocityY = 0;
             }
+            else
+            {
+                VelocityY += 0.15f*2;
+            }
+
             Move(gameTime);
         }
 
@@ -107,7 +115,14 @@ namespace MonoTinker.Code
         public void Move(GameTime gametime)
         {
             this.Transform.Position += Velocity * Speed;
-            this.Collider.Position += Velocity * Speed;
+            Console.WriteLine(Transform.Position);
+            if (Transform.PosY >= 480 - this.SpriteSize.Y)
+            {
+                jumped = false;
+                Transform.PosY = 480 - this.SpriteSize.Y;
+            }
+            this.Collider.Position = Transform.Position;
+
         }
 
 

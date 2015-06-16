@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Code\Components\Animation.cs" />
     <Compile Include="Code\Components\BoxCollider.cs" />
+    <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
@@ -66,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ghettoville1.jpg" />
     <Content Include="Content\playerRun.png" />
     <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />

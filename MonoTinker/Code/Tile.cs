@@ -23,7 +23,7 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite.Texture,transform.Position,sprite.Source,Color.White);
+            spriteBatch.Draw(sprite.Texture,transform.Position,sprite.Source,Color.White,0,Vector2.Zero,transform.Scale,SpriteEffects.None,0);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace MonoTinker.Code.Components
             this._texture2D = texture2D;
             this.Size = new Vector2(_texture2D.Width,_texture2D.Height);
             this.Center = new Vector2(_texture2D.Width/2f, _texture2D.Height/2f);
+            this.source = new Rectangle(0,0,(int)Size.X,(int)Size.Y);
         }
 
         public Sprite(string path, ContentManager content): this(content.Load<Texture2D>(path))
