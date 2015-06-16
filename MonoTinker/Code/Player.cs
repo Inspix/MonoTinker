@@ -11,7 +11,7 @@ namespace MonoTinker.Code
     {
         private Animation animation;
         private Vector2 velocity;
-        private float speed;
+        private float normalSpeed = 2;
         private bool flip;
 
         public Transform Transform;
@@ -22,6 +22,7 @@ namespace MonoTinker.Code
             animation = anim;
             this.Transform = new Transform(Vector2.Zero);
             Collider = new BoxCollider(Transform.Position, animation.Size);
+            Speed = normalSpeed;
         }
 
         public Vector2 Velocity
@@ -50,14 +51,16 @@ namespace MonoTinker.Code
             KeyboardState ks = Keyboard.GetState();
             if (ks.IsKeyDown(Keys.A))
             {
+                VelocityX = -1;
+
                 if (ks.IsKeyDown(Keys.LeftShift))
                 {
-                    VelocityX = -2;
+                    Speed = normalSpeed * 2;
                     animation.FramesPerSecond = 45;
                 }
                 else
                 {
-                    VelocityX = -1;
+                    Speed = normalSpeed * 1;
                     animation.FramesPerSecond = 30;
                 }
                 flip = true;
@@ -65,14 +68,15 @@ namespace MonoTinker.Code
             }
             else if (ks.IsKeyDown(Keys.D))
             {
+                VelocityX = 1;
                 if (ks.IsKeyDown(Keys.LeftShift))
                 {
-                    VelocityX = 2;
+                    Speed = normalSpeed * 2;
                     animation.FramesPerSecond = 45;
                 }
                 else
                 {
-                    VelocityX = 1;
+                    Speed = normalSpeed * 1;
                     animation.FramesPerSecond = 30;
                 }
                 flip = false;
@@ -102,8 +106,8 @@ namespace MonoTinker.Code
        
         public void Move(GameTime gametime)
         {
-            this.Transform.Position += Velocity;
-            this.Collider.Position += Velocity;
+            this.Transform.Position += Velocity * Speed;
+            this.Collider.Position += Velocity * Speed;
         }
 
 
