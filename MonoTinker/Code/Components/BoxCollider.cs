@@ -144,7 +144,7 @@ namespace MonoTinker.Code.Components
             return result;
         }
 
-        public static bool Collide(this BoxCollider b1, BoxCollider b2)
+        public static bool Touches(this BoxCollider b1, BoxCollider b2)
         {
             return b1.TouchesBottom(b2) || b1.TouchesTop(b2) || b1.TouchesLeft(b2) || b1.TouchesRight(b2);
         }

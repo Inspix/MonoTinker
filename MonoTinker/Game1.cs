@@ -43,10 +43,10 @@ namespace MonoTinker
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            textureSheet = Content.Load<Texture2D>("textures");
+            textureSheet = Content.Load<Texture2D>("playerRun");
 
-            player = new Player(new Sprite(textureSheet,new Rectangle(22,42,55,55)));
-            tile = new Tile(new Sprite(textureSheet,new Rectangle(83,40,55,55)),Vector2.One *200);
+            player = new Player(new Animation(textureSheet,new Rectangle(0,0,130,150),30,1));
+            //tile = new Tile(new Sprite(textureSheet,new Rectangle(83,40,55,55)),Vector2.One *200);
 
             // TODO: use this.Content to load your game content here
         }
@@ -71,7 +71,7 @@ namespace MonoTinker
                 Exit();
             player.Update(gameTime);
             // TODO: Add your update logic here
-            player.Collider.Collide(tile.BoxCollider);
+            //player.Collider.Touches(tile.BoxCollider);
             base.Update(gameTime);
         }
 
@@ -85,7 +85,7 @@ namespace MonoTinker
 
             spriteBatch.Begin();
             player.Draw(spriteBatch);
-            tile.Draw(spriteBatch);
+            //tile.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 

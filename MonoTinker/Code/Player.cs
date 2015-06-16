@@ -8,14 +8,15 @@ namespace MonoTinker.Code
     class Player
     {
         public Transform Transform;
-        public Sprite Sprite;
+        private Animation animation;
+        private bool flip;
         public BoxCollider Collider;
 
-        public Player(Sprite sprite)
+        public Player(Animation anim)
         {
-            Sprite = sprite;
+            animation = anim;
             this.Transform = new Transform(Vector2.Zero);
-            Collider = new BoxCollider(Transform.Position,sprite.Size);
+            Collider = new BoxCollider(Transform.Position, animation.Size);
         }
 
         public void Update(GameTime gameTime)
@@ -23,11 +24,33 @@ namespace MonoTinker.Code
             KeyboardState ks = Keyboard.GetState();
             if (ks.IsKeyDown(Keys.A))
             {
-                Move(new Vector2(-1f,0));
+                if (ks.IsKeyDown(Keys.LeftShift))
+                {
+                    Move(new Vector2(-2f, 0));
+                    animation.FramesPerSecond = 45;
+                }
+                else
+                {
+                    Move(new Vector2(-1f,0));
+                    animation.FramesPerSecond = 30;
+                }
+                flip = true;
+                animation.Update(gameTime);
             }
             if (ks.IsKeyDown(Keys.D))
             {
-                Move(new Vector2(1f,0));
+                if (ks.IsKeyDown(Keys.LeftShift))
+                {
+                    Move(new Vector2(2f, 0));
+                    animation.FramesPerSecond = 45;
+                }
+                else
+                {
+                    Move(new Vector2(1f, 0));
+                    animation.FramesPerSecond = 30;
+                }
+                flip = false;
+                animation.Update(gameTime);
             }
             if (ks.IsKeyDown(Keys.W))
             {
@@ -47,7 +70,7 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite.Texture,Transform.Position,Sprite.Source,Color.White);
+            spriteBatch.Draw(animation.Texture,Transform.Position, animation.Source,Color.White,0,Vector2.Zero, Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
         }
     }
 }
