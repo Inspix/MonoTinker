@@ -45,13 +45,17 @@
     <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
+    <Compile Include="Code\Components\MenuScreen.cs" />
+    <Compile Include="Code\Components\OtherScreen.cs" />
+    <Compile Include="Code\Components\Screen.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
+    <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Player.cs" />
     <Compile Include="Code\Components\Tile.cs" />
     <Compile Include="Code\Utils\Debug.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,7 +75,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fade.png" />
     <Content Include="Content\ghettoville1.jpg" />
+    <Content Include="Content\Menu\ghettoville.jpg" />
+    <Content Include="Content\Other\playerRun.png" />
     <Content Include="Content\playerRun.png" />
     <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />

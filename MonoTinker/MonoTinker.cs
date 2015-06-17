@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,14 +12,14 @@ namespace MonoTinker
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class MonoTinker : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        private ScreenManager sm;
         public Vector2 CameraLookAt;
 
-        public Game1()
+        public MonoTinker()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -33,6 +34,7 @@ namespace MonoTinker
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            sm = new ScreenManager(Content,GraphicsDevice);
             base.Initialize();
         }
 
@@ -44,7 +46,6 @@ namespace MonoTinker
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            AssetManager.Instance.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -66,6 +67,7 @@ namespace MonoTinker
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            sm.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -77,9 +79,8 @@ namespace MonoTinker
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-
-            spriteBatch.End();
+            
+            sm.Draw(spriteBatch);
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

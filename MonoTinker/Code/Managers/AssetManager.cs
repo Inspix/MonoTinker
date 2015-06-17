@@ -21,7 +21,7 @@ namespace MonoTinker.Code.Managers
         private Dictionary<string, Texture2D> spriteSheet;          // To Store our sprite sheets
         private Dictionary<string, Sprite> sprites;                 // To Store our sprites
         private Dictionary<string, Animation> animations;           // To Store our animations
-        // Todo dictionary for sounds  
+        // TODO: dictionary for sounds  
 
         private AssetManager()
         {
@@ -39,6 +39,11 @@ namespace MonoTinker.Code.Managers
         {
             this.content = content;
             this.AddSprite("ghettoville1","BG");
+        }
+
+        public void UnloadContent()
+        {
+            this.content.Unload();
         }
 
         public T Get<T>(string id)                                  // Get an asset based on type
