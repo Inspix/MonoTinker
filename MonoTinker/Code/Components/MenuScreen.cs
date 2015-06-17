@@ -6,7 +6,7 @@ using MonoTinker.Code.Managers;
 
 namespace MonoTinker.Code.Components
 {
-    public class MenuScreen : Screen
+    public sealed class MenuScreen : Screen
     {
         private Texture2D bg;
 

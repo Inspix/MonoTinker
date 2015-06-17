@@ -6,7 +6,7 @@ using MonoTinker.Code.Managers;
 
 namespace MonoTinker.Code.Components
 {
-    public class OtherScreen : Screen
+    public sealed class OtherScreen : Screen
     {
         private Texture2D bg;
         public OtherScreen(IServiceProvider service, string path) : base(service, path)
