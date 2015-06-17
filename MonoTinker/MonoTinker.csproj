@@ -47,8 +47,10 @@
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
+    <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Player.cs" />
-    <Compile Include="Code\Tile.cs" />
+    <Compile Include="Code\Components\Tile.cs" />
+    <Compile Include="Code\Utils\Debug.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +66,8 @@
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

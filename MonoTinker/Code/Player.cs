@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code.Components;
 using MonoTinker.Code.Components.Interfaces;
+using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code
 {
@@ -115,7 +116,7 @@ namespace MonoTinker.Code
         public void Move(GameTime gametime)
         {
             this.Transform.Position += Velocity * Speed;
-            Console.WriteLine(Transform.Position);
+            //Console.WriteLine(Transform.Position);
             if (Transform.PosY >= 480 - this.SpriteSize.Y)
             {
                 jumped = false;
@@ -124,7 +125,6 @@ namespace MonoTinker.Code
             this.Collider.Position = Transform.Position;
 
         }
-
 
         public void Draw(SpriteBatch spriteBatch)
         {

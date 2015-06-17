@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,10 +32,7 @@ namespace MonoTinker.Code.Components
             get { return this._texture2D; }
         }
 
-        
-    
-
-    public Sprite(Texture2D texture2D)
+        public Sprite(Texture2D texture2D)
         {
             this._texture2D = texture2D;
             this.Size = new Vector2(_texture2D.Width,_texture2D.Height);

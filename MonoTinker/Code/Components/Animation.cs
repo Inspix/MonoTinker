@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoTinker.Code.Components
@@ -7,13 +6,13 @@ namespace MonoTinker.Code.Components
     public class Animation : Sprite
     {
         private int framesMissing;
-        private int frameWidth;
-        private int frameHight;
-        private int framesTotal;
-        private int framesPerRow;
-        private int framesPerCol;
-        private int Row;
-        private int RowFrame;
+        private readonly int frameWidth;
+        private readonly int frameHight;
+        private readonly int framesTotal;
+        private readonly int framesPerRow;
+        private readonly int framesPerCol;
+        private int row;
+        private int rowFrame;
         private int frame;
         private double timeElapsed;
         private double timeToUpdate;
@@ -21,6 +20,11 @@ namespace MonoTinker.Code.Components
         public double FramesPerSecond
         {
             set { this.timeToUpdate = (1f/value); }
+        }
+
+        public new Vector2 Center 
+        {
+            get { return new Vector2(this.Source.Width/2f,this.Source.Height/2f);}
         }
 
         public int FramesMissing { set { this.framesMissing = value; } }
@@ -53,32 +57,31 @@ namespace MonoTinker.Code.Components
             {
                 timeElapsed -= timeToUpdate;
                 frame++;
-                RowFrame++;
-                SourceX = RowFrame*frameWidth;
-                if (RowFrame >= framesPerRow)
+                rowFrame++;
+                SourceX = rowFrame*frameWidth;
+                if (rowFrame >= framesPerRow)
                 {
-                    RowFrame = 0;
-                    Row++;
+                    rowFrame = 0;
+                    row++;
                     SourceX = 0;
-                    SourceY = Row*frameHight;
+                    SourceY = row*frameHight;
                     if (frame > framesTotal - this.framesMissing)
                     {
                         frame = 0;
-                        Row = 0;
-                        RowFrame = 0;
+                        row = 0;
+                        rowFrame = 0;
                         SourceX = 0;
                         SourceY = 0;
                     }
                 }
-
             }
         }
 
         public void Reset()
         {
             frame = 0;
-            Row = 0;
-            RowFrame = 0;
+            row = 0;
+            rowFrame = 0;
             SourceX = 0;
             SourceY = 0;
         }

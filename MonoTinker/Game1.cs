@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Managers;
+using MonoTinker.Code.Utils;
 
 namespace MonoTinker
 {
@@ -13,10 +15,8 @@ namespace MonoTinker
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Tile tile;
-        public Player player;
-        private Texture2D textureSheet;
-        private Camera camera;
+
+        public Vector2 CameraLookAt;
 
         public Game1()
         {
@@ -33,7 +33,6 @@ namespace MonoTinker
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(GraphicsDevice.Viewport);
             base.Initialize();
         }
 
@@ -45,13 +44,7 @@ namespace MonoTinker
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture2D bg = Content.Load<Texture2D>("ghettoville1");
-            textureSheet = Content.Load<Texture2D>("playerRun");
-
-            player = new Player(new Animation(textureSheet,new Rectangle(0,0,130,150),30,1));
-            player.Transform.Position = new Vector2(Window.ClientBounds.Width/2f,Window.ClientBounds.Height - player.SpriteSize.Y);
-            tile = new Tile(new Sprite(bg),Vector2.Zero);
-
+            AssetManager.Instance.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -73,10 +66,6 @@ namespace MonoTinker
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            player.Update(gameTime);
-            // TODO: Add your update logic here
-            camera.Update(gameTime,this);
-            //player.Collider.Touches(tile.BoxCollider);
             base.Update(gameTime);
         }
 
@@ -88,10 +77,8 @@ namespace MonoTinker
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,null,null,null,null,camera.Transform);
-            tile.Draw(spriteBatch);
+            spriteBatch.Begin();
 
-            player.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
