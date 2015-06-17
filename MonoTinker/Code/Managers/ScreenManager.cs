@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoTinker.Code.Game;
 using MonoTinker.Code.Components;
 
 namespace MonoTinker.Code.Managers
@@ -10,7 +11,7 @@ namespace MonoTinker.Code.Managers
     {
         private static Screen currentScreen;
         private static Screen newScreen;
-        private int width, height;
+        private static int width, height;
         private float Alpha;
         private static bool increase;
         private Texture2D fadeTexture;
@@ -21,11 +22,11 @@ namespace MonoTinker.Code.Managers
         public ScreenManager(ContentManager content,GraphicsDevice gdevice)
         {
             batch = new SpriteBatch(gdevice);
-            width = gdevice.DisplayMode.Width;
-            height = gdevice.DisplayMode.Height;
+            width = gdevice.Viewport.Width;
+            height = gdevice.Viewport.Height;
             service = content.ServiceProvider;
             fadeTexture = content.Load<Texture2D>("fade");
-            currentScreen = new MenuScreen(service, "Menu");
+            currentScreen = new SplashScreen(service);
         }
 
         public static bool Transitioning
@@ -33,17 +34,27 @@ namespace MonoTinker.Code.Managers
             get { return transitioning; }
         }
 
+        public static Vector2 ScreenDimensions
+        {
+            get { return new Vector2(width,height);}
+        }
+
         public static void ChangeScreen(string id)
         {
             switch (id)
             {
                 case "Menu":
-                    newScreen = new MenuScreen(service,"Menu");
+                    newScreen = new MenuScreen(service);
                     transitioning = true;
                     increase = true;
                     break;
                 case "Other":
-                    newScreen = new OtherScreen(service,"Other");
+                    newScreen = new OtherScreen(service);
+                    transitioning = true;
+                    increase = true;
+                    break;
+                case "Splash":
+                    newScreen = new SplashScreen(service);
                     transitioning = true;
                     increase = true;
                     break;
@@ -73,7 +84,6 @@ namespace MonoTinker.Code.Managers
                 }
             }
         }
-
 
         public void Update(GameTime gameTime)
         {

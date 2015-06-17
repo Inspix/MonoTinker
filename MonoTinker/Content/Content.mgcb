@@ -79,3 +79,20 @@
 /processorParam:TextureFormat=Color
 /build:fade.png
 
+#begin SplashScreen/SplashFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SplashScreen/SplashFont.spritefont
+
+#begin SplashScreen/logo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:SplashScreen/logo.png
+

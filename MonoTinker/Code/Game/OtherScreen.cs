@@ -2,14 +2,15 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoTinker.Code.Components;
 using MonoTinker.Code.Managers;
 
-namespace MonoTinker.Code.Components
+namespace MonoTinker.Code.Game
 {
     public sealed class OtherScreen : Screen
     {
         private Texture2D bg;
-        public OtherScreen(IServiceProvider service, string path) : base(service, path)
+        public OtherScreen(IServiceProvider service) : base(service, "Other")
         {
             this.LoadContent();
         }

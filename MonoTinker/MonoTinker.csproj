@@ -45,11 +45,12 @@
     <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
-    <Compile Include="Code\Components\MenuScreen.cs" />
-    <Compile Include="Code\Components\OtherScreen.cs" />
+    <Compile Include="Code\Game\MenuScreen.cs" />
+    <Compile Include="Code\Game\OtherScreen.cs" />
     <Compile Include="Code\Components\Screen.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
     <Compile Include="Code\Components\Transform.cs" />
+    <Compile Include="Code\Game\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Player.cs" />
@@ -80,11 +81,15 @@
     <Content Include="Content\Menu\ghettoville.jpg" />
     <Content Include="Content\Other\playerRun.png" />
     <Content Include="Content\playerRun.png" />
+    <Content Include="Content\SplashScreen\logo.png" />
     <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SplashScreen\SplashFont.spritefont" />
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">

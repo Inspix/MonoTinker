@@ -17,14 +17,7 @@ namespace MonoTinker.Code.Components
         protected abstract void LoadContent();
         public abstract void UnloadContent();
 
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            
-        }
-
-        public virtual void Update(GameTime gameTime)
-        {
-            
-        }
+        public abstract void Draw(SpriteBatch spriteBatch);
+        public abstract void Update(GameTime gameTime);
     }
 }
