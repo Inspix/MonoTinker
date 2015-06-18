@@ -1,6 +1,8 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components
 {
@@ -8,10 +10,23 @@ namespace MonoTinker.Code.Components
     {
         private Texture2D _texture2D;
         private Rectangle source;
+        private Vector2 scale;
 
         public Rectangle Source
         {
             get { return this.source; }
+        }
+
+        public Vector2 Scale
+        {
+            get { return this.scale; }
+            set
+            {
+                //this.source.Width = (int)Math.Ceiling(this.Texture.Width * value.X);
+                //this.source.Height = (int)Math.Ceiling(this.Texture.Height * value.Y);
+                this.scale = value;
+                this.Center = new Vector2(this.source.Width/2f,this.source.Height/2f);
+            }
         }
 
         protected int SourceX
@@ -24,8 +39,12 @@ namespace MonoTinker.Code.Components
             set { this.source.Y = value; }
         }
 
-        public Vector2 Size { get; }
-        public Vector2 Center { get; }
+        public Vector2 Size
+        {
+            get { return this.source.SizeVec2(); } 
+        }
+
+        public Vector2 Center { get; private set; }
 
         public Texture2D Texture
         {
@@ -35,9 +54,8 @@ namespace MonoTinker.Code.Components
         public Sprite(Texture2D texture2D)
         {
             this._texture2D = texture2D;
-            this.Size = new Vector2(_texture2D.Width,_texture2D.Height);
-            this.Center = new Vector2(_texture2D.Width/2f, _texture2D.Height/2f);
-            this.source = new Rectangle(0,0,(int)Size.X,(int)Size.Y);
+            this.source = texture2D.Bounds;
+            this.Scale = Vector2.One;
         }
 
         public Sprite(string path, ContentManager content): this(content.Load<Texture2D>(path))
@@ -48,7 +66,7 @@ namespace MonoTinker.Code.Components
         {
             this._texture2D = texture2D;
             this.source = sourceRect;
-            this.Size = new Vector2(sourceRect.Width,sourceRect.Height);
+            this.Scale = Vector2.One;
         }
     }
 }

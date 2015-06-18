@@ -15,18 +15,16 @@ namespace MonoTinker.Code.Managers
         private float Alpha;
         private static bool increase;
         private Texture2D fadeTexture;
-        private SpriteBatch batch;
         private static IServiceProvider service;
         private static bool transitioning;
 
         public ScreenManager(ContentManager content,GraphicsDevice gdevice)
         {
-            batch = new SpriteBatch(gdevice);
             width = gdevice.Viewport.Width;
             height = gdevice.Viewport.Height;
             service = content.ServiceProvider;
             fadeTexture = content.Load<Texture2D>("fade");
-            currentScreen = new SplashScreen(service);
+            currentScreen = new MenuScreen(service);
         }
 
         public static bool Transitioning
@@ -37,6 +35,11 @@ namespace MonoTinker.Code.Managers
         public static Vector2 ScreenDimensions
         {
             get { return new Vector2(width,height);}
+        }
+
+        public static Vector2 ScreenCenter
+        {
+            get { return new Vector2(width/2f, height/2f); }
         }
 
         public static void ChangeScreen(string id)

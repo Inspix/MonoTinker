@@ -56,6 +56,7 @@
     <Compile Include="Code\Player.cs" />
     <Compile Include="Code\Components\Tile.cs" />
     <Compile Include="Code\Utils\Debug.cs" />
+    <Compile Include="Code\Utils\RectangleHelper.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,7 +79,13 @@
   <ItemGroup>
     <Content Include="Content\fade.png" />
     <Content Include="Content\ghettoville1.jpg" />
-    <Content Include="Content\Menu\ghettoville.jpg" />
+    <Content Include="Content\Menu\belt.png" />
+    <Content Include="Content\Menu\bigGear.png" />
+    <Content Include="Content\Menu\leds.png" />
+    <Content Include="Content\Menu\play.png" />
+    <Content Include="Content\Menu\smallGear.png" />
+    <Content Include="Content\Menu\text.png" />
+    <Content Include="Content\Menu\textGlow.png" />
     <Content Include="Content\Other\playerRun.png" />
     <Content Include="Content\playerRun.png" />
     <Content Include="Content\SplashScreen\logo.png" />
