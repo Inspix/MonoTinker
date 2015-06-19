@@ -18,14 +18,14 @@ namespace MonoTinker.Code.Managers
         private static AssetManager instance;
         private ContentManager content;
 
-        private Dictionary<string, Texture2D> spriteSheet;          // To Store our sprite sheets
+        private Dictionary<string, SpriteSheet> spriteSheet;          // To Store our sprite sheets
         private Dictionary<string, Sprite> sprites;                 // To Store our sprites
         private Dictionary<string, Animation> animations;           // To Store our animations
         // TODO: dictionary for sounds  
 
         private AssetManager()
         {
-            this.spriteSheet = new Dictionary<string, Texture2D>();
+            this.spriteSheet = new Dictionary<string, SpriteSheet>();
             this.sprites = new Dictionary<string, Sprite>();
             this.animations = new Dictionary<string, Animation>();
         }
@@ -76,7 +76,7 @@ namespace MonoTinker.Code.Managers
                 case TextureType.Animation:
                     if (animations.ContainsKey(key))
                     {
-                        return animations[key].Texture;
+                        //return animations[key].Texture;
                     }
                     Debug.Error("Invalid animation key: \"{0}\"", key);
                     return null;
@@ -92,7 +92,7 @@ namespace MonoTinker.Code.Managers
                     case TextureType.SpriteSheet:
                     if (spriteSheet.ContainsKey(key))
                     {
-                        return this.spriteSheet[key];
+                        return this.spriteSheet[key].Texture;
                     }
                     Debug.Error("Invalid sprite sheet key: \"{0}\"", key);
                     return null;
@@ -136,7 +136,7 @@ namespace MonoTinker.Code.Managers
                 Debug.Warning("exception at AssetManager - AddSprite (string,string)");
                 Debug.Error(e.Source);
             }
-        }
+        }/*
 
         public void AddSprite(string spriteSheetId, string newId, Rectangle source)
         {
@@ -150,11 +150,11 @@ namespace MonoTinker.Code.Managers
                 Debug.Warning("exception at AssetManager - AddSprite (string,string,Rectangle)");
                 Debug.Error(e.Source);
             }
-        }
+        }*/
         #endregion
 
         #region Add Animation Methods
-        public void AddAnimation(Rectangle source, string filename, string id = "")
+        /*public void AddAnimation(Rectangle source, string filename, string id = "")
         {
             try
             {
@@ -191,10 +191,10 @@ namespace MonoTinker.Code.Managers
                 Debug.Warning("exception at AssetManager - AddAnimation (Rectangle,int,int,string,string)");
                 Debug.Error(e.Source);
             }
-        } 
+        } */
         #endregion
 
-        public void AddSpriteSheet(string filename, string id = "")
+        /*public void AddSpriteSheet(string filename, string id = "")
         {
             try
             {
@@ -205,6 +205,6 @@ namespace MonoTinker.Code.Managers
                 Debug.Warning("exception at AssetManager - AddSpriteSheet (string,string)");
                 Debug.Error(e.Source);
             }
-        }
+        }*/
     }
 }

@@ -67,6 +67,7 @@ namespace MonoTinker
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            InputHandler.Update(Window);
             sm.Update(gameTime);
             base.Update(gameTime);
         }

@@ -6,13 +6,13 @@ namespace MonoTinker.Code.Components
     {
 
         #region Private fields
-        private Vector2 _position; 
+        private Vector2 _position;
         #endregion
 
         #region Public fields
 
+        public float Rotation;
         public Vector2 Scale;
-        public float Rotation; 
 
         #endregion
 
@@ -62,5 +62,6 @@ namespace MonoTinker.Code.Components
         }
 
         #endregion
+        
     }
 }

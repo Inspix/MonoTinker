@@ -5,41 +5,75 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code.Components;
 using MonoTinker.Code.Managers;
+using MonoTinker.Code.Components.Extensions;
+using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Game
 {
     public sealed class MenuScreen : Screen
     {
-        private Dictionary<string, Texture2D> textures;
-        private Dictionary<string, Sprite> sprites; 
+
+        private Sprite logo, logoGlow, play, options, bigGear, smallGear, belt,leds;
+
         private Random rnd;
         private double time;
         private float rotation;
         private bool reverse;
         private byte counter;
 
+        private int index;
+
+        private int Index
+        {
+            get { return index; }
+            set
+            {
+                if (value < 1 || value > 3)
+                {
+                    return;
+                }
+                this.index = value;
+            }
+        }
+
         public MenuScreen(IServiceProvider service) : base(service, "Menu")
         {
-            textures = new Dictionary<string, Texture2D>();
-            sprites = new Dictionary<string, Sprite>();
-
             rnd = new Random(DateTime.Now.Minute);
             this.LoadContent();
         }
 
         protected override void LoadContent()
         {
-            //textures.Add("Text",content.Load<Texture2D>("text"));
-            sprites.Add("Text", new Sprite(content.Load<Texture2D>("text")));
-            sprites.Add("TextGlow",new Sprite(content.Load<Texture2D>("textGlow")));
-            sprites.Add("BigGear",new Sprite(content.Load<Texture2D>("bigGear")));
-            textures.Add("Leds", content.Load<Texture2D>("leds"));
-            textures.Add("SmallGear", content.Load<Texture2D>("smallGear"));
-            textures.Add("Belt", content.Load<Texture2D>("belt"));
-            Sprite play = new Sprite(content.Load<Texture2D>("play"));
-            play.Scale = Vector2.One*0.5f;
-            sprites.Add("Play", play);
+            logo = new Sprite(content.Load<Texture2D>("text"))
+            {
+                Transform = {Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY*100) + Vector2.UnitX*50}
+            };
+            logoGlow = new Sprite(content.Load<Texture2D>("textGlow"));
+            logoGlow.Transform.Position = logo.Transform.Position - new Vector2(45,-10);
+            logoGlow.Color = Color.OrangeRed;
 
+            play = new Sprite(content.Load<Texture2D>("play"));
+            play.Transform.Position = ScreenManager.ScreenCenter + Vector2.UnitY*35;
+            play.Transform.Scale = Vector2.One * 0.4f;
+
+            options = new Sprite(content.Load<Texture2D>("options"));
+            options.Transform.Position = play.Transform.Position + Vector2.UnitY*100 - Vector2.UnitX*15;
+            options.Transform.Scale = play.Transform.Scale;
+
+            bigGear = new Sprite(content.Load<Texture2D>("bigGear"));
+            bigGear.Transform.Position = Vector2.One*100;
+            bigGear.OriginCustom = bigGear.Center + new Vector2(-1,3);
+
+            leds = new Sprite(content.Load<Texture2D>("leds"));
+            leds.Transform.Position = logo.Transform.Position + new Vector2(logo.Source.Right/2f, 0);
+            leds.Transform.Scale = Vector2.One * 0.7f;
+
+            smallGear = new Sprite(content.Load<Texture2D>("smallGear"));
+            smallGear.Transform.Position = bigGear.Transform.Position + Vector2.UnitY*105 - Vector2.UnitX*20;
+
+            belt = new Sprite(content.Load<Texture2D>("belt"));
+            belt.Origin = Origin.Center;
+            belt.Transform.Position = bigGear.Transform.Position + new Vector2(-10,44);
         }
 
         public override void UnloadContent()
@@ -60,47 +94,63 @@ namespace MonoTinker.Code.Game
                 }
                 time = 0;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Tab) && !ScreenManager.Transitioning)
+            if (Keys.Tab.Down() && !ScreenManager.Transitioning)
             {
                 ScreenManager.ChangeScreen("Other");
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            if (Keys.Q.Down())
             {
-                sprites["Play"].Scale += Vector2.One*0.1f;
+                play.Transform.Scale(0.1f);
             }
+
+            if (InputHandler.IsKeyDown(Keys.Up))
+            {
+                Index--;
+            }
+            if (InputHandler.IsKeyDown(Keys.Down))
+            {
+                Index++;
+            }
+            MenuIndexChange();
+            Console.WriteLine(index);
+            bigGear.Transform.Rotation = rotation;
+            smallGear.Transform.Rotation = rotation;
+        }
+
+        public void MenuIndexChange()
+        {
+            play.Transform.Scale = Index == 1
+                ? Vector2.One * (MathHelper.SmoothStep(play.Transform.Scale.X, 0.5f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(play.Transform.Scale.X, 0.4f, 0.1f));
+            options.Transform.Scale = Index == 2
+                ? Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.5f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.4f, 0.1f));
+            play.Color = Index == 1 ? ColorHelper.SmoothTransition(play.Color, Color.OrangeRed, 0.02f) 
+                                    : ColorHelper.SmoothTransition(play.Color, Color.White, 0.02f);
+            options.Color = Index == 2 ? ColorHelper.SmoothTransition(options.Color, Color.OrangeRed, 0.02f)
+                                    : ColorHelper.SmoothTransition(options.Color, Color.White, 0.02f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            /*spriteBatch.Draw(textures["Text"],((ScreenManager.ScreenDimensions/2f) - Vector2.UnitY*100) + Vector2.UnitX*50,
-                textures["Text"].Bounds,Color.White,0,
-                new Vector2(textures["Text"].Width/2f, textures["Text"].Height / 2f),
-                Vector2.One, SpriteEffects.None, 0 );*/
-            spriteBatch.Draw(sprites["Text"].Texture,
-                ((ScreenManager.ScreenCenter) - Vector2.UnitY*100) + Vector2.UnitX * 50,
-                sprites["Text"].Source, Color.White, 0,
-                sprites["Text"].Center,
-                sprites["Text"].Scale, SpriteEffects.None, 0);
+            logo.Draw(spriteBatch);
             if ((time >= TimeSpan.FromSeconds(rnd.Next(1, 2) + rnd.NextDouble()).TotalSeconds) &&
                 (time <= TimeSpan.FromSeconds(rnd.Next(2, 2) + rnd.NextDouble()).TotalSeconds) ||
                 (time >= TimeSpan.FromSeconds(rnd.Next(2, 3) + rnd.NextDouble()).TotalSeconds) &&
                 (time <= TimeSpan.FromSeconds(rnd.Next(3, 4) + rnd.NextDouble()).TotalSeconds))
-           {
-                /*spriteBatch.Draw(textures["TextGlow"], ((ScreenManager.ScreenDimensions / 2f) - Vector2.UnitY * 100) + Vector2.UnitX * 50,
-                    textures["TextGlow"].Bounds, Color.White*(float) rnd.NextDouble(), 0,
-                    new Vector2((textures["TextGlow"].Width + 95f)/2f, (textures["TextGlow"].Height - 20)/2f),
-                    Vector2.One, SpriteEffects.None, 0);*/
-               spriteBatch.Draw(sprites["TextGlow"].Texture,
-                   (ScreenManager.ScreenCenter - Vector2.UnitY*100) + Vector2.UnitX*50,
-                   sprites["TextGlow"].Source, Color.White*(float) rnd.NextDouble(), 0,
-                   sprites["TextGlow"].Center + new Vector2(45, -10),
-                   sprites["TextGlow"].Scale, SpriteEffects.None, 0);
-           }
+            {
+                logoGlow.Draw(spriteBatch);
+            }
 
-            spriteBatch.Draw(sprites["BigGear"].Texture,Vector2.One * 50,sprites["BigGear"].Source,Color.White,rotation,sprites["BigGear"].Center, sprites["BigGear"].Scale, SpriteEffects.None,0 );
-            spriteBatch.Draw(sprites["Play"].Texture,ScreenManager.ScreenCenter + Vector2.UnitY * 35, sprites["Play"].Source,Color.White,0, sprites["Play"].Center, sprites["Play"].Scale,SpriteEffects.None, 0);
+            bigGear.Draw(spriteBatch);
+            smallGear.Draw(spriteBatch);
+            play.Draw(spriteBatch);
+            options.Draw(spriteBatch);
+            leds.Draw(spriteBatch);
+            belt.Draw(spriteBatch);
+
             spriteBatch.End();
         }
     }

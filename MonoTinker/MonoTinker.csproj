@@ -44,7 +44,9 @@
     <Compile Include="Code\Components\Animation.cs" />
     <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
+    <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
+    <Compile Include="Code\Components\SpriteSheet.cs" />
     <Compile Include="Code\Game\MenuScreen.cs" />
     <Compile Include="Code\Game\OtherScreen.cs" />
     <Compile Include="Code\Components\Screen.cs" />
@@ -54,9 +56,10 @@
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Player.cs" />
-    <Compile Include="Code\Components\Tile.cs" />
+    <Compile Include="Code\Utils\ColorHelper.cs" />
     <Compile Include="Code\Utils\Debug.cs" />
-    <Compile Include="Code\Utils\RectangleHelper.cs" />
+    <Compile Include="Code\Utils\Helper.cs" />
+    <Compile Include="Code\Utils\InputHandler.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,16 +81,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fade.png" />
-    <Content Include="Content\ghettoville1.jpg" />
     <Content Include="Content\Menu\belt.png" />
     <Content Include="Content\Menu\bigGear.png" />
     <Content Include="Content\Menu\leds.png" />
+    <Content Include="Content\Menu\options.png" />
     <Content Include="Content\Menu\play.png" />
     <Content Include="Content\Menu\smallGear.png" />
     <Content Include="Content\Menu\text.png" />
     <Content Include="Content\Menu\textGlow.png" />
+    <Content Include="Content\Other\ghettoville1.jpg" />
     <Content Include="Content\Other\playerRun.png" />
-    <Content Include="Content\playerRun.png" />
     <Content Include="Content\SplashScreen\logo.png" />
     <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />

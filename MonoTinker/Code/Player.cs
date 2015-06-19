@@ -54,12 +54,11 @@ namespace MonoTinker.Code
 
         public void Update(GameTime gameTime)
         {
-            KeyboardState ks = Keyboard.GetState();
-            if (ks.IsKeyDown(Keys.A))
+            if (Keys.A.Down())
             {
                 VelocityX = -1;
 
-                if (ks.IsKeyDown(Keys.LeftShift))
+                if (Keys.LeftShift.Down())
                 {
                     Speed = normalSpeed * 2;
                     animation.FramesPerSecond = 45;
@@ -72,10 +71,10 @@ namespace MonoTinker.Code
                 flip = true;
                 animation.Update(gameTime);
             }
-            else if (ks.IsKeyDown(Keys.D))
+            else if (Keys.D.Down())
             {
                 VelocityX = 1;
-                if (ks.IsKeyDown(Keys.LeftShift))
+                if (Keys.LeftShift.Down())
                 {
                     Speed = normalSpeed * 2;
                     animation.FramesPerSecond = 45;
@@ -91,10 +90,9 @@ namespace MonoTinker.Code
             else
             {
                 VelocityX = 0;
-                animation.Reset();
             }
 
-            if (!jumped && ks.IsKeyDown(Keys.Space))
+            if (!jumped && Keys.Space.Down())
             {
                 jumped = true;
                 Transform.PosY -= 10f;
@@ -128,9 +126,7 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(animation.Texture,Transform.Position, animation.Source,Color.White,0,Vector2.Zero, Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
+            spriteBatch.Draw(animation[true].Texture,Transform.Position, animation[true].Source,Color.White,0,Vector2.Zero, Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
         }
-
-        
     }
 }

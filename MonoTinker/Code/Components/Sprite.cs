@@ -6,42 +6,64 @@ using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components
 {
+    public enum Origin
+    {
+        Center,TopLeft, TopRight,BottomLeft,BottomRight
+    }
+
     public class Sprite
     {
         private Texture2D _texture2D;
-        private Rectangle source;
-        private Vector2 scale;
+        public Transform Transform;
+        private Rectangle? source;
+        private SpriteEffects effect;
+        private Vector2 origin;
+        public Color Color;
 
-        public Rectangle Source
+        public SpriteEffects Effect
         {
-            get { return this.source; }
+            set { this.effect = value; }
         }
 
-        public Vector2 Scale
+        public float LayerDepth;
+
+        public Origin Origin
         {
-            get { return this.scale; }
-            set
-            {
-                //this.source.Width = (int)Math.Ceiling(this.Texture.Width * value.X);
-                //this.source.Height = (int)Math.Ceiling(this.Texture.Height * value.Y);
-                this.scale = value;
-                this.Center = new Vector2(this.source.Width/2f,this.source.Height/2f);
+            set {
+                switch (value)
+                {
+                    case Origin.TopLeft:
+                        this.origin = Vector2.Zero;
+                        break;
+                    case Origin.TopRight:
+                        this.origin = new Vector2(this.Size.X, 0);
+                        break;
+                    case Origin.BottomLeft:
+                        this.origin = new Vector2(0, this.Size.Y);
+                        break;
+                    case Origin.BottomRight:
+                        this.origin = Size;
+                        break;
+                    case Origin.Center:
+                        this.origin = Center;
+                        break;
+                }
             }
         }
 
-        protected int SourceX
+        public Vector2 OriginCustom
         {
-            set { this.source.X = value; }
+            set { this.origin = value; }
         }
 
-        protected int SourceY
+        public Rectangle Source
         {
-            set { this.source.Y = value; }
+            get { return source ?? this._texture2D.Bounds; }
         }
-
+        
         public Vector2 Size
         {
-            get { return this.source.SizeVec2(); } 
+            get { return this._texture2D.Bounds.Size.ToVector2(); } 
         }
 
         public Vector2 Center { get; private set; }
@@ -54,8 +76,11 @@ namespace MonoTinker.Code.Components
         public Sprite(Texture2D texture2D)
         {
             this._texture2D = texture2D;
-            this.source = texture2D.Bounds;
-            this.Scale = Vector2.One;
+            this.source = null;
+            this.Transform = new Transform();
+            this.Center = _texture2D.Bounds.Center.ToVector2();
+            this.Origin = Origin.Center;
+            this.Color = Color.White;
         }
 
         public Sprite(string path, ContentManager content): this(content.Load<Texture2D>(path))
@@ -66,7 +91,15 @@ namespace MonoTinker.Code.Components
         {
             this._texture2D = texture2D;
             this.source = sourceRect;
-            this.Scale = Vector2.One;
+            this.Transform = new Transform();
+            this.Center = _texture2D.Bounds.Center.ToVector2();
+            this.Origin = Origin.Center;
+            this.Color = Color.White;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture,Transform.Position,Source,Color,Transform.Rotation,origin,Transform.Scale,effect,LayerDepth);
         }
     }
 }
