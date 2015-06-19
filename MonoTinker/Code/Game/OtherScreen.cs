@@ -85,7 +85,7 @@ namespace MonoTinker.Code.Game
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
             spriteBatch.Draw(light,player.Transform.Position,null,null,player.SpriteCenter * (Vector2.One + player.Transform.Scale));
-            spriteBatch.Draw(light, new Vector2(200, 200), Color.White);
+            spriteBatch.Draw(light, new Rectangle(0,0,Device.Viewport.Width,Device.Viewport.Height), Color.White * 0.5f);
             spriteBatch.Draw(light, new Vector2(450, 200), Color.White);
             spriteBatch.End();
 
