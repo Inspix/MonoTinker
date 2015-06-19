@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using MonoTinker.Code.Managers;
 
 namespace MonoTinker.Code.Components
 {
@@ -7,11 +8,13 @@ namespace MonoTinker.Code.Components
 
         #region Private fields
         private Vector2 _position;
+        //private Vector2 _scale;
         #endregion
 
         #region Public fields
 
         public float Rotation;
+
         public Vector2 Scale;
 
         #endregion

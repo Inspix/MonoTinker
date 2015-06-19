@@ -11,20 +11,31 @@ namespace MonoTinker.Code.Managers
     {
         private static Screen currentScreen;
         private static Screen newScreen;
+        public static bool ShouldExit;
         private static int width, height;
         private float Alpha;
         private static bool increase;
         private Texture2D fadeTexture;
         private static IServiceProvider service;
+        public static Viewport view;
+        public static GraphicsDevice device;
         private static bool transitioning;
+        private static Vector2 globalScale;
 
         public ScreenManager(ContentManager content,GraphicsDevice gdevice)
         {
             width = gdevice.Viewport.Width;
             height = gdevice.Viewport.Height;
+            device = gdevice;
             service = content.ServiceProvider;
+            globalScale = new Vector2(width/640f,height/480f);
             fadeTexture = content.Load<Texture2D>("fade");
             currentScreen = new MenuScreen(service);
+        }
+
+        public static Vector2 GlobalScale
+        {
+            get { return globalScale; }
         }
 
         public static bool Transitioning

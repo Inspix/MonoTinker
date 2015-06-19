@@ -13,7 +13,7 @@ namespace MonoTinker
         [STAThread]
         static void Main()
         {
-            using (var game = new MonoTinker())
+            using (var game = new MonoTinker(1024,768))
                 game.Run();
         }
     }

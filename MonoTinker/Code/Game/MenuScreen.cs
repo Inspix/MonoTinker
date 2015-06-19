@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +12,7 @@ namespace MonoTinker.Code.Game
     public sealed class MenuScreen : Screen
     {
 
-        private Sprite logo, logoGlow, play, options, bigGear, smallGear, belt,leds;
+        private Sprite logo, logoGlow, play, options, exit, bigGear, smallGear, belt,leds;
 
         private Random rnd;
         private double time;
@@ -60,8 +59,12 @@ namespace MonoTinker.Code.Game
             options.Transform.Position = play.Transform.Position + Vector2.UnitY*100 - Vector2.UnitX*15;
             options.Transform.Scale = play.Transform.Scale;
 
+            exit = new Sprite(content.Load<Texture2D>("exit"));
+            exit.Transform.Position = options.Transform.Position + Vector2.UnitY * 70 + Vector2.UnitX*15;
+            exit.Transform.Scale = options.Transform.Scale;
+
             bigGear = new Sprite(content.Load<Texture2D>("bigGear"));
-            bigGear.Transform.Position = Vector2.One*100;
+            bigGear.Transform.Position = Vector2.One*100 * ScreenManager.GlobalScale;
             bigGear.OriginCustom = bigGear.Center + new Vector2(-1,3);
 
             leds = new Sprite(content.Load<Texture2D>("leds"));
@@ -84,6 +87,7 @@ namespace MonoTinker.Code.Game
         public override void Update(GameTime gameTime)
         {
             Console.WriteLine(counter++);
+            Input(gameTime);
             time += gameTime.ElapsedGameTime.TotalSeconds;
             rotation += reverse ? (float)gameTime.ElapsedGameTime.TotalSeconds : -(float)gameTime.ElapsedGameTime.TotalSeconds;
             if (time > TimeSpan.FromSeconds(rnd.NextDouble() + rnd.Next(1,6)).TotalSeconds)
@@ -94,31 +98,49 @@ namespace MonoTinker.Code.Game
                 }
                 time = 0;
             }
-            if (Keys.Tab.Down() && !ScreenManager.Transitioning)
-            {
-                ScreenManager.ChangeScreen("Other");
-            }
-
-            if (Keys.Q.Down())
-            {
-                play.Transform.Scale(0.1f);
-            }
-
-            if (InputHandler.IsKeyDown(Keys.Up))
-            {
-                Index--;
-            }
-            if (InputHandler.IsKeyDown(Keys.Down))
-            {
-                Index++;
-            }
-            MenuIndexChange();
+            MenuIndexCheck();
             Console.WriteLine(index);
             bigGear.Transform.Rotation = rotation;
             smallGear.Transform.Rotation = rotation;
         }
 
-        public void MenuIndexChange()
+        public void Input(GameTime gameTime)
+        {
+            if (Keys.Enter.DownOnce())
+            {
+                switch (index)
+                {
+                    case 1:
+                        ScreenManager.ChangeScreen("Other");
+                        break;
+                    case 2:
+                        ScreenManager.ChangeScreen("Splash");
+                        break;
+                    case 3:
+                        ScreenManager.ShouldExit = true;
+                        break;
+                }
+            }
+            if (Keys.Tab.Down() && !ScreenManager.Transitioning)
+            {
+                ScreenManager.ChangeScreen("Other");
+            }
+            if (Keys.Q.Down())
+            {
+                play.Transform.Scale(0.1f);
+            }
+            if (InputHandler.DirectionDownOnce("up"))
+            {
+                Index--;
+            }
+            if (InputHandler.DirectionDownOnce("down"))
+            {
+                Index++;
+            }
+        }
+
+
+        public void MenuIndexCheck()
         {
             play.Transform.Scale = Index == 1
                 ? Vector2.One * (MathHelper.SmoothStep(play.Transform.Scale.X, 0.5f, 0.1f))
@@ -126,10 +148,16 @@ namespace MonoTinker.Code.Game
             options.Transform.Scale = Index == 2
                 ? Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.5f, 0.1f))
                 : Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.4f, 0.1f));
+            exit.Transform.Scale = Index == 3
+                ? Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.5f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.4f, 0.1f));
+
             play.Color = Index == 1 ? ColorHelper.SmoothTransition(play.Color, Color.OrangeRed, 0.02f) 
                                     : ColorHelper.SmoothTransition(play.Color, Color.White, 0.02f);
             options.Color = Index == 2 ? ColorHelper.SmoothTransition(options.Color, Color.OrangeRed, 0.02f)
                                     : ColorHelper.SmoothTransition(options.Color, Color.White, 0.02f);
+            exit.Color = Index == 3 ? ColorHelper.SmoothTransition(exit.Color, Color.OrangeRed, 0.02f)
+                                    : ColorHelper.SmoothTransition(exit.Color, Color.White, 0.02f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -148,6 +176,7 @@ namespace MonoTinker.Code.Game
             smallGear.Draw(spriteBatch);
             play.Draw(spriteBatch);
             options.Draw(spriteBatch);
+            exit.Draw(spriteBatch);
             leds.Draw(spriteBatch);
             belt.Draw(spriteBatch);
 

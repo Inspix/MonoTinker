@@ -28,6 +28,11 @@ namespace MonoTinker.Code
             Speed = normalSpeed;
         }
 
+        public Texture2D Texture
+        {
+            get { return this.animation[true].Texture; }
+        }
+
         public Vector2 Velocity
         {
             get { return this.velocity; } 
@@ -94,6 +99,7 @@ namespace MonoTinker.Code
 
             if (!jumped && Keys.Space.Down())
             {
+                Debug.Message("Player jumped at {0}", this.Transform.Position);
                 jumped = true;
                 Transform.PosY -= 10f;
                 VelocityY = -5f;
@@ -126,7 +132,7 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(animation[true].Texture,Transform.Position, animation[true].Source,Color.White,0,Vector2.Zero, Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
+            spriteBatch.Draw(animation[true].Texture,Transform.Position, animation[true].Source,Color.White,0,Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
         }
     }
 }

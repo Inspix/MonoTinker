@@ -44,6 +44,7 @@
     <Compile Include="Code\Components\Animation.cs" />
     <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
+    <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
     <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\SpriteSheet.cs" />
@@ -83,6 +84,7 @@
     <Content Include="Content\fade.png" />
     <Content Include="Content\Menu\belt.png" />
     <Content Include="Content\Menu\bigGear.png" />
+    <Content Include="Content\Menu\exit.png" />
     <Content Include="Content\Menu\leds.png" />
     <Content Include="Content\Menu\options.png" />
     <Content Include="Content\Menu\play.png" />
@@ -90,7 +92,11 @@
     <Content Include="Content\Menu\text.png" />
     <Content Include="Content\Menu\textGlow.png" />
     <Content Include="Content\Other\ghettoville1.jpg" />
+    <Content Include="Content\Other\lighting.png" />
     <Content Include="Content\Other\playerRun.png" />
+    <Content Include="Content\Shaders\Lighting.fx" />
+    <Content Include="Content\Shaders\SpriteGrayscale.fx" />
+    <Content Include="Content\Shaders\SpriteInvert.fx" />
     <Content Include="Content\SplashScreen\logo.png" />
     <Content Include="Content\textures.png" />
     <Content Include="Icon.ico" />

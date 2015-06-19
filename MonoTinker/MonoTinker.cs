@@ -14,14 +14,22 @@ namespace MonoTinker
     /// </summary>
     public class MonoTinker : Game
     {
+        public readonly int Widht;
+        public readonly int Height;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public static bool ShouldExit;
         private ScreenManager sm;
         public Vector2 CameraLookAt;
 
-        public MonoTinker()
+        public MonoTinker(int width,int height)
         {
+            Widht = width;
+            Height = height;
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -34,7 +42,10 @@ namespace MonoTinker
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Window.Position = new Point(GraphicsDevice.DisplayMode.Width / 2 - Widht / 2,GraphicsDevice.DisplayMode.Height / 2 - Height / 2);
             sm = new ScreenManager(Content,GraphicsDevice);
+            ScreenManager.view = graphics.GraphicsDevice.Viewport;
+
             base.Initialize();
         }
 
@@ -67,6 +78,10 @@ namespace MonoTinker
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (ScreenManager.ShouldExit)
+            {
+                Exit();
+            }
             InputHandler.Update(Window);
             sm.Update(gameTime);
             base.Update(gameTime);
@@ -79,7 +94,6 @@ namespace MonoTinker
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
             
             sm.Draw(spriteBatch);
             // TODO: Add your drawing code here

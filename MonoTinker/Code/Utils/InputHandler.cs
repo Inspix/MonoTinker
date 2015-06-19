@@ -26,6 +26,40 @@ namespace MonoTinker.Code.Utils
             return IsKeyDown(key);
         }
 
+        public static bool DirectionDownOnce(string direction)
+        {
+            switch (direction.ToLower())
+            {
+                case "up":
+                    return IsKeyDown(Keys.Up) || IsKeyDown(Keys.W);
+                case "down":
+                    return IsKeyDown(Keys.Down) || IsKeyDown(Keys.S);
+                case "left":
+                    return IsKeyDown(Keys.Left) || IsKeyDown(Keys.A);
+                case "right":
+                    return IsKeyDown(Keys.Right) || IsKeyDown(Keys.D);
+                default:
+                    return false;
+            }
+        }
+
+        public static bool DirectionDown(string direction)
+        {
+            switch (direction.ToLower())
+            {
+                case "up":
+                    return currentKeyboardState.IsKeyDown(Keys.Up) || currentKeyboardState.IsKeyDown(Keys.W);
+                case "down":
+                    return currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.S);
+                case "left":
+                    return currentKeyboardState.IsKeyDown(Keys.Left) || currentKeyboardState.IsKeyDown(Keys.A);
+                case "right":
+                    return currentKeyboardState.IsKeyDown(Keys.Right) || currentKeyboardState.IsKeyDown(Keys.D);
+                default:
+                    return false;
+            }
+        }
+
         public static void Update(GameWindow win)
         {
             lastKeyboardState = currentKeyboardState;
