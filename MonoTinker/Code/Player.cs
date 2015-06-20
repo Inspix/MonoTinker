@@ -10,7 +10,7 @@ namespace MonoTinker.Code
 {
     public class Player : IMovable
     {
-        private Animation animation;
+        private AnimationV2 animation;
         private Vector2 velocity;
         private float normalSpeed = 2;
         private bool flip;
@@ -20,17 +20,17 @@ namespace MonoTinker.Code
         public Transform Transform;
         public BoxCollider Collider;
 
-        public Player(Animation anim)
+        public Player(AnimationV2 anim)
         {
             animation = anim;
             this.Transform = new Transform(Vector2.Zero);
-            Collider = new BoxCollider(Transform.Position, animation.Size);
+            Collider = new BoxCollider(Transform.Position, animation.CurrentFrame.Size);
             Speed = normalSpeed;
         }
 
         public Texture2D Texture
         {
-            get { return this.animation[true].Texture; }
+            get { return this.animation.CurrentFrame.Texture; }
         }
 
         public Vector2 Velocity
@@ -53,9 +53,9 @@ namespace MonoTinker.Code
 
         public float Speed { get; set; }
 
-        public Vector2 SpriteCenter { get { return this.animation.Center; } }
+        public Vector2 SpriteCenter { get { return this.animation.CurrentFrame.Center; } }
 
-        public Vector2 SpriteSize { get { return this.animation.Size; } }
+        public Vector2 SpriteSize { get { return this.animation.CurrentFrame.Size; } }
 
         public void Update(GameTime gameTime)
         {
@@ -99,7 +99,6 @@ namespace MonoTinker.Code
 
             if (!jumped && Keys.Space.Down())
             {
-                Debug.Message("Player jumped at {0}", this.Transform.Position);
                 jumped = true;
                 Transform.PosY -= 10f;
                 VelocityY = -5f;
@@ -112,7 +111,7 @@ namespace MonoTinker.Code
             {
                 VelocityY += 0.15f*2;
             }
-
+            
             Move(gameTime);
         }
 
@@ -120,7 +119,6 @@ namespace MonoTinker.Code
         public void Move(GameTime gametime)
         {
             this.Transform.Position += Velocity * Speed;
-            //Console.WriteLine(Transform.Position);
             if (Transform.PosY >= 480 - this.SpriteSize.Y)
             {
                 jumped = false;
@@ -132,7 +130,7 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(animation[true].Texture,Transform.Position, animation[true].Source,Color.White,0,Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
+            spriteBatch.Draw(animation.CurrentFrame.Texture,Transform.Position, animation.CurrentFrame.Source,Color.White,0,Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
         }
     }
 }

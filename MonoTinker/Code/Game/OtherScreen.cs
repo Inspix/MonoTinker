@@ -13,6 +13,7 @@ namespace MonoTinker.Code.Game
         private Texture2D bg;
         private Texture2D bg2;
         private Texture2D light;
+        private SpriteAtlas textures;
         private RenderTarget2D lightMask;
         private RenderTarget2D mainTarget;
         private GraphicsDevice Device;
@@ -31,6 +32,7 @@ namespace MonoTinker.Code.Game
 
         protected override void LoadContent()
         {
+            textures= new SpriteAtlas();
             Device = ScreenManager.device;
             var pp = Device.PresentationParameters;
             lightMask = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
@@ -44,7 +46,8 @@ namespace MonoTinker.Code.Game
             bg = content.Load<Texture2D>("playerRun");
             bg2 = content.Load<Texture2D>("ghettoville1");
             light = content.Load<Texture2D>("lighting");
-            player = new Player(new Animation(bg,new Vector2(130,150),1));
+            string[] names = textures.PopulateFromSpritesheet(bg, new Vector2(130, 150), "dude", 1);
+            player = new Player(new AnimationV2(names,textures));
             player.Transform.Position = Vector2.One*50;
             player.Transform.Scale = Vector2.One*0.5f;
 
@@ -80,11 +83,10 @@ namespace MonoTinker.Code.Game
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Console.WriteLine(Device.Indices);
             Device.SetRenderTarget(lightMask);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
-            spriteBatch.Draw(light,player.Transform.Position,null,null,player.SpriteCenter * (Vector2.One + player.Transform.Scale));
+            spriteBatch.Draw(light,player.Transform.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20);
             spriteBatch.Draw(light, new Rectangle(0,0,Device.Viewport.Width,Device.Viewport.Height), Color.White * 0.5f);
             spriteBatch.Draw(light, new Vector2(450, 200), Color.White);
             spriteBatch.End();

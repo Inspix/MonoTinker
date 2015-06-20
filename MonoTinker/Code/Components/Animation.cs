@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -22,14 +23,14 @@ namespace MonoTinker.Code.Components
             set { this.timeToUpdate = (1f/value); }
         }
 
-        public Sprite this[bool current]
+        public Sprite CurrentFrame
         {
             get
             {
-                return !current ? this[0] : this[frame];
+                return this[frame];
             }
         }
-
+        
         public Vector2 Center
         {
             get
@@ -88,7 +89,7 @@ namespace MonoTinker.Code.Components
             if (timeElapsed > timeToUpdate)
             {
                 timeElapsed -= timeToUpdate;
-                frame++;
+                this.frame++;
                 if (frame >= this.Count-framesMissing)
                 {
                     frame = 0;

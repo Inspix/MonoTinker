@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoTinker.Code.Components.Extensions;
 using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components
@@ -9,39 +9,40 @@ namespace MonoTinker.Code.Components
     public class SpriteSheet
     {
         private Texture2D spriteSheet;
-        private Dictionary<string, Sprite> spritesDictionary;
+        private SpriteAtlas atlas;
         private readonly string baseName;
 
         public SpriteSheet(Texture2D texture, Vector2 size, string baseName = "")
         {
             this.spriteSheet = texture;
             this.baseName = baseName;
-            this.spritesDictionary = new Dictionary<string, Sprite>();
+            this.atlas = new SpriteAtlas();
             this.CreateSprites(size);
+
         }
 
         public SpriteSheet(Texture2D texture, Vector2 size, int missing, string baseName = "")
         {
             this.spriteSheet = texture;
             this.baseName = baseName;
-            this.spritesDictionary = new Dictionary<string, Sprite>();
+            this.atlas = new SpriteAtlas();
             this.CreateSprites(size, missing);
         }
 
-        private void CreateSprites(Vector2 sizez,int missing = 0)
+        private void CreateSprites(Vector2 framesize,int missing = 0, string baseName = "")
         {
-            Point size = sizez.ToPoint();
-            int perRow = spriteSheet.Width/size.X;
-            int perCol = spriteSheet.Height/size.Y;
-            int total = (perCol*perRow) - missing;
+            Point size = framesize.ToPoint();
+            int perRow = spriteSheet.Width / size.X;
+            int perCol = spriteSheet.Height / size.Y;
+            int total = (perCol * perRow) - missing;
             int index = 0;
             for (int y = 0; y < perCol; y++)
             {
                 for (int x = 0; x < perRow; x++)
                 {
-                    spritesDictionary.Add(baseName+index,new Sprite(spriteSheet,new Rectangle(x * size.X,y * size.Y ,size.X,size.Y)));
+                    atlas.Add(baseName + index, new Sprite(spriteSheet, new Rectangle(x * size.X, y * size.Y, size.X, size.Y)));
                     index++;
-                    if (index  >= total)
+                    if (index >= total)
                     {
                         break;
                     }
@@ -56,7 +57,7 @@ namespace MonoTinker.Code.Components
 
         public int Count
         {
-            get { return this.spritesDictionary.Count; }
+            get { return this.atlas.Count; }
         }
 
         public Sprite this[string key]
@@ -65,7 +66,7 @@ namespace MonoTinker.Code.Components
             {
                 try
                 {
-                    return this.spritesDictionary[key];
+                    return atlas[key];
                 }
                 catch (Exception)
                 {
@@ -75,17 +76,17 @@ namespace MonoTinker.Code.Components
             }
         }
 
-        public Sprite this[int key]
+        public Sprite this[int index]
         {
             get
             {
                 try
                 {
-                    return this.spritesDictionary[baseName+key];
+                    return (this.atlas[index]);
                 }
                 catch (Exception)
                 {
-                    Debug.Error("Invalid sprite sheet index: {0}", key);
+                    Debug.Error("Invalid sprite sheet index: {0}", index);
                 }
                 return null;
             }

@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using System.Globalization;
+
 namespace MonoTinker
 {
 #if WINDOWS || LINUX
@@ -13,8 +16,10 @@ namespace MonoTinker
         [STAThread]
         static void Main()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             using (var game = new MonoTinker(1024,768))
                 game.Run();
+
         }
     }
 #endif

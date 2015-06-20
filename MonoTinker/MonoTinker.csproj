@@ -42,9 +42,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\Components\Animation.cs" />
+    <Compile Include="Code\Components\AnimationV2.cs" />
     <Compile Include="Code\Components\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
+    <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\SpriteSheet.cs" />
@@ -82,15 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fade.png" />
-    <Content Include="Content\Menu\belt.png" />
-    <Content Include="Content\Menu\bigGear.png" />
-    <Content Include="Content\Menu\exit.png" />
-    <Content Include="Content\Menu\leds.png" />
-    <Content Include="Content\Menu\options.png" />
-    <Content Include="Content\Menu\play.png" />
-    <Content Include="Content\Menu\smallGear.png" />
-    <Content Include="Content\Menu\text.png" />
-    <Content Include="Content\Menu\textGlow.png" />
+    <Content Include="Content\Menu\menu.png" />
+    <Content Include="Content\Menu\menu.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Other\ghettoville1.jpg" />
     <Content Include="Content\Other\lighting.png" />
     <Content Include="Content\Other\playerRun.png" />

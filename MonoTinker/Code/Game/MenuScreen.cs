@@ -13,7 +13,7 @@ namespace MonoTinker.Code.Game
     {
 
         private Sprite logo, logoGlow, play, options, exit, bigGear, smallGear, belt,leds;
-
+        private SpriteAtlas atlas;
         private Random rnd;
         private double time;
         private float rotation;
@@ -38,43 +38,50 @@ namespace MonoTinker.Code.Game
         public MenuScreen(IServiceProvider service) : base(service, "Menu")
         {
             rnd = new Random(DateTime.Now.Minute);
+            atlas = new SpriteAtlas();
             this.LoadContent();
         }
 
         protected override void LoadContent()
         {
-            logo = new Sprite(content.Load<Texture2D>("text"))
+            atlas.PopulateFromSpriteSheet(content,"menu");
+
+            foreach (var spriteAtla in atlas)
             {
-                Transform = {Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY*100) + Vector2.UnitX*50}
-            };
-            logoGlow = new Sprite(content.Load<Texture2D>("textGlow"));
-            logoGlow.Transform.Position = logo.Transform.Position - new Vector2(45,-10);
+                Console.WriteLine(spriteAtla.Key);
+            }
+
+            logo = atlas["text"];
+            logo.Transform.Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY * 100) + Vector2.UnitX*50;
+
+            logoGlow = atlas["textGlow"];
+            logoGlow.Transform.Position = logo.Transform.Position - new Vector2(45, -10);
             logoGlow.Color = Color.OrangeRed;
 
-            play = new Sprite(content.Load<Texture2D>("play"));
-            play.Transform.Position = ScreenManager.ScreenCenter + Vector2.UnitY*35;
-            play.Transform.Scale = Vector2.One * 0.4f;
+            play = atlas["play"];
+            play.Transform.Position = ScreenManager.ScreenCenter + Vector2.UnitY * 35;
+            play.Transform.Scale = Vector2.One*0.4f;
 
-            options = new Sprite(content.Load<Texture2D>("options"));
-            options.Transform.Position = play.Transform.Position + Vector2.UnitY*100 - Vector2.UnitX*15;
-            options.Transform.Scale = play.Transform.Scale;
+            options = atlas["options"];
+            options.Transform.Position = play.Transform.Position + Vector2.UnitY * 100 - Vector2.UnitX * 15;
+            options.Transform.Scale = Vector2.One * 0.4f;
 
-            exit = new Sprite(content.Load<Texture2D>("exit"));
-            exit.Transform.Position = options.Transform.Position + Vector2.UnitY * 70 + Vector2.UnitX*15;
-            exit.Transform.Scale = options.Transform.Scale;
+            exit = atlas["exit"];
+            exit.Transform.Position = options.Transform.Position + Vector2.UnitY * 70 + Vector2.UnitX * 15;
+            exit.Transform.Scale = Vector2.One * 0.5f;
 
-            bigGear = new Sprite(content.Load<Texture2D>("bigGear"));
-            bigGear.Transform.Position = Vector2.One*100 * ScreenManager.GlobalScale;
-            bigGear.OriginCustom = bigGear.Center + new Vector2(-1,3);
+            bigGear = atlas["bigGear"];
+            bigGear.Transform.Position = Vector2.One * 100;
+            bigGear.OriginCustom = bigGear.Center + new Vector2(-1,2);
 
-            leds = new Sprite(content.Load<Texture2D>("leds"));
-            leds.Transform.Position = logo.Transform.Position + new Vector2(logo.Source.Right/2f, 0);
+            smallGear = atlas["smallGear"];
+            smallGear.Transform.Position = bigGear.Transform.Position + Vector2.UnitY * 105 - Vector2.UnitX * 20;
+
+            leds = atlas["leds"];
+            leds.Transform.Position = logo.Transform.Position + Vector2.UnitX * logo.Size.X/2f;
             leds.Transform.Scale = Vector2.One * 0.7f;
 
-            smallGear = new Sprite(content.Load<Texture2D>("smallGear"));
-            smallGear.Transform.Position = bigGear.Transform.Position + Vector2.UnitY*105 - Vector2.UnitX*20;
-
-            belt = new Sprite(content.Load<Texture2D>("belt"));
+            belt = atlas["belt"];
             belt.Origin = Origin.Center;
             belt.Transform.Position = bigGear.Transform.Position + new Vector2(-10,44);
         }
@@ -86,10 +93,10 @@ namespace MonoTinker.Code.Game
 
         public override void Update(GameTime gameTime)
         {
-            Console.WriteLine(counter++);
             Input(gameTime);
             time += gameTime.ElapsedGameTime.TotalSeconds;
             rotation += reverse ? (float)gameTime.ElapsedGameTime.TotalSeconds : -(float)gameTime.ElapsedGameTime.TotalSeconds;
+            counter++;
             if (time > TimeSpan.FromSeconds(rnd.NextDouble() + rnd.Next(1,6)).TotalSeconds)
             {
                 if (counter >= 200)
@@ -99,7 +106,6 @@ namespace MonoTinker.Code.Game
                 time = 0;
             }
             MenuIndexCheck();
-            Console.WriteLine(index);
             bigGear.Transform.Rotation = rotation;
             smallGear.Transform.Rotation = rotation;
         }
@@ -117,6 +123,7 @@ namespace MonoTinker.Code.Game
                         ScreenManager.ChangeScreen("Splash");
                         break;
                     case 3:
+                        this.UnloadContent();
                         ScreenManager.ShouldExit = true;
                         break;
                 }
@@ -149,8 +156,8 @@ namespace MonoTinker.Code.Game
                 ? Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.5f, 0.1f))
                 : Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.4f, 0.1f));
             exit.Transform.Scale = Index == 3
-                ? Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.5f, 0.1f))
-                : Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.4f, 0.1f));
+                ? Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.6f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.5f, 0.1f));
 
             play.Color = Index == 1 ? ColorHelper.SmoothTransition(play.Color, Color.OrangeRed, 0.02f) 
                                     : ColorHelper.SmoothTransition(play.Color, Color.White, 0.02f);
@@ -179,7 +186,6 @@ namespace MonoTinker.Code.Game
             exit.Draw(spriteBatch);
             leds.Draw(spriteBatch);
             belt.Draw(spriteBatch);
-
             spriteBatch.End();
         }
     }
