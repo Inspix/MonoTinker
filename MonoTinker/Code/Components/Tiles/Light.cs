@@ -27,6 +27,7 @@ namespace MonoTinker.Code.Components.Tiles
             this.Opacity = opacity;
             this.effect = effect;
             Init();
+            
         }
 
         public int Opacity

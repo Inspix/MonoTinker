@@ -60,6 +60,23 @@ namespace MonoTinker.Code.Utils
             }
         }
 
+        public static bool MouseDown(string button)
+        {
+            switch (button)
+            {
+                case "left":
+                    return currentMouseState.LeftButton == ButtonState.Pressed &&
+                           lastMouseState.LeftButton == ButtonState.Released;
+                case "right":
+                    return currentMouseState.RightButton == ButtonState.Pressed &&
+                           lastMouseState.RightButton == ButtonState.Released;
+                case "middle":
+                    return currentMouseState.MiddleButton == ButtonState.Pressed &&
+                           lastMouseState.MiddleButton == ButtonState.Released;
+            }
+            return false;
+        }
+
         public static void Update(GameWindow win)
         {
             lastKeyboardState = currentKeyboardState;

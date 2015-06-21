@@ -45,6 +45,7 @@
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
+    <Compile Include="Code\Components\Elements\Projectile.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fade.png" />
+    <Content Include="Content\Game\crosshair.png" />
     <Content Include="Content\Game\hyptosis_til-art-batch-2.png" />
     <Content Include="Content\Game\hyptosis_tile-art-batch-3.png" />
     <Content Include="Content\Game\light.png" />
@@ -100,6 +102,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Game\playerRun.png" />
+    <Content Include="Content\Game\projectiles.png" />
+    <Content Include="Content\Game\projectiles.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Game\tt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Menu\menu.png" />
     <Content Include="Content\Menu\menu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

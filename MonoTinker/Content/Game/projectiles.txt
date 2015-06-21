@@ -1,0 +1,16 @@
+#
+# Sprite sheet data for MonoGame.
+#
+# To learn how to import these sprites into your MonoGame project visit:
+# http://www.codeandweb.com/texturepacker/monogame
+#
+# Sprite sheet: projectiles.png (612 x 112)
+# $TexturePacker:SmartUpdate:794bb158fe038c742fadd5328b2612e5:059534091741fff7e95dc80fa03e3b04:e47cc1024ff0cd701834cf3749e24aa2$
+#
+
+slice01_01;1;553;2;54;74;74;54;0.5;0.5
+slice02_02;1;488;2;63;75;75;63;0.5;0.5
+slice03_03;1;413;2;73;77;77;73;0.5;0.5
+slice04_04;0;257;2;154;90;154;90;0.5;0.5
+slice05_05;0;2;2;137;106;137;106;0.5;0.5
+slice06_06;1;141;2;114;106;106;114;0.5;0.5

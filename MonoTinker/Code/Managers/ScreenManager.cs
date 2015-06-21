@@ -10,16 +10,19 @@ namespace MonoTinker.Code.Managers
 {
     public class ScreenManager
     {
-        private static Screen currentScreen;
-        private static Screen newScreen;
-        public static bool ShouldExit;
-        private static int width, height;
-        private float Alpha;
-        private static bool increase;
-        private Texture2D fadeTexture;
-        private static IServiceProvider service;
         public static Viewport view;
         public static GraphicsDevice device;
+        public static bool ShouldExit;
+        public static readonly Random rng = new Random();
+
+        private Texture2D fadeTexture;
+        private float Alpha;
+
+        private static Screen currentScreen;
+        private static Screen newScreen;
+        private static int width, height;
+        private static bool increase;
+        private static IServiceProvider service;
         private static bool transitioning;
         private static Vector2 globalScale;
 

@@ -43,6 +43,7 @@ namespace MonoTinker
         {
             // TODO: Add your initialization logic here
             Window.Position = new Point(GraphicsDevice.DisplayMode.Width / 2 - Widht / 2,GraphicsDevice.DisplayMode.Height / 2 - Height / 2);
+            Window.Title = "MonoTinker";
             sm = new ScreenManager(Content,GraphicsDevice);
             ScreenManager.view = graphics.GraphicsDevice.Viewport;
 

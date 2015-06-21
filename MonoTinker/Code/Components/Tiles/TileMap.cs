@@ -2,12 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.Tiles
@@ -177,7 +173,7 @@ namespace MonoTinker.Code.Components.Tiles
                                 if (tiles[col] != 0)
                                 {
                                     LightTiles.Add(new Light(atlas[tiles[col] - 1].Texture, atlas[tiles[col] - 1].Source,
-                                        new Vector2(x, y)));
+                                        new Vector2(x, y),LightSimpleEffect.None));
                                 }
                                 x += 32;
                             }
@@ -189,7 +185,6 @@ namespace MonoTinker.Code.Components.Tiles
                     }
                 }
             }
-            
             totalHeight = height*32;
             totalWidht = width*32;
 

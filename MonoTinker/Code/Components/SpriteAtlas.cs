@@ -30,6 +30,7 @@ namespace MonoTinker.Code.Components
 
         public SpriteAtlas() : this(DefaultSize)
         {
+            
         }
 
         public string[] PopulateFromSpritesheet(Texture2D texture,Vector2 framesize, string basename = "", int missing = 0)
