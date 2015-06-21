@@ -13,6 +13,11 @@ namespace MonoTinker.Code.Components.Tiles
         public bool Active;
         private Vector2 center;
         private Vector2 scale;
+        private Random random;
+        private double timeToUpdate;
+        private bool[] triggers;
+        private int[] counters;
+        private int[] values;
         private LightSimpleEffect effect;
         public Light(Texture2D texture, Rectangle source, Vector2 position,LightSimpleEffect effect = LightSimpleEffect.None,
             int opacity = 255,Vector2 scale = default(Vector2)) : base(texture, source, position)
@@ -21,7 +26,7 @@ namespace MonoTinker.Code.Components.Tiles
             this.scale = scale == default (Vector2) ? Vector2.One : scale;
             this.Opacity = opacity;
             this.effect = effect;
-            Active = true;
+            Init();
         }
 
         public int Opacity
@@ -43,6 +48,29 @@ namespace MonoTinker.Code.Components.Tiles
             {
                 case LightSimpleEffect.Fading: Fading(gameTime);
                     break;
+                case LightSimpleEffect.Shimmering:
+                    Shimmering(gameTime);
+                    break;
+            }
+        }
+
+        private void Init()
+        {
+            Active = true;
+            switch (effect)
+            {
+                case LightSimpleEffect.Fading:
+                    timeToUpdate = TimeSpan.FromSeconds(0.2f).TotalSeconds;
+                    break;
+                case LightSimpleEffect.Shimmering:
+                    this.Opacity = 10;
+                    timeToUpdate = TimeSpan.FromSeconds(0.01f).TotalSeconds;
+
+                    counters = new int[1];
+                    values = new int[2];
+                    triggers = new[] {true,true};
+                    random = new Random();
+                    break;
             }
         }
 
@@ -54,11 +82,44 @@ namespace MonoTinker.Code.Components.Tiles
 
         private void Shimmering(GameTime gameTime)
         {
-            //TODO Shimmering "Effect" 
+            //TODO Shimmering "Effect"
+            if (triggers[0])
+            {
+                values[0] = random.Next(100, 250);
+                values[1] = random.Next(values[0]+5, values[0]+10);
+                triggers[0] = false;
+            }
+          
+            timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
+            if (timeElapsed >= timeToUpdate)
+            {
+                timeElapsed -= timeToUpdate;
+                counters[0]++;
+                if (counters[0] >= values[0] && counters[0] <= values[1] && triggers[1])
+                {
+                    this.Opacity += 12;
+                    
+                }
+                if (counters[0] > values[1] && triggers[1])
+                {
+                    triggers[1] = false;
+                }
+                if (!triggers[1])
+                {
+                    this.Opacity -= 6;
+                    if (this.Opacity == 0)
+                    {
+                        triggers[1] = true;
+                        triggers[0] = true;
+                        counters[0] = 0; 
+
+                    }
+                }
+            }
         }
 
         private double timeElapsed;
-        private double timeToUpdate = TimeSpan.FromSeconds(0.1).TotalSeconds;
+        
         private void Fading(GameTime gameTime)
         {
             timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;

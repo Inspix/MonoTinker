@@ -53,7 +53,7 @@ namespace MonoTinker.Code.GameScreens
             bg = content.Load<Texture2D>("playerRun");
             bg2 = content.Load<Texture2D>("ghettoville1");
             light = content.Load<Texture2D>("lighting");
-            lights.Add(new Light(light, light.Bounds, Vector2.One*100,LightSimpleEffect.Fading));
+            lights.Add(new Light(light, light.Bounds, Vector2.One*100,LightSimpleEffect.Shimmering));
             lights.Add(new Light(light, light.Bounds, Vector2.One * 200, LightSimpleEffect.Fading));
             lights.Add(new Light(light, light.Bounds, Vector2.One * 400, LightSimpleEffect.Fading));
 
