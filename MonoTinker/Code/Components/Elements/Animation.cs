@@ -1,8 +1,7 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoTinker.Code.Components
+namespace MonoTinker.Code.Components.Elements
 {
     public enum AnimInfo
     {

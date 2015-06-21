@@ -3,11 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Components.Elements;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Components.Extensions;
 using MonoTinker.Code.Utils;
 
-namespace MonoTinker.Code.Game
+namespace MonoTinker.Code.GameScreens
 {
     public sealed class MenuScreen : Screen
     {
@@ -56,7 +57,7 @@ namespace MonoTinker.Code.Game
 
             logoGlow = atlas["textGlow"];
             logoGlow.Transform.Position = logo.Transform.Position - new Vector2(45, -10);
-            logoGlow.Color = Color.OrangeRed;
+            logoGlow.Clr = Color.OrangeRed;
 
             play = atlas["play"];
             play.Transform.Position = ScreenManager.ScreenCenter + Vector2.UnitY * 35;
@@ -117,10 +118,10 @@ namespace MonoTinker.Code.Game
                 switch (index)
                 {
                     case 1:
-                        ScreenManager.ChangeScreen("Other");
+                        ScreenManager.ChangeScreen("Game");
                         break;
                     case 2:
-                        ScreenManager.ChangeScreen("Splash");
+                        ScreenManager.ChangeScreen("Other");
                         break;
                     case 3:
                         this.UnloadContent();
@@ -159,12 +160,12 @@ namespace MonoTinker.Code.Game
                 ? Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.6f, 0.1f))
                 : Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.5f, 0.1f));
 
-            play.Color = Index == 1 ? ColorHelper.SmoothTransition(play.Color, Color.OrangeRed, 0.02f) 
-                                    : ColorHelper.SmoothTransition(play.Color, Color.White, 0.02f);
-            options.Color = Index == 2 ? ColorHelper.SmoothTransition(options.Color, Color.OrangeRed, 0.02f)
-                                    : ColorHelper.SmoothTransition(options.Color, Color.White, 0.02f);
-            exit.Color = Index == 3 ? ColorHelper.SmoothTransition(exit.Color, Color.OrangeRed, 0.02f)
-                                    : ColorHelper.SmoothTransition(exit.Color, Color.White, 0.02f);
+            play.Clr = Index == 1 ? ColorHelper.SmoothTransition(play.Clr, Color.OrangeRed, 0.02f) 
+                                    : ColorHelper.SmoothTransition(play.Clr, Color.White, 0.02f);
+            options.Clr = Index == 2 ? ColorHelper.SmoothTransition(options.Clr, Color.OrangeRed, 0.02f)
+                                    : ColorHelper.SmoothTransition(options.Clr, Color.White, 0.02f);
+            exit.Clr = Index == 3 ? ColorHelper.SmoothTransition(exit.Clr, Color.OrangeRed, 0.02f)
+                                    : ColorHelper.SmoothTransition(exit.Clr, Color.White, 0.02f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

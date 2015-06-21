@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoTinker.Code.Components
+namespace MonoTinker.Code.Components.Elements
 {
     public abstract class Screen
     {

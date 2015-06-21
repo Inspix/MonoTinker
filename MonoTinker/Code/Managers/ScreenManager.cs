@@ -2,8 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Game;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.GameScreens;
 
 namespace MonoTinker.Code.Managers
 {
@@ -69,6 +70,11 @@ namespace MonoTinker.Code.Managers
                     break;
                 case "Splash":
                     newScreen = new SplashScreen(service);
+                    transitioning = true;
+                    increase = true;
+                    break;
+                case "Game":
+                    newScreen = new GameScreen(service);
                     transitioning = true;
                     increase = true;
                     break;

@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.Components.Interfaces;
+using MonoTinker.Code.Components.Tiles;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
 
-namespace MonoTinker.Code.Game
+namespace MonoTinker.Code.GameScreens
 {
     public sealed class OtherScreen : Screen
     {
@@ -19,7 +24,8 @@ namespace MonoTinker.Code.Game
         private GraphicsDevice Device;
         private Camera camera;
         private Player player;
-        private bool firstFramePassed;
+        private List<ISimpleDrawable> lights;
+        private Random rnd = new Random();
         private bool grayScale;
         private bool invertColors;
         private Effect fx;
@@ -34,6 +40,7 @@ namespace MonoTinker.Code.Game
         {
             textures= new SpriteAtlas();
             Device = ScreenManager.device;
+            lights = new List<ISimpleDrawable>();
             var pp = Device.PresentationParameters;
             lightMask = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
             mainTarget = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
@@ -46,6 +53,10 @@ namespace MonoTinker.Code.Game
             bg = content.Load<Texture2D>("playerRun");
             bg2 = content.Load<Texture2D>("ghettoville1");
             light = content.Load<Texture2D>("lighting");
+            lights.Add(new Light(light, light.Bounds, Vector2.One*100,LightSimpleEffect.Fading));
+            lights.Add(new Light(light, light.Bounds, Vector2.One * 200, LightSimpleEffect.Fading));
+            lights.Add(new Light(light, light.Bounds, Vector2.One * 400, LightSimpleEffect.Fading));
+
             string[] names = textures.PopulateFromSpritesheet(bg, new Vector2(130, 150), "dude", 1);
             player = new Player(new AnimationV2(names,textures));
             player.Transform.Position = Vector2.One*50;
@@ -60,6 +71,10 @@ namespace MonoTinker.Code.Game
 
         public override void Update(GameTime gameTime)
         {
+            foreach (var l in lights.OfType<Light>())
+            {
+                l.Update(gameTime);
+            }
             player.Update(gameTime);
             camera.Update(gameTime,player.Transform.Position);
             InputUpdate(gameTime);
@@ -67,6 +82,7 @@ namespace MonoTinker.Code.Game
 
         public void InputUpdate(GameTime gameTime)
         {
+
             if (Keys.Tab.DownOnce() && !ScreenManager.Transitioning)
             {
                 ScreenManager.ChangeScreen("Menu");
@@ -86,9 +102,11 @@ namespace MonoTinker.Code.Game
             Device.SetRenderTarget(lightMask);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
-            spriteBatch.Draw(light,player.Transform.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20);
-            spriteBatch.Draw(light, new Rectangle(0,0,Device.Viewport.Width,Device.Viewport.Height), Color.White * 0.5f);
-            spriteBatch.Draw(light, new Vector2(450, 200), Color.White);
+            spriteBatch.Draw(light,player.Transform.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20,0f,Vector2.One + Vector2.One *(float)rnd.NextDouble() * 0.5f);
+            foreach (var simpleDrawable in lights)
+            {
+                simpleDrawable.Draw(spriteBatch);
+            }
             spriteBatch.End();
 
             Device.SetRenderTarget(mainTarget);

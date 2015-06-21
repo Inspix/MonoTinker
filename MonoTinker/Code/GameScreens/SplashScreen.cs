@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Components.Elements;
 using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
 
-namespace MonoTinker.Code.Game
+namespace MonoTinker.Code.GameScreens
 {
     public sealed class SplashScreen : Screen
     {

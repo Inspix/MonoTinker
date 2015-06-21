@@ -41,21 +41,28 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Code\Components\Animation.cs" />
-    <Compile Include="Code\Components\AnimationV2.cs" />
-    <Compile Include="Code\Components\BoxCollider.cs" />
+    <Compile Include="Code\Components\Elements\Animation.cs" />
+    <Compile Include="Code\Components\Elements\AnimationV2.cs" />
+    <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
+    <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\SpriteSheet.cs" />
-    <Compile Include="Code\Game\MenuScreen.cs" />
-    <Compile Include="Code\Game\OtherScreen.cs" />
-    <Compile Include="Code\Components\Screen.cs" />
+    <Compile Include="Code\Components\Tiles\CollisionTile.cs" />
+    <Compile Include="Code\Components\Tiles\StaticTile.cs" />
+    <Compile Include="Code\Components\Tiles\Tile.cs" />
+    <Compile Include="Code\Components\Tiles\Light.cs" />
+    <Compile Include="Code\Components\Tiles\TileMap.cs" />
+    <Compile Include="Code\GameScreens\GameScreen.cs" />
+    <Compile Include="Code\GameScreens\MenuScreen.cs" />
+    <Compile Include="Code\GameScreens\OtherScreen.cs" />
+    <Compile Include="Code\Components\Elements\Screen.cs" />
     <Compile Include="Code\Components\Sprite.cs" />
-    <Compile Include="Code\Components\Transform.cs" />
-    <Compile Include="Code\Game\SplashScreen.cs" />
+    <Compile Include="Code\Components\Elements\Transform.cs" />
+    <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Player.cs" />
@@ -84,6 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fade.png" />
+    <Content Include="Content\Game\hyptosis_til-art-batch-2.png" />
+    <Content Include="Content\Game\hyptosis_tile-art-batch-3.png" />
+    <Content Include="Content\Game\light.png" />
+    <Content Include="Content\Game\lighting.png" />
+    <Content Include="Content\Game\LightingFX.fx" />
+    <Content Include="Content\Game\map.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Game\playerRun.png" />
     <Content Include="Content\Menu\menu.png" />
     <Content Include="Content\Menu\menu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -104,6 +120,7 @@
   <ItemGroup>
     <None Include="Content\SplashScreen\SplashFont.spritefont" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">

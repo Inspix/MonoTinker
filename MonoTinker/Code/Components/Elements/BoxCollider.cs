@@ -1,7 +1,6 @@
-using System;
 using Microsoft.Xna.Framework;
 
-namespace MonoTinker.Code.Components
+namespace MonoTinker.Code.Components.Elements
 {
     public class BoxCollider
     {

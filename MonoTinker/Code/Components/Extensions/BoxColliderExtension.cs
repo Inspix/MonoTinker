@@ -1,3 +1,5 @@
+using MonoTinker.Code.Components.Elements;
+
 namespace MonoTinker.Code.Components.Extensions
 {
     internal static class BoxColliderExtension
