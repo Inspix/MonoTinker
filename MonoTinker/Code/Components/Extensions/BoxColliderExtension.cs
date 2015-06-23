@@ -1,10 +1,24 @@
+using Microsoft.Xna.Framework;
 using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components.Extensions
 {
     internal static class BoxColliderExtension
     {
         private const float Margin = 2.5f;
+
+        public static Rectangle Inflate(this Rectangle rect, Vector2 amount,bool debug = false)
+        {
+            rect.Location -= (amount/2f).ToPoint();
+            rect.Size += amount.ToPoint();
+            if (debug)
+            {
+                Debug.Warning(rect.ToString());
+
+            }
+            return rect;
+        }
 
         public static bool TouchesTop(this BoxCollider b1, BoxCollider b2)
         {

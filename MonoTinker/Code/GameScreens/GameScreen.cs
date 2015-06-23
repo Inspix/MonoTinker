@@ -36,22 +36,18 @@ namespace MonoTinker.Code.GameScreens
         protected override void LoadContent()
         {
             color = Color.White;
-            color.A = 100;
+            color.A = 150;
             light = content.Load<Texture2D>("lighting");
             lightEffect = content.Load<Effect>("LightingFX");
             TileAtlas = new SpriteAtlas();
             TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("hyptosis_tile-art-batch-3"), new Vector2(32, 32), "TileSetOne");
             TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("hyptosis_til-art-batch-2"), new Vector2(32, 32), "TileSetTwo");
             TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("light"), new Vector2(32, 32), "Light");
-            TileAtlas.PopulateFromSpriteSheet(content,"projectiles");
+            TileAtlas.Add("LaserProjectile",new Sprite(content.Load<Texture2D>("laser")));
+            TileAtlas.Add("ArrowProjectile", new Sprite(content.Load<Texture2D>("arrow")));
             projectiles = new List<Projectile>();
-            string[] projectileAnimation = new[]
-            {
-                "slice01_01", "slice02_02", "slice03_03",
-                "slice04_04", "slice05_05", "slice06_06",
-            };
+           
             crosshair = content.Load<Texture2D>("crosshair");
-            projectileAnimationV2 = new AnimationV2(projectileAnimation,TileAtlas);
             map = new TileMap();
             map.LoadFromTiledFile(ref TileAtlas, content.RootDirectory + "/tt.txt");
             camera = new Camera(ScreenManager.view);
@@ -62,7 +58,7 @@ namespace MonoTinker.Code.GameScreens
             string[] names = playerAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("playerRun"),
                 new Vector2(130, 150), "dude", 1);
             player = new Player(new AnimationV2(names,playerAtlas));
-            player.Transform.Scale = Vector2.One * 0.4f;
+            player.Transform.Scale = Vector2.One * 0.4f; 
             
         }
 
@@ -78,11 +74,22 @@ namespace MonoTinker.Code.GameScreens
             camera.Update(gameTime,player.Transform.Position);
             if (InputHandler.MouseDown("left"))
             {
-                Projectile p = new Projectile(TileAtlas["slice01_01"], player.Transform.Position,0);
+                Projectile p = new Projectile(TileAtlas["LaserProjectile"], player.Transform.Position, 0);
                 p.Velocity =
                     Vector2.Normalize(player.Transform.Position - player.Transform.Position +
-                                      Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter);
+                                     Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter);
                 p.RotationAngles = (float) Math.Atan2(p.Velocity.Y, p.Velocity.X) + 29.8f;
+                projectiles.Add(p);
+
+            }
+            if (InputHandler.MouseDown("right"))
+            {
+                Projectile p = new Projectile(TileAtlas["ArrowProjectile"], player.Transform.Position, 0);
+                p.Velocity =
+                    Vector2.Normalize(player.Transform.Position - player.Transform.Position +
+                                     Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter);
+                p.RotationAngles = (float)Math.Atan2(p.Velocity.Y, p.Velocity.X) + 29.8f;
+                p.Effect = SpriteEffects.FlipVertically;
                 projectiles.Add(p);
 
             }
@@ -93,6 +100,13 @@ namespace MonoTinker.Code.GameScreens
                 {
                     projectiles.RemoveAt(i);
                     i--;
+                }
+            }
+            foreach (var collisionTile in map.CollisionTiles)
+            {
+                foreach (var projectile in projectiles)
+                {
+                    collisionTile.Collided(projectile);
                 }
             }
         }
@@ -119,7 +133,10 @@ namespace MonoTinker.Code.GameScreens
             }
             foreach (var collisionTile in map.CollisionTiles)
             {
-                collisionTile.Draw(spriteBatch);
+                if (collisionTile.Active)
+                {
+                    collisionTile.Draw(spriteBatch);
+                }
             }
             foreach (var projectile in projectiles)
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,7 +10,7 @@ using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code
 {
-    public class Player : IMovable
+    public class Player : IMovable, ICollidable
     {
         private AnimationV2 animation;
         private Vector2 velocity;
@@ -19,13 +20,13 @@ namespace MonoTinker.Code
         private bool jumped;
 
         public Transform Transform;
-        public BoxCollider Collider;
+        public Rectangle boundingBox;
 
         public Player(AnimationV2 anim)
         {
             animation = anim;
             this.Transform = new Transform(Vector2.Zero);
-            Collider = new BoxCollider(Transform.Position, animation.CurrentFrame.Size);
+            boundingBox = new Rectangle(this.Transform.Position.ToPoint(),animation.CurrentFrame.Size.ToPoint());
             Speed = normalSpeed;
         }
 
@@ -54,11 +55,32 @@ namespace MonoTinker.Code
 
         public float Speed { get; set; }
 
-        public Vector2 SpriteCenter { get { return this.animation.CurrentFrame.Center; } }
+        public Vector2 SpriteCenter { get { return this.animation.CurrentFrame.Size/2f; } }
 
         public Vector2 SpriteSize { get { return this.animation.CurrentFrame.Size; } }
 
+        public Vector2 Center { get { return new Vector2(this.Transform.PosX + SpriteCenter.X, this.Transform.PosY + SpriteCenter.Y);} }
+
         public void Update(GameTime gameTime)
+        {
+            Input(gameTime);
+            Move(gameTime);
+        }
+
+       
+        public void Move(GameTime gametime)
+        {
+            this.Transform.Position += Velocity * Speed;
+            if (Transform.PosY >= 480 - this.SpriteSize.Y)
+            {
+                jumped = false;
+                Transform.PosY = 480 - this.SpriteSize.Y;
+            }
+            this.boundingBox.Location = this.Transform.Position.ToPoint();
+
+        }
+
+        public void Input(GameTime gameTime)
         {
             if (Keys.A.Down())
             {
@@ -110,28 +132,28 @@ namespace MonoTinker.Code
             }
             else
             {
-                VelocityY += 0.15f*2;
+                VelocityY += 0.15f * 2;
             }
-            
-            Move(gameTime);
-        }
-
-       
-        public void Move(GameTime gametime)
-        {
-            this.Transform.Position += Velocity * Speed;
-            if (Transform.PosY >= 480 - this.SpriteSize.Y)
-            {
-                jumped = false;
-                Transform.PosY = 480 - this.SpriteSize.Y;
-            }
-            this.Collider.Position = Transform.Position;
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(animation.CurrentFrame.Texture,Transform.Position, animation.CurrentFrame.Source,Color.White,0,Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
+        }
+
+        public Rectangle BoundingBox
+        {
+            get { return this.boundingBox; }
+        }
+
+        public bool Collided(ICollidable obj)
+        {
+            bool result = this.boundingBox.Intersects(obj.BoundingBox);
+            if (result)
+            {
+                Debug.Message("player collided with:{0}", nameof(obj));
+            }
+            return result;
         }
     }
 }

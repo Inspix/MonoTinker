@@ -45,8 +45,9 @@
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
-    <Compile Include="Code\Components\Elements\Projectile.cs" />
+    <Compile Include="Code\Components\GameObjects\Projectile.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
+    <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Code\GameScreens\MenuScreen.cs" />
     <Compile Include="Code\GameScreens\OtherScreen.cs" />
     <Compile Include="Code\Components\Elements\Screen.cs" />
-    <Compile Include="Code\Components\Sprite.cs" />
+    <Compile Include="Code\Components\Elements\Sprite.cs" />
     <Compile Include="Code\Components\Elements\Transform.cs" />
     <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
@@ -92,9 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fade.png" />
+    <Content Include="Content\Game\arrow.png" />
+    <Content Include="Content\Game\bullet.png" />
     <Content Include="Content\Game\crosshair.png" />
     <Content Include="Content\Game\hyptosis_til-art-batch-2.png" />
     <Content Include="Content\Game\hyptosis_tile-art-batch-3.png" />
+    <Content Include="Content\Game\laser.png" />
     <Content Include="Content\Game\light.png" />
     <Content Include="Content\Game\lighting.png" />
     <Content Include="Content\Game\LightingFX.fx" />

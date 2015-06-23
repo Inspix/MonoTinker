@@ -90,7 +90,7 @@ namespace MonoTinker.Code.Components
             this.source = sourceRect;
             this.Size = sourceRect.Size.ToVector2();
             this.Transform = new Transform();
-            this.Center = _texture2D.Bounds.Center.ToVector2();
+            this.Center = source.Value .Center.ToVector2();
             this.Origin = Origin.Center;
             this.Clr = Color.White;
         }
