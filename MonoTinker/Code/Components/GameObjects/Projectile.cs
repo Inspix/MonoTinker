@@ -56,13 +56,6 @@ namespace MonoTinker.Code.Components.Elements
             this.boudndingBox.Location = this.Transform.Position.ToPoint();
         }
 
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(this.Texture, Transform.Position, this.Source, Color.White, this.Transform.Rotation,
-                this.Center, this.Transform.Scale, this.effect, 0);
-        }
-
         public Rectangle BoundingBox
         {
             get { return this.boudndingBox; }
