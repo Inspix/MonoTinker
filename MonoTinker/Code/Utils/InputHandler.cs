@@ -26,6 +26,11 @@ namespace MonoTinker.Code.Utils
             return IsKeyDown(key);
         }
 
+        public static bool DownLast(this Keys key)
+        {
+            return lastKeyboardState.IsKeyDown(key) && currentKeyboardState.IsKeyUp(key);
+        }
+
         public static bool DirectionDownOnce(string direction)
         {
             switch (direction.ToLower())

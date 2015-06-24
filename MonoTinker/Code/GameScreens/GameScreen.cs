@@ -22,7 +22,7 @@ namespace MonoTinker.Code.GameScreens
         private Effect lightEffect;
         private Camera camera;
         private Texture2D crosshair;
-        private Player player;
+        private PlayerOld player;
         private TileMap map;
         private Color color;
         private AnimationV2 projectileAnimationV2;
@@ -57,7 +57,7 @@ namespace MonoTinker.Code.GameScreens
 
             string[] names = playerAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("playerRun"),
                 new Vector2(130, 150), "dude", 1);
-            player = new Player(new AnimationV2(names,playerAtlas));
+            player = new PlayerOld(new Animation(names,playerAtlas));
             player.Transform.Scale = Vector2.One * 0.4f; 
             
         }

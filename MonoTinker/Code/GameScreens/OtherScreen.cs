@@ -23,7 +23,7 @@ namespace MonoTinker.Code.GameScreens
         private RenderTarget2D mainTarget;
         private GraphicsDevice Device;
         private Camera camera;
-        private Player player;
+        private PlayerOld player;
         private List<ISimpleDrawable> lights;
         private Random rnd = new Random();
         private bool grayScale;
@@ -58,7 +58,7 @@ namespace MonoTinker.Code.GameScreens
             lights.Add(new Light(light, light.Bounds, Vector2.One * 400, LightSimpleEffect.Fading));
 
             string[] names = textures.PopulateFromSpritesheet(bg, new Vector2(130, 150), "dude", 1);
-            player = new Player(new AnimationV2(names,textures));
+            player = new PlayerOld(new Animation(names,textures));
             player.Transform.Position = Vector2.One*50;
             player.Transform.Scale = Vector2.One*0.5f;
 

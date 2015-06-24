@@ -1,86 +1,68 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoTinker.Code.Components.Elements
 {
-    public enum AnimInfo
+    public class Animation
     {
-        PerFrame,Relative
-    }
-
-    public class Animation : SpriteSheet
-    {
-        private int framesMissing;
-        private Vector2 frameSize;
-        private int frame;
+        private string[] sprites;
+        public Vector2 Offset;
+        public bool Looping;
+        public event EventHandler OnAnimationFinish;
+        private SpriteAtlas atlas;
+        private Color tint;
         private double timeElapsed;
         private double timeToUpdate;
-        private AnimInfo info;
+        private int currentFrame;
 
-        public double FramesPerSecond
+        public int FramesPerSecond
         {
-            set { this.timeToUpdate = (1f/value); }
+            set
+            {
+                this.timeToUpdate = (1f / value);
+            }
+        }
+
+        public Animation(string[] frames, SpriteAtlas source, int fps = 30)
+        {
+            this.sprites = frames;
+            this.atlas = source;
+            this.FramesPerSecond = fps;
+            this.Tint = Color.White;
+            this.Looping = true;
+        }
+
+        public Sprite this[int index]
+        {
+            get { return this.atlas[sprites[index]]; }
         }
 
         public Sprite CurrentFrame
         {
-            get
-            {
-                return this[frame];
-            }
+            get { return this[currentFrame]; }
         }
-        
-        public Vector2 Center
+
+        public int Count
         {
-            get
+            get { return this.sprites.Length; }
+        }
+
+        public Color Tint
+        {
+            get { return this.tint; }
+            set
             {
-                switch (info)
+                if (value != Color.White)
                 {
-                    case AnimInfo.PerFrame:
-                        return this[frame].Center;
-                    default:
-                        return this.frameSize / 2f;
+                    this.tint = value * 0.75f;
+                }
+                else
+                {
+                    this.tint = value;
                 }
             }
         }
-
-        public Vector2 Size
-        {
-            get
-            {
-                switch (info)
-                {
-                    case AnimInfo.PerFrame:
-                        return this[frame].Size;
-                    default:
-                        return this.frameSize;
-                }
-            }
-        }
-
-        public int FramesMissing { set { this.framesMissing = value; } }
-
-        public Animation(Texture2D texture2D,Vector2 frameSize) : base(texture2D, frameSize)
-        {
-            this.frameSize = frameSize;
-            info = AnimInfo.Relative;
-            this.FramesPerSecond = this.Count;
-        }
-
-        public Animation(Texture2D texture2D, Vector2 frameSize, int missingframes) : base(texture2D, frameSize,missingframes)
-        {
-            this.frameSize = frameSize;
-            info = AnimInfo.Relative;
-            this.FramesPerSecond = this.Count - missingframes;
-        }
-
-        public Animation(Texture2D texture2D, Vector2 frameSize, int fps,int missingFrames) : base(texture2D, frameSize, missingFrames)
-        {
-            this.frameSize = frameSize;
-            info = AnimInfo.Relative;
-            this.FramesPerSecond = fps;
-        }
-
 
         public void Update(GameTime gameTime)
         {
@@ -88,12 +70,58 @@ namespace MonoTinker.Code.Components.Elements
             if (timeElapsed > timeToUpdate)
             {
                 timeElapsed -= timeToUpdate;
-                this.frame++;
-                if (frame >= this.Count-framesMissing)
+                Console.WriteLine(sprites[currentFrame]);
+                if (sprites.Length != 1)
                 {
-                    frame = 0;
+                    this.currentFrame++;
+                }
+                if (currentFrame >= this.sprites.Length)
+                {
+                    if (!Looping)
+                    {
+                        OnAnimationFinishInvoke(this, new EventArgs());
+                    }
+                    currentFrame = 0;
                 }
             }
         }
+
+        public void Update()
+        {
+            this.currentFrame++;
+            if (currentFrame >= this.sprites.Length)
+            {
+                if (!Looping)
+                {
+                    OnAnimationFinishInvoke(this, new EventArgs());
+                }
+                currentFrame = 0;
+            }
+        }
+
+        private void OnAnimationFinishInvoke(object sender, EventArgs e)
+        {
+            if (OnAnimationFinish != null)
+            {
+                OnAnimationFinish(sender, e);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        {
+            Draw(spriteBatch, position,0);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2? origin = null, Vector2? scale = null, SpriteEffects effect = SpriteEffects.None)
+        {
+            spriteBatch.Draw(CurrentFrame.Texture, position + Offset, CurrentFrame.Source, Tint, rotation, origin ?? Vector2.Zero, scale ?? Vector2.One, effect, 0);
+        }
+
+        public void Reset()
+        {
+            this.currentFrame = 0;
+            this.timeElapsed = 0;
+        }
+
     }
 }

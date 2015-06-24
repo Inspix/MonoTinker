@@ -42,9 +42,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\Components\Elements\Animation.cs" />
+    <Compile Include="Code\Components\Elements\AnimationControler.cs" />
+    <Compile Include="Code\Components\Elements\AnimationEventArgs.cs" />
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
+    <Compile Include="Code\Components\Elements\CompoundAnimation.cs" />
+    <Compile Include="Code\Components\Extensions\Factory.cs" />
     <Compile Include="Code\Components\GameObjects\Projectile.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
     <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
@@ -58,6 +62,7 @@
     <Compile Include="Code\Components\Tiles\Tile.cs" />
     <Compile Include="Code\Components\Tiles\Light.cs" />
     <Compile Include="Code\Components\Tiles\TileMap.cs" />
+    <Compile Include="Code\GameScreens\CharacterCreationScreen.cs" />
     <Compile Include="Code\GameScreens\GameScreen.cs" />
     <Compile Include="Code\GameScreens\MenuScreen.cs" />
     <Compile Include="Code\GameScreens\OtherScreen.cs" />
@@ -67,7 +72,7 @@
     <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
-    <Compile Include="Code\Player.cs" />
+    <Compile Include="Code\PlayerOld.cs" />
     <Compile Include="Code\Utils\ColorHelper.cs" />
     <Compile Include="Code\Utils\Debug.cs" />
     <Compile Include="Code\Utils\Helper.cs" />
@@ -92,6 +97,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CharacterCreation\Slash\BODY_male.png" />
+    <Content Include="Content\CharacterCreation\Slash\HEAD_hair_blonde.png" />
+    <Content Include="Content\CharacterCreation\Slash\LEGS_pants_greenish.png" />
+    <Content Include="Content\CharacterCreation\Slash\TORSO_leather_armor_torso.png" />
+    <Content Include="Content\CharacterCreation\Slash\WEAPON_rapier.png" />
+    <Content Include="Content\CharacterCreation\Walking\BODY_male.png" />
+    <Content Include="Content\CharacterCreation\Walking\HEAD_hair_blonde.png" />
+    <Content Include="Content\CharacterCreation\Walking\LEGS_pants_greenish.png" />
+    <Content Include="Content\CharacterCreation\Walking\TORSO_leather_armor_torso.png" />
     <Content Include="Content\fade.png" />
     <Content Include="Content\Game\arrow.png" />
     <Content Include="Content\Game\bullet.png" />

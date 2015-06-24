@@ -121,7 +121,7 @@ namespace MonoTinker.Code.GameScreens
                         ScreenManager.ChangeScreen("Game");
                         break;
                     case 2:
-                        ScreenManager.ChangeScreen("Other");
+                        ScreenManager.ChangeScreen("CharacterCreation");
                         break;
                     case 3:
                         this.UnloadContent();

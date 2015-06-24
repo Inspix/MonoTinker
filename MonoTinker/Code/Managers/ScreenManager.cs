@@ -63,25 +63,22 @@ namespace MonoTinker.Code.Managers
             {
                 case "Menu":
                     newScreen = new MenuScreen(service);
-                    transitioning = true;
-                    increase = true;
                     break;
                 case "Other":
                     newScreen = new OtherScreen(service);
-                    transitioning = true;
-                    increase = true;
                     break;
                 case "Splash":
                     newScreen = new SplashScreen(service);
-                    transitioning = true;
-                    increase = true;
                     break;
                 case "Game":
                     newScreen = new GameScreen(service);
-                    transitioning = true;
-                    increase = true;
+                    break;
+                case "CharacterCreation":
+                    newScreen = new CharacterCreationScreen(service);
                     break;
             }
+            transitioning = true;
+            increase = true;
         }
 
         private void Transition(GameTime gameTime)

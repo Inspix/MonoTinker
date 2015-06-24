@@ -28,7 +28,7 @@ namespace MonoTinker.Code.Components.Tiles
         {
             if (obj is Projectile)
             { 
-                if (BoundingBox.Inflate(Vector2.One*50).Intersects(obj.BoundingBox))
+                if (BoundingBox.Inflate(Vector2.One*10).Intersects(obj.BoundingBox))
                 {
                     ((Projectile) obj).Active = false;
                     return true;

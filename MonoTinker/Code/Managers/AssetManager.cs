@@ -117,7 +117,7 @@ namespace MonoTinker.Code.Managers
             }
         }
 
-        public void AddAnimation(string filename, Vector2 frameSize, string id = "", int fps = 30, int framesMissing = 0)
+      /*  public void AddAnimation(string filename, Vector2 frameSize, string id = "", int fps = 30, int framesMissing = 0)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace MonoTinker.Code.Managers
                 Debug.Warning("Exception when adding a Animation from file : {0}", filename);
                 Debug.Error(e.StackTrace);
             }
-        } 
+        } */
         #endregion
 
         public void AddSpriteSheet(SpriteSheet spritesheet, string id)

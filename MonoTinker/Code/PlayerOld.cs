@@ -1,18 +1,17 @@
-using System;
-using System.Collections.Specialized;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components;
 using MonoTinker.Code.Components.Elements;
 using MonoTinker.Code.Components.Interfaces;
 using MonoTinker.Code.Utils;
 
+// Deprecated no longer used;
+
 namespace MonoTinker.Code
 {
-    public class Player : IMovable, ICollidable
+    public class PlayerOld : IMovable, ICollidable
     {
-        private AnimationV2 animation;
+        private Animation animation;
         private Vector2 velocity;
         private float normalSpeed = 2;
         private bool flip;
@@ -22,7 +21,7 @@ namespace MonoTinker.Code
         public Transform Transform;
         public Rectangle boundingBox;
 
-        public Player(AnimationV2 anim)
+        public PlayerOld(Animation anim)
         {
             animation = anim;
             this.Transform = new Transform(Vector2.Zero);
@@ -138,7 +137,8 @@ namespace MonoTinker.Code
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(animation.CurrentFrame.Texture,Transform.Position, animation.CurrentFrame.Source,Color.White,0,Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,0);
+            //spriteBatch.Draw(animation.CurrentFrame.Texture, Transform.Position, animation.CurrentFrame.Source, Color.White, 0, Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
+            animation.Draw(spriteBatch,Transform.Position,0,null,Transform.Scale,flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
         }
 
         public Rectangle BoundingBox
