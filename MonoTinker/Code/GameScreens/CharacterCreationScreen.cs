@@ -225,9 +225,9 @@ namespace MonoTinker.Code.GameScreens
 
             if (Keys.Space.DownOnce())
             {
-                int r = ScreenManager.rng.Next(0, 255);
-                int g = ScreenManager.rng.Next(0, 255);
-                int b = ScreenManager.rng.Next(0, 255);
+                int r = ScreenManager.Rng.Next(0, 255);
+                int g = ScreenManager.Rng.Next(0, 255);
+                int b = ScreenManager.Rng.Next(0, 255);
                 foreach (var value in controler.States.Values)
                 {
                     value.Layer(1).Tint = Color.FromNonPremultiplied(r, g, b, 255);
@@ -237,9 +237,9 @@ namespace MonoTinker.Code.GameScreens
 
             if (Keys.Q.DownOnce())
             {
-                int r = ScreenManager.rng.Next(0, 255);
-                int g = ScreenManager.rng.Next(0, 255);
-                int b = ScreenManager.rng.Next(0, 255);
+                int r = ScreenManager.Rng.Next(0, 255);
+                int g = ScreenManager.Rng.Next(0, 255);
+                int b = ScreenManager.Rng.Next(0, 255);
                 foreach (var value in controler.States.Values)
                 {
                     value.Layer(1).Tint = Color.FromNonPremultiplied(r, g, b, 255);

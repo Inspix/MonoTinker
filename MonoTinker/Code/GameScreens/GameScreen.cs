@@ -52,8 +52,8 @@ namespace MonoTinker.Code.GameScreens
             map.LoadFromTiledFile(ref TileAtlas, content.RootDirectory + "/tt.txt");
             camera = new Camera(ScreenManager.view);
             playerAtlas = new SpriteAtlas();
-            lightMask = new RenderTarget2D(ScreenManager.device,map.Widht,map.Height);
-            main = new RenderTarget2D(ScreenManager.device, map.Widht, map.Height);
+            lightMask = new RenderTarget2D(ScreenManager.Device,map.Widht,map.Height);
+            main = new RenderTarget2D(ScreenManager.Device, map.Widht, map.Height);
 
             string[] names = playerAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("playerRun"),
                 new Vector2(130, 150), "dude", 1);
@@ -113,8 +113,8 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            ScreenManager.device.SetRenderTarget(lightMask);
-            ScreenManager.device.Clear(Color.Black);
+            ScreenManager.Device.SetRenderTarget(lightMask);
+            ScreenManager.Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
             spriteBatch.Draw(light,Vector2.Zero,light.Bounds,color,0,light.Bounds.Center.ToVector2(),Vector2.One*50,SpriteEffects.None,0);
             spriteBatch.Draw(light,player.Transform.Position,light.Bounds,Color.White,0,Vector2.Zero, Vector2.One*0.5f,SpriteEffects.None, 0 );
@@ -124,8 +124,8 @@ namespace MonoTinker.Code.GameScreens
             }
             spriteBatch.End();
 
-            ScreenManager.device.SetRenderTarget(main);
-            ScreenManager.device.Clear(Color.Black);
+            ScreenManager.Device.SetRenderTarget(main);
+            ScreenManager.Device.Clear(Color.Black);
             spriteBatch.Begin();
             foreach (var staticTile in map.StaticTiles)
             { 
@@ -145,7 +145,7 @@ namespace MonoTinker.Code.GameScreens
             player.Draw(spriteBatch);
             spriteBatch.End();
 
-            ScreenManager.device.SetRenderTarget(null);
+            ScreenManager.Device.SetRenderTarget(null);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend,null,null,null,null,camera.Transform);
             lightEffect.Parameters["LightMask"].SetValue(lightMask);
             lightEffect.CurrentTechnique.Passes[0].Apply();

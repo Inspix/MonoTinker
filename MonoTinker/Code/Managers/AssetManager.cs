@@ -19,14 +19,14 @@ namespace MonoTinker.Code.Managers
         private static AssetManager instance;
         private ContentManager content;
 
-        private Dictionary<string, SpriteSheet> spriteSheet;          // To Store our sprite sheets
+        private Dictionary<string, SpriteAtlas> spriteAtlas;          // To Store our sprite sheets
         private Dictionary<string, Sprite> sprites;                 // To Store our sprites
         private Dictionary<string, Animation> animations;           // To Store our animations
         // TODO: dictionary for sounds  
 
         private AssetManager()
         {
-            this.spriteSheet = new Dictionary<string, SpriteSheet>();
+            this.spriteAtlas = new Dictionary<string, SpriteAtlas>();
             this.sprites = new Dictionary<string, Sprite>();
             this.animations = new Dictionary<string, Animation>();
         }
@@ -64,9 +64,9 @@ namespace MonoTinker.Code.Managers
                 object toReturn = this.animations[id];
                 return (T) toReturn;
             }
-            if (typeof(T) == typeof(SpriteSheet))
+            if (typeof(T) == typeof(SpriteAtlas))
             {
-                object toReturn = this.spriteSheet[id];
+                object toReturn = this.spriteAtlas[id];
                 return (T)toReturn;
             }
 
@@ -116,47 +116,7 @@ namespace MonoTinker.Code.Managers
                 Debug.Error(e.StackTrace);
             }
         }
-
-      /*  public void AddAnimation(string filename, Vector2 frameSize, string id = "", int fps = 30, int framesMissing = 0)
-        {
-            try
-            {
-                var anim = new Animation(content.Load<Texture2D>(filename), frameSize, fps, framesMissing);
-                AddAnimation(anim, id ?? filename);
-            }
-            catch (Exception e)
-            {
-                Debug.Warning("Exception when adding a Animation from file : {0}", filename);
-                Debug.Error(e.StackTrace);
-            }
-        } */
         #endregion
-
-        public void AddSpriteSheet(SpriteSheet spritesheet, string id)
-        {
-            try
-            {
-                spriteSheet.Add(id,spritesheet);
-            }
-            catch (Exception e)
-            {
-                Debug.Warning("Exception when adding a Spritesheet with id : {0}", id);
-                Debug.Error(e.StackTrace);
-            }
-        }
-
-        public void AddSpriteSheet(string file, string id = "")
-        {
-            try
-            {
-                
-            }
-            catch (Exception e)
-            {
-                Debug.Warning("Exception when adding a Spritesheet with id : {0}", id);
-                Debug.Error(e.StackTrace);
-            }
-        }
-
+        
     }
 }

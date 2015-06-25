@@ -1,22 +1,24 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.GameScreens;
-
 namespace MonoTinker.Code.Managers
 {
+    using System;
+
+    using Components.Elements;
+
+    using GameScreens;
+
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    
     public class ScreenManager
     {
-        public static Viewport view;
-        public static GraphicsDevice device;
+        public static Viewport View;
+        public static GraphicsDevice Device;
         public static bool ShouldExit;
-        public static readonly Random rng = new Random();
+        public static readonly Random Rng = new Random();
 
         private Texture2D fadeTexture;
-        private float Alpha;
+        private float alpha;
 
         private static Screen currentScreen;
         private static Screen newScreen;
@@ -30,10 +32,10 @@ namespace MonoTinker.Code.Managers
         {
             width = gdevice.Viewport.Width;
             height = gdevice.Viewport.Height;
-            device = gdevice;
+            Device = gdevice;
             service = content.ServiceProvider;
             globalScale = new Vector2(width/640f,height/480f);
-            fadeTexture = content.Load<Texture2D>("fade");
+            this.fadeTexture = content.Load<Texture2D>("fade");
             currentScreen = new MenuScreen(service);
         }
 
@@ -85,10 +87,10 @@ namespace MonoTinker.Code.Managers
         {
             if (increase)
             {
-                this.Alpha += 1.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (Alpha >= 1f)
+                this.alpha += 1.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (this.alpha >= 1f)
                 {
-                    this.Alpha = 1f;
+                    this.alpha = 1f;
                     currentScreen.UnloadContent();
                     currentScreen = newScreen;
                     increase = false;
@@ -96,10 +98,10 @@ namespace MonoTinker.Code.Managers
             }
             else
             {
-                this.Alpha -= 1.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (transitioning && Alpha < 0)
+                this.alpha -= 1.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (transitioning && this.alpha < 0)
                 {
-                    this.Alpha = 0;
+                    this.alpha = 0;
                     transitioning = false;
                 }
             }
@@ -110,7 +112,7 @@ namespace MonoTinker.Code.Managers
             currentScreen.Update(gameTime);
             if (transitioning)
             {
-                Transition(gameTime);
+                this.Transition(gameTime);
             }
         }
 
@@ -121,7 +123,7 @@ namespace MonoTinker.Code.Managers
             if (transitioning)
             {
                 spriteBatch.Begin();
-                spriteBatch.Draw(fadeTexture,Vector2.Zero,null,null,Vector2.Zero,0f,new Vector2(width,height),Color.White * Alpha);
+                spriteBatch.Draw(this.fadeTexture,Vector2.Zero,null,null,Vector2.Zero,0f,new Vector2(width,height),Color.White * this.alpha);
                 spriteBatch.End();
 
             }

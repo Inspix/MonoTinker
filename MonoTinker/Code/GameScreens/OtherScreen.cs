@@ -39,7 +39,7 @@ namespace MonoTinker.Code.GameScreens
         protected override void LoadContent()
         {
             textures= new SpriteAtlas();
-            Device = ScreenManager.device;
+            Device = ScreenManager.Device;
             lights = new List<ISimpleDrawable>();
             var pp = Device.PresentationParameters;
             lightMask = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
