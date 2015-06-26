@@ -25,6 +25,7 @@ namespace MonoTinker.Code.GameScreens
         private TextBox box;
 
         private Inventory inventory;
+        private Inventory inventory2;
         private bool attacking;
         private Vector2 position;
 
@@ -40,10 +41,11 @@ namespace MonoTinker.Code.GameScreens
             status.Transitioning = true;
             status.FadeSpeed = 10;
             inventory = new Inventory(Vector2.One*200, ScreenManager.Device,5);
+            inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
             controler = new AnimationControler();
             atlas = new SpriteAtlas();
 
-            box = new TextBox(Vector2.One * 100,ScreenManager.Device,"Once upon a time, there was a kid nameed Goshko..... He was very young and cool!",5);
+            box = new TextBox(Vector2.One * 100,ScreenManager.Device, "Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool!", new Vector2(5,2));
 
             List<string[]> layers = new List<string[]>();
             string[] bodyAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/BODY_male"), new Vector2(64, 64), "body");
@@ -136,11 +138,13 @@ namespace MonoTinker.Code.GameScreens
         public override void Draw(SpriteBatch spriteBatch)
         {
             box.DrawElements();
+            inventory2.DrawElements();
             inventory.DrawElements();
             status.DrawElements();
             spriteBatch.Begin();
             controler.Draw(spriteBatch,position);
             status.Draw(spriteBatch);
+            inventory2.Draw(spriteBatch);
             inventory.Draw(spriteBatch);
             box.Draw(spriteBatch);
             spriteBatch.End();
@@ -151,6 +155,7 @@ namespace MonoTinker.Code.GameScreens
         {
             box.Update(gameTime);
             inventory.Update(gameTime);
+            inventory2.Update(gameTime);
             if (!attacking && Keys.A.Down())
             {
                 controler.ChangeState("walkLeft");

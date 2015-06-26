@@ -5,7 +5,14 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Button
+    public enum ClickType
+    {
+        Single,
+        Toggle,
+        Continuous
+    }
+
+    public class Button : Fadeable
     {
         private Sprite normal;
         private Sprite hover;
@@ -13,9 +20,8 @@ namespace MonoTinker.Code.Components.UI
         private Rectangle bounds;
         private bool hovering;
         private bool clicked;
+        private ClickType type;
 
-        public bool ToggleClick;
-        
         public Button(Vector2 position, Sprite normalState, Sprite hoverState, Sprite clickState)
         {
             this.normal = normalState.Clone() as Sprite;
@@ -25,6 +31,14 @@ namespace MonoTinker.Code.Components.UI
             hover.Position = position;
             click.Position = position;
             this.bounds = new Rectangle(position.ToPoint(), normalState.DefaultSource.Size);
+        }
+
+        public ClickType Type
+        {
+            set
+            {
+                this.type = value;
+            }
         }
 
         public bool Clicked
@@ -44,7 +58,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void Update()
         {
-            if (ToggleClick)
+            if (type == ClickType.Toggle)
             {
                 if (Clicked)
                 {
@@ -53,9 +67,13 @@ namespace MonoTinker.Code.Components.UI
                 }
                 this.clicked = this.hovering && InputHandler.MouseDownOnce("left"); 
             }
-            else
+            else if (type == ClickType.Continuous)
             {
                 this.clicked = this.hovering && InputHandler.MouseDown("left");
+            }
+            else
+            {
+                this.clicked = this.hovering && InputHandler.MouseDownOnce("left");
             }
         }
 

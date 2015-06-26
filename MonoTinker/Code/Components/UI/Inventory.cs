@@ -40,7 +40,7 @@ namespace MonoTinker.Code.Components.UI
                 AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBall),
                 AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallHover),
                 AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallClick));
-            moveButton.ToggleClick = true;
+            moveButton.Type = ClickType.Toggle;
 
 
 
@@ -104,6 +104,10 @@ namespace MonoTinker.Code.Components.UI
             Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
             closeButton.Over(mousePos);
             moveButton.Over(mousePos);
+            foreach (Sprite spriteAtla in Elements.Values)
+            {
+                spriteAtla.Clr = spriteAtla.Contains(mousePos) ? Color.LightGray : Color.White;
+            }
 
             if (moveButton.Clicked)
             {
