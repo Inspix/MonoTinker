@@ -1,6 +1,8 @@
 
 namespace MonoTinker.Code.Utils
 {
+    using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
@@ -107,6 +109,10 @@ namespace MonoTinker.Code.Utils
             lastKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
+            foreach (var pressedKey in currentKeyboardState.GetPressedKeys())
+            {
+                Console.WriteLine(pressedKey);
+            }
             lastMouseState = currentMouseState;
             currentMouseState = Mouse.GetState(win);
         }

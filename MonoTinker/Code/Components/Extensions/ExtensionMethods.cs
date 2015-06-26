@@ -1,16 +1,66 @@
 namespace MonoTinker.Code.Components.Extensions
 {
-    using Microsoft.Xna.Framework;
-    using Components.Elements;
-    using Utils;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Forms;
 
-    internal static class BoxColliderExtension
+    using global::MonoTinker.Code.Components.Elements;
+    using global::MonoTinker.Code.Utils;
+
+    using Microsoft.Xna.Framework;
+
+    public static class ExtensionMethods
     {
+        public static void Scale(this Transform tr, float increment)
+        {
+            tr.Scale += Vector2.One * increment;
+        }
+
+        public static IEnumerable<string> SplitToPieces(this string str, int pieceSize)
+        {
+            if (pieceSize < 1)
+            {
+                Debug.Warning("Split to Pieces fail: Invalid piece size: {0}", pieceSize);
+                yield break;
+            }
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                Debug.Warning("Trying to split empty or null string to pieces");
+                yield break;
+            }
+            /*
+                        for (int i = 0; i < str.Length; i+= pieceSize)
+                        {
+                            if (pieceSize + i > str.Length)
+                            {
+                                pieceSize = str.Length - i;
+                            }
+                            yield return str.Substring(i, pieceSize);
+                        }*/
+            int index = 0;
+            while (true)
+            {
+                if (index + pieceSize > str.Length)
+                {
+                    pieceSize = str.Length - index;
+                }
+                if (index >= str.Length) yield break;
+                char[] main = str.Skip(index).Take(pieceSize).ToArray();
+                char[] after = str.Skip(main.Length + index).TakeWhile(s => !char.IsWhiteSpace(s)).ToArray();
+                string output = new string(main) + new string(after);
+                index = output.Length + index;
+                yield return output.Trim(); 
+            }
+        }
+
+
+
+        #region BoxExtensions
         private const float Margin = 2.5f;
 
-        public static Rectangle InflateExt(this Rectangle rect, Vector2 amount,bool debug = false)
+        public static Rectangle InflateExt(this Rectangle rect, Vector2 amount, bool debug = false)
         {
-            rect.Location -= (amount/2f).ToPoint();
+            rect.Location -= (amount / 2f).ToPoint();
             rect.Size += amount.ToPoint();
             if (debug)
             {
@@ -106,6 +156,11 @@ namespace MonoTinker.Code.Components.Extensions
         public static bool Touches(this BoxCollider b1, BoxCollider b2)
         {
             return b1.TouchesBottom(b2) || b1.TouchesTop(b2) || b1.TouchesLeft(b2) || b1.TouchesRight(b2);
-        }
+        } 
+        #endregion
     }
+
+
+
+
 }

@@ -44,7 +44,7 @@ namespace MonoTinker.Code.Utils
 
         public static Color AlphaChange(Color clr, int amount)
         {
-            if (amount > 255)
+            if (amount >= 255)
             {
                 clr.A = 255;
                 clr.R = 255;
@@ -52,7 +52,7 @@ namespace MonoTinker.Code.Utils
                 clr.B = 255;
 
             }
-            else if (amount < 0)
+            else if (amount <= 0)
             {
                 clr.A = 0;
                 clr.R = 0;

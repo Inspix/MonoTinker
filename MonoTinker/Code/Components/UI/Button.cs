@@ -1,9 +1,7 @@
 namespace MonoTinker.Code.Components.UI
 {
-    using global::MonoTinker.Code.Utils;
-
-    using Interfaces;
-
+    using Utils;
+    
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 

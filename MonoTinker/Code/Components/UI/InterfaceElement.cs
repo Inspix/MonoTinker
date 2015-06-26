@@ -19,6 +19,8 @@ namespace MonoTinker.Code.Components.UI
 
         protected bool OverrideDrawElements;
 
+        protected bool OverrideDrawLabels;
+
         protected int Width;
 
         protected int Height;
@@ -47,12 +49,15 @@ namespace MonoTinker.Code.Components.UI
                 element.Value.Draw(this.Batch);
             }
 
-            foreach (var label in Labels)
+            if (!OverrideDrawLabels)
             {
-                if (label.IsVisible)
+                foreach (var label in Labels)
                 {
-                    label.Draw(Batch);
-                }
+                    if (label.IsVisible)
+                    {
+                        label.Draw(Batch);
+                    }
+                } 
             }
 
             if (this.OverrideDrawElements) return;
@@ -79,7 +84,7 @@ namespace MonoTinker.Code.Components.UI
             if (this.IsVisible)
             {
                 //this.DrawElements();
-                 spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position, this.alpha);
+                 spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position,this.RenderTarget2D.Bounds,this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
             }
 
         }

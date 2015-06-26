@@ -47,13 +47,12 @@
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
+    <Compile Include="Code\Components\Extensions\ExtensionMethods.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
     <Compile Include="Code\Components\GameObjects\Projectile.cs" />
-    <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
     <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
-    <Compile Include="Code\Components\Extensions\TransformExtensions.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\SpriteSheet.cs" />
     <Compile Include="Code\Components\Tiles\CollisionTile.cs" />

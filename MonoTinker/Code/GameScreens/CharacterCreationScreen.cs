@@ -22,6 +22,8 @@ namespace MonoTinker.Code.GameScreens
 
         private StatusBar status;
 
+        private TextBox box;
+
         private Inventory inventory;
         private bool attacking;
         private Vector2 position;
@@ -37,9 +39,12 @@ namespace MonoTinker.Code.GameScreens
             status.DefaultAlpha = 255;
             status.Transitioning = true;
             status.FadeSpeed = 10;
-            inventory = new Inventory(Vector2.One*200, ScreenManager.Device,8);
+            inventory = new Inventory(Vector2.One*200, ScreenManager.Device,5);
             controler = new AnimationControler();
             atlas = new SpriteAtlas();
+
+            box = new TextBox(Vector2.One * 100,ScreenManager.Device,"Once upon a time, there was a kid nameed Goshko..... He was very young and cool!",5);
+
             List<string[]> layers = new List<string[]>();
             string[] bodyAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/BODY_male"), new Vector2(64, 64), "body");
             string[] hairAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/HEAD_hair_blonde"), new Vector2(64, 64), "hair");
@@ -130,19 +135,21 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-        
+            box.DrawElements();
             inventory.DrawElements();
             status.DrawElements();
             spriteBatch.Begin();
             controler.Draw(spriteBatch,position);
             status.Draw(spriteBatch);
             inventory.Draw(spriteBatch);
+            box.Draw(spriteBatch);
             spriteBatch.End();
             
         }
 
         public override void Update(GameTime gameTime)
         {
+            box.Update(gameTime);
             inventory.Update(gameTime);
             if (!attacking && Keys.A.Down())
             {
