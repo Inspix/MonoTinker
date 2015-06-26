@@ -10,6 +10,9 @@ namespace MonoTinker.Code.GameScreens
     using Components.Elements;
     using Components.Interfaces;
     using Components.Tiles;
+
+    using global::MonoTinker.Code.Components.UI;
+
     using Managers;
     using Utils;
 
@@ -22,6 +25,8 @@ namespace MonoTinker.Code.GameScreens
         private RenderTarget2D lightMask;
         private RenderTarget2D mainTarget;
         private GraphicsDevice Device;
+
+        private StatusBar hud;
         private Camera camera;
         private PlayerOld player;
         private List<ISimpleDrawable> lights;
@@ -38,6 +43,8 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
+            hud=new StatusBar(Vector2.One*20, ScreenManager.Device);
+            hud.IsVisible = true;
             textures= new SpriteAtlas();
             Device = ScreenManager.Device;
             lights = new List<ISimpleDrawable>();
@@ -71,6 +78,7 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Update(GameTime gameTime)
         {
+            hud.Update(gameTime);
             foreach (var l in lights.OfType<Light>())
             {
                 l.Update(gameTime);
@@ -99,6 +107,7 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //hud.DrawElements();
             Device.SetRenderTarget(lightMask);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
@@ -112,20 +121,28 @@ namespace MonoTinker.Code.GameScreens
             Device.SetRenderTarget(mainTarget);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate);
+
             spriteBatch.Draw(bg2, Vector2.Zero, Color.White);
+
             if (grayScale) fx.CurrentTechnique.Passes[0].Apply();
             if (invertColors) fx2.CurrentTechnique.Passes[0].Apply();
             player.Draw(spriteBatch);
-            
+
             spriteBatch.End();
 
             Device.SetRenderTarget(null);
-            Device.Clear(Color.CornflowerBlue);
+            
+            spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend, null, null, null, null, camera.Transform);
             fx3.Parameters["LightMask"].SetValue(lightMask);
             fx3.CurrentTechnique.Passes[0].Apply();
+            
+
             spriteBatch.Draw(mainTarget,Vector2.Zero,Color.White);
+
+            spriteBatch.End();
+            spriteBatch.Begin();
+            hud.Draw(spriteBatch);
             spriteBatch.End();
         }
     }

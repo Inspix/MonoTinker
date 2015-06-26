@@ -61,10 +61,13 @@
     <Compile Include="Code\Components\Tiles\Tile.cs" />
     <Compile Include="Code\Components\Tiles\Light.cs" />
     <Compile Include="Code\Components\Tiles\TileMap.cs" />
+    <Compile Include="Code\Components\UI\Button.cs" />
+    <Compile Include="Code\Components\UI\Fadeable.cs" />
     <Compile Include="Code\Components\UI\InterfaceElement.cs" />
     <Compile Include="Code\Components\UI\Inventory.cs" />
-    <Compile Include="Code\Components\UI\PlayerHud.cs" />
+    <Compile Include="Code\Components\UI\StatusBar.cs" />
     <Compile Include="Code\Components\UI\Text.cs" />
+    <Compile Include="Code\Components\UI\TextBox.cs" />
     <Compile Include="Code\GameScreens\CharacterCreationScreen.cs" />
     <Compile Include="Code\GameScreens\GameScreen.cs" />
     <Compile Include="Code\GameScreens\MenuScreen.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="Code\Utils\Debug.cs" />
     <Compile Include="Code\Utils\Helper.cs" />
     <Compile Include="Code\Utils\InputHandler.cs" />
+    <Compile Include="Code\Utils\Keybindings.cs" />
     <Compile Include="Code\Utils\SpriteNames.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />

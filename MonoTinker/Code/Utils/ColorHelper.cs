@@ -41,6 +41,33 @@ namespace MonoTinker.Code.Utils
             byte step1 = (byte)(MathHelper.Clamp(step, 0.004f, 1f) * 254);
             return SmoothTransition(c1, c2, step1);
         }
+
+        public static Color AlphaChange(Color clr, int amount)
+        {
+            if (amount > 255)
+            {
+                clr.A = 255;
+                clr.R = 255;
+                clr.G = 255;
+                clr.B = 255;
+
+            }
+            else if (amount < 0)
+            {
+                clr.A = 0;
+                clr.R = 0;
+                clr.G = 0;
+                clr.B = 0;
+            }
+            else
+            {
+                clr.A = (byte)amount;
+                clr.R = (byte)amount;
+                clr.G = (byte)amount;
+                clr.B = (byte)amount;
+            }
+            return clr;
+        }
         
     }
 }

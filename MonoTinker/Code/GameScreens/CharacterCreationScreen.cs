@@ -20,7 +20,9 @@ namespace MonoTinker.Code.GameScreens
         private SpriteAtlas atlas;
         private AnimationControler controler;
 
-        private PlayerHud status;
+        private StatusBar status;
+
+        private Inventory inventory;
         private bool attacking;
         private Vector2 position;
 
@@ -31,8 +33,11 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
-            status = new PlayerHud(Vector2.One, ScreenManager.Device);
+            status = new StatusBar(Vector2.One, ScreenManager.Device);
             status.DefaultAlpha = 255;
+            status.Transitioning = true;
+            status.FadeSpeed = 10;
+            inventory = new Inventory(Vector2.One*200, ScreenManager.Device,8);
             controler = new AnimationControler();
             atlas = new SpriteAtlas();
             List<string[]> layers = new List<string[]>();
@@ -78,25 +83,6 @@ namespace MonoTinker.Code.GameScreens
             slashRight.ChangeLayerOffset(4, Vector2.One * -64);
             slashRight.Looping = false;
             
-            
-            //AnimationV2 idleUp = new AnimationV2(bodyAnim.Take(1).ToArray(), atlas, 10);
-            //AnimationV2 idleUpHairLayer = new AnimationV2(hairAnim.Take(1).ToArray(), atlas, 10);
-            //idleUp.AddLayer(idleUpHairLayer);
-            //AnimationV2 idleLeft = new AnimationV2(bodyAnim.Skip(9).Take(1).ToArray(), atlas, 10);
-            //idleLeft.AddLayer(new AnimationV2(hairAnim.Skip(9).Take(1).ToArray(), atlas, 10));
-            //AnimationV2 idleDown = new AnimationV2(bodyAnim.Skip(18).Take(1).ToArray(), atlas, 10);
-            //idleDown.AddLayer(new AnimationV2(hairAnim.Skip(18).Take(1).ToArray(), atlas, 10));
-            //AnimationV2 idleRight = new AnimationV2(bodyAnim.Skip(27).Take(1).ToArray(), atlas, 10);
-            //idleRight.AddLayer(new AnimationV2(hairAnim.Skip(27).Take(1).ToArray(), atlas, 10));
-            //AnimationV2 walkUp = new AnimationV2(bodyAnim.Skip(1).Take(8).ToArray(), atlas, 10);
-            //walkUp.AddLayer(new AnimationV2(hairAnim.Skip(1).Take(8).ToArray(), atlas, 10));
-            //AnimationV2 walkLeft = new AnimationV2(bodyAnim.Skip(10).Take(8).ToArray(), atlas, 10);
-            //walkLeft.AddLayer(new AnimationV2(hairAnim.Skip(10).Take(8).ToArray(), atlas, 10));
-            //AnimationV2 walkDown = new AnimationV2(bodyAnim.Skip(19).Take(8).ToArray(), atlas, 10);
-            //walkDown.AddLayer(new AnimationV2(hairAnim.Skip(19).Take(8).ToArray(), atlas, 10));
-            //AnimationV2 walkRight = new AnimationV2(bodyAnim.Skip(28).Take(8).ToArray(), atlas, 10);
-            //walkRight.AddLayer(new AnimationV2(hairAnim.Skip(28).Take(8).ToArray(), atlas, 10));
-
             controler.AddState("idleUp", idleUp);
             controler.AddState("idleLeft", idleLeft);
             controler.AddState("idleDown", idleDown);
@@ -144,15 +130,20 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+        
+            inventory.DrawElements();
+            status.DrawElements();
             spriteBatch.Begin();
             controler.Draw(spriteBatch,position);
             status.Draw(spriteBatch);
+            inventory.Draw(spriteBatch);
             spriteBatch.End();
             
         }
 
         public override void Update(GameTime gameTime)
         {
+            inventory.Update(gameTime);
             if (!attacking && Keys.A.Down())
             {
                 controler.ChangeState("walkLeft");

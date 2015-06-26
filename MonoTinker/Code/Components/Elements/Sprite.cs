@@ -2,6 +2,8 @@
 namespace MonoTinker.Code.Components
 {
     using System;
+    using System.Runtime.CompilerServices;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -14,7 +16,7 @@ namespace MonoTinker.Code.Components
         Center,TopLeft, TopRight,BottomLeft,BottomRight
     }
 
-    public class Sprite : ISimpleDrawable
+    public class Sprite : ISimpleDrawable,ICloneable
     {
         protected Texture2D _texture2D;
         protected const float NinetyDegreeRotation = (float)(Math.PI/2f);
@@ -116,6 +118,12 @@ namespace MonoTinker.Code.Components
             }
         }
 
+        public bool Contains(Vector2 point)
+        {
+            Rectangle position = new Rectangle(this.Position.ToPoint(),this.DefaultSource.Size);
+            return position.Contains(point);
+        }
+
 
         public void RestoreDefaultSource()
         {
@@ -184,6 +192,13 @@ namespace MonoTinker.Code.Components
                 return this.Transform.Position;
             }
             set { this.Transform.Position = value; }
+        }
+
+        public object Clone()
+        {
+            Sprite toReturn = new Sprite(this.Texture,new Rectangle(this.DefaultSource.Location,this.DefaultSource.Size));
+            toReturn.OriginCustom = this.origin;
+            return toReturn;
         }
     }
 }

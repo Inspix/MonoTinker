@@ -66,7 +66,7 @@ namespace MonoTinker.Code.Utils
             }
         }
 
-        public static bool MouseDown(string button)
+        public static bool MouseDownOnce(string button)
         {
             switch (button)
             {
@@ -81,6 +81,25 @@ namespace MonoTinker.Code.Utils
                            lastMouseState.MiddleButton == ButtonState.Released;
             }
             return false;
+        }
+
+        public static bool MouseDown(string button)
+        {
+            switch (button)
+            {
+                case "left":
+                    return currentMouseState.LeftButton == ButtonState.Pressed;
+                case "right":
+                    return currentMouseState.RightButton == ButtonState.Pressed;
+                case "middle":
+                    return currentMouseState.MiddleButton == ButtonState.Pressed;
+            }
+            return false;
+        }
+
+        public static Vector2 MousePos()
+        {
+            return currentMouseState.Position.ToVector2();
         }
 
         public static void Update(GameWindow win)
