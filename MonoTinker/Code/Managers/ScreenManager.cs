@@ -3,7 +3,6 @@ namespace MonoTinker.Code.Managers
     using System;
 
     using Components.Elements;
-
     using GameScreens;
 
     using Microsoft.Xna.Framework;
@@ -14,6 +13,10 @@ namespace MonoTinker.Code.Managers
     {
         public static Viewport View;
         public static GraphicsDevice Device;
+
+        public static GameWindow Window;
+
+        public static ContentManager Content;
         public static bool ShouldExit;
         public static readonly Random Rng = new Random();
 
@@ -28,11 +31,13 @@ namespace MonoTinker.Code.Managers
         private static bool transitioning;
         private static Vector2 globalScale;
 
-        public ScreenManager(ContentManager content,GraphicsDevice gdevice)
+        public ScreenManager(ContentManager content,GameWindow window,GraphicsDevice gdevice)
         {
+            Window = window;
             width = gdevice.Viewport.Width;
             height = gdevice.Viewport.Height;
             Device = gdevice;
+            Content = content;
             service = content.ServiceProvider;
             globalScale = new Vector2(width/640f,height/480f);
             this.fadeTexture = content.Load<Texture2D>("fade");

@@ -1,15 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoTinker.Code.Components
 {
+    using System.Text.RegularExpressions;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class SpriteAtlas : IOrderedDictionary, IDictionary<string, Sprite>
     {
         private const int DefaultSize = 0;
@@ -33,7 +35,15 @@ namespace MonoTinker.Code.Components
             
         }
 
-        public string[] PopulateFromSpritesheet(Texture2D texture,Vector2 framesize, string basename = "", int missing = 0)
+        /// <summary>
+        /// Add Sprites to atlas from texture cut to a given size
+        /// </summary>
+        /// <param name="texture">Texture to slice</param>
+        /// <param name="framesize">Frame size</param>
+        /// <param name="basename">Base name for the slices</param>
+        /// <param name="missing">Missing frames if frames not even</param>
+        /// <returns>String array with the given names</returns>
+        public string[] PopulateFromSpriteSheet(Texture2D texture,Vector2 framesize, string basename = "", int missing = 0)
         {
             List<string> names = new List<string>();
             if (frameSize == Vector2.Zero)
@@ -66,6 +76,12 @@ namespace MonoTinker.Code.Components
             return names.ToArray();
         }
 
+
+        /// <summary>
+        /// Populate SpriteAtlas from MonoGame TexturePacker SpriteSheet and Txt file
+        /// </summary>
+        /// <param name="content">Content manager to load with</param>
+        /// <param name="filename">File name</param>
         public void PopulateFromSpriteSheet(ContentManager content, string filename)
         {
             Texture2D texture2D = content.Load<Texture2D>(filename);
@@ -102,7 +118,45 @@ namespace MonoTinker.Code.Components
 
             }
         }
-        // belt;0;1403;2;51;127;77;140;0.5392156862745098;0.44881889763779526
+
+        /// <summary>
+        /// Alternative way to populate from TexturePacker LibGX files
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="filename"></param>
+        public void PopulateFromSpriteSheetAlt(ContentManager content, string filename)
+        {
+            Texture2D texture2D = content.Load<Texture2D>(filename);
+            sheets.Add(texture2D);
+            string file = Path.Combine(content.RootDirectory, Path.ChangeExtension(filename, "txt"));
+            string text = File.ReadAllText(file);
+
+            Regex rgx = new Regex(@"(?<name>[^\n]*)\s*(?:rotate:\s[^\n]*)\s*\w*:\s*(?<x>\d*),\s(?<y>\d*)\s*\w*:\s*(?<sx>\d*),\s(?<sy>\d*)");
+            MatchCollection mathes = rgx.Matches(text);
+
+            foreach (Match match in mathes)
+            {
+                string name = match.Groups["name"].Value;
+                int x = int.Parse(match.Groups["x"].Value);
+                int y = int.Parse(match.Groups["y"].Value);
+                int width = int.Parse(match.Groups["sx"].Value);
+                int height = int.Parse(match.Groups["sy"].Value);
+                Rectangle source = new Rectangle(x,y,width,height);
+                Sprite toAdd = new Sprite(texture2D,source);
+                toAdd.Origin = Origin.TopLeft;
+                this.Add(name,toAdd);
+            }
+        }
+
+ /*      
+  SliderMiddle
+  rotate: false
+  xy: 2, 2
+  size: 10, 5
+  orig: 10, 5
+  offset: 0, 0
+  index: -1*/
+
         #region Add Methods
 
         public void Add(string key, Sprite value)

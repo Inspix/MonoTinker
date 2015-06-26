@@ -1,7 +1,7 @@
-using Microsoft.Xna.Framework;
-
 namespace MonoTinker.Code.Components.Elements
 {
+    using Microsoft.Xna.Framework;
+
     public class Transform
     {
 

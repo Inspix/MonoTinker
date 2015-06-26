@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework;
-using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.Tiles
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Interfaces;
+
     public class TileMap
     {
         private List<StaticTile> staticTiles;

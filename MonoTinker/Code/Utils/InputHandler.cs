@@ -1,8 +1,9 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace MonoTinker.Code.Utils
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+
     public static class InputHandler
     {
         private static KeyboardState currentKeyboardState;

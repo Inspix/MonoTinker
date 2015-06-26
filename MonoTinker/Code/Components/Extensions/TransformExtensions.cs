@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using MonoTinker.Code.Components.Elements;
-
 namespace MonoTinker.Code.Components.Extensions
 {
+    using Microsoft.Xna.Framework;
+
+    using Components.Elements;
+
     public static class TransformExtensions
     {
         public static void Scale(this Transform tr, float increment)

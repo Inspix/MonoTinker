@@ -1,10 +1,9 @@
-using System;
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
-using MonoTinker.Code.Components;
 
 namespace MonoTinker.Code.Utils
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     public static class Mathf
     {
         public static bool Approximately(this float f, float f2)

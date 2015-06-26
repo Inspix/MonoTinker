@@ -1,9 +1,10 @@
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace MonoTinker.Code.Utils
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     public static class Debug
     {
         private static Form debugForm;

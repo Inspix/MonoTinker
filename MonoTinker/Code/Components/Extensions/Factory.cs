@@ -1,10 +1,12 @@
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using MonoTinker.Code.Components.Elements;
+
 
 namespace MonoTinker.Code.Components.Extensions
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Components.Elements;
+
     public static class Factory
     {
         public static AnimationV2 CreateAnimationWithLayers(SpriteAtlas atlas, List<string[]> layers, int startingIndex,

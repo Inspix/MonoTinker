@@ -1,14 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Managers;
 
 namespace MonoTinker.Code.GameScreens
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Components.Elements;
+    using Managers;
+
     public sealed class SplashScreen : Screen
     {
         private SpriteFont font;

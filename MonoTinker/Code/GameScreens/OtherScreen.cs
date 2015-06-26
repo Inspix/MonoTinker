@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Interfaces;
-using MonoTinker.Code.Components.Tiles;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.GameScreens
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using Components;
+    using Components.Elements;
+    using Components.Interfaces;
+    using Components.Tiles;
+    using Managers;
+    using Utils;
+
     public sealed class OtherScreen : Screen
     {
         private Texture2D bg;
@@ -44,7 +44,7 @@ namespace MonoTinker.Code.GameScreens
             var pp = Device.PresentationParameters;
             lightMask = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
             mainTarget = new RenderTarget2D(Device, pp.BackBufferWidth+500,pp.BackBufferHeight);
-            camera = new Camera(ScreenManager.view);
+            camera = new Camera(ScreenManager.View);
             camera.Limit = true;
             camera.Limits(new Vector2(0,0), new Vector2(pp.BackBufferWidth-600, pp.BackBufferHeight));
             fx = content.Load<Effect>("../Shaders/SpriteGrayScale");
@@ -57,7 +57,7 @@ namespace MonoTinker.Code.GameScreens
             lights.Add(new Light(light, light.Bounds, Vector2.One * 200, LightSimpleEffect.Fading));
             lights.Add(new Light(light, light.Bounds, Vector2.One * 400, LightSimpleEffect.Fading));
 
-            string[] names = textures.PopulateFromSpritesheet(bg, new Vector2(130, 150), "dude", 1);
+            string[] names = textures.PopulateFromSpriteSheet(bg, new Vector2(130, 150), "dude", 1);
             player = new PlayerOld(new Animation(names,textures));
             player.Transform.Position = Vector2.One*50;
             player.Transform.Scale = Vector2.One*0.5f;

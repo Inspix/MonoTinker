@@ -1,7 +1,8 @@
-using Microsoft.Xna.Framework;
 
 namespace MonoTinker.Code.Components.Interfaces
 {
+    using Microsoft.Xna.Framework;
+
     public interface IMovable
     {
         Vector2 Velocity { get; set; }

@@ -1,7 +1,8 @@
-using Microsoft.Xna.Framework;
 
 namespace MonoTinker.Code.Components.Interfaces
 {
+    using Microsoft.Xna.Framework;
+
     public interface ICollidable
     {
         Rectangle BoundingBox { get; }

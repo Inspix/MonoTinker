@@ -1,14 +1,16 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Managers
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Components;
+    using Components.Elements;
+    using Utils;
+
     public enum TextureType
     {
         Sprite,Animation,SpriteSheet
@@ -19,16 +21,18 @@ namespace MonoTinker.Code.Managers
         private static AssetManager instance;
         private ContentManager content;
 
-        private Dictionary<string, SpriteAtlas> spriteAtlas;          // To Store our sprite sheets
-        private Dictionary<string, Sprite> sprites;                 // To Store our sprites
-        private Dictionary<string, Animation> animations;           // To Store our animations
+        private SpriteAtlas spriteAtlas;          // To Store our sprite sheets
+
+        private Dictionary<string, Animation> animations;  // To Store our animations
+
+        private Dictionary<string, SpriteFont> fonts;
         // TODO: dictionary for sounds  
 
         private AssetManager()
         {
-            this.spriteAtlas = new Dictionary<string, SpriteAtlas>();
-            this.sprites = new Dictionary<string, Sprite>();
+            this.spriteAtlas = new SpriteAtlas();
             this.animations = new Dictionary<string, Animation>();
+            this.fonts = new Dictionary<string, SpriteFont>();
         }
 
         public static AssetManager Instance                         // Instance Getter
@@ -39,6 +43,9 @@ namespace MonoTinker.Code.Managers
         public void LoadContent(ContentManager content)             // Preload Content
         {
             this.content = content;
+            this.AddSprite("UI/frame","UIFrame");
+            this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"UI/hud");
+            this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
         }
 
         public void UnloadContent()
@@ -51,12 +58,12 @@ namespace MonoTinker.Code.Managers
             T obj1 = default(T);
             if (typeof(T) == typeof(Texture2D))
             {
-                object toReturn = this.sprites[id].Texture;
+                object toReturn = this.spriteAtlas[id].Texture;
                 return (T)toReturn;
             }
             if (typeof(T) == typeof(Sprite))
             {
-                object toReturn = this.sprites[id];
+                object toReturn = this.spriteAtlas[id];
                 return (T) toReturn;
             }
             if (typeof(T) == typeof(Animation))
@@ -66,7 +73,12 @@ namespace MonoTinker.Code.Managers
             }
             if (typeof(T) == typeof(SpriteAtlas))
             {
-                object toReturn = this.spriteAtlas[id];
+                object toReturn = this.spriteAtlas;
+                return (T)toReturn;
+            }
+            if (typeof(T) == typeof(SpriteFont))
+            {
+                object toReturn = this.fonts[id];
                 return (T)toReturn;
             }
 
@@ -79,7 +91,7 @@ namespace MonoTinker.Code.Managers
         {
             try
             {
-                sprites.Add(id ?? filename, new Sprite(content.Load<Texture2D>(filename)));
+                spriteAtlas.Add(id ?? filename, new Sprite(content.Load<Texture2D>(filename)));
             }
             catch (Exception e)
             {
@@ -92,7 +104,7 @@ namespace MonoTinker.Code.Managers
         {
             try
             {
-                sprites.Add(id, new Sprite(content.Load<Texture2D>(filename), sourceRectangle));
+                spriteAtlas.Add(id, new Sprite(content.Load<Texture2D>(filename), sourceRectangle));
             }
             catch (Exception e)
             {

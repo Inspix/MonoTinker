@@ -1,11 +1,14 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Utils;
+
 
 namespace MonoTinker.Code.Components.Elements
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Utils;
+
     public class AnimationV2
     {
         private List<Animation> layers;

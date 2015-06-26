@@ -1,8 +1,8 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace MonoTinker.Code.Components.Interfaces
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     public interface ISimpleDrawable
     {
         void Draw(SpriteBatch spriteBatch);

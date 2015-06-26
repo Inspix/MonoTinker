@@ -1,14 +1,16 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Interfaces;
-using MonoTinker.Code.Utils;
 
 // Deprecated no longer used;
 
 namespace MonoTinker.Code
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using Components.Elements;
+    using Components.Interfaces;
+    using Utils;
+
     public class PlayerOld : IMovable, ICollidable
     {
         private Animation animation;

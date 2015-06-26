@@ -1,11 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Utils;
+
 
 namespace MonoTinker.Code.Components.Elements
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Utils;
+
     public delegate void AnimationFinish(string stateName);
 
     public class AnimationControler

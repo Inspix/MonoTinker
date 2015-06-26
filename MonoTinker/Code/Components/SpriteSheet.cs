@@ -1,11 +1,13 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Utils;
+
+
     public class SpriteSheet
     {
         private Texture2D spriteSheet;

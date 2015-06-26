@@ -1,20 +1,26 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
+
 
 namespace MonoTinker.Code.GameScreens
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using Components;
+    using Components.Elements;
+    using Components.Extensions;
+    using Managers;
+    using Utils;
+    using Components.UI;
+
     public sealed class CharacterCreationScreen : Screen
     {
         private SpriteAtlas atlas;
         private AnimationControler controler;
+
+        private PlayerHud status;
         private bool attacking;
         private Vector2 position;
 
@@ -25,13 +31,15 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
+            status = new PlayerHud(Vector2.One, ScreenManager.Device);
+            status.DefaultAlpha = 255;
             controler = new AnimationControler();
             atlas = new SpriteAtlas();
             List<string[]> layers = new List<string[]>();
-            string[] bodyAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Walking/BODY_male"), new Vector2(64, 64), "body");
-            string[] hairAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Walking/HEAD_hair_blonde"), new Vector2(64, 64), "hair");
-            string[] torsoAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Walking/TORSO_leather_armor_torso"),new Vector2(64,64),"torso");
-            string[] legsAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Walking/LEGS_pants_greenish"),new Vector2(64, 64), "legs");
+            string[] bodyAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/BODY_male"), new Vector2(64, 64), "body");
+            string[] hairAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/HEAD_hair_blonde"), new Vector2(64, 64), "hair");
+            string[] torsoAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/TORSO_leather_armor_torso"),new Vector2(64,64),"torso");
+            string[] legsAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Walking/LEGS_pants_greenish"),new Vector2(64, 64), "legs");
             layers.Add(bodyAnim);
             layers.Add(hairAnim);
             layers.Add(torsoAnim);
@@ -46,11 +54,11 @@ namespace MonoTinker.Code.GameScreens
             var walkRight = Factory.CreateAnimationWithLayers(atlas, layers, 28, 8, 10);
 
             List<string[]> slashLayers = new List<string[]>();
-            string[] slashbodyAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Slash/BODY_male"), new Vector2(64, 64), "slashbody");
-            string[] slashhairAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Slash/HEAD_hair_blonde"), new Vector2(64, 64), "slashhair");
-            string[] slashtorsoAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Slash/TORSO_leather_armor_torso"), new Vector2(64, 64), "slashtorso");
-            string[] slashlegsAnim = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Slash/LEGS_pants_greenish"), new Vector2(64, 64), "slashlegs");
-            string[] slashRapier = atlas.PopulateFromSpritesheet(content.Load<Texture2D>("Slash/WEAPON_rapier"),
+            string[] slashbodyAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Slash/BODY_male"), new Vector2(64, 64), "slashbody");
+            string[] slashhairAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Slash/HEAD_hair_blonde"), new Vector2(64, 64), "slashhair");
+            string[] slashtorsoAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Slash/TORSO_leather_armor_torso"), new Vector2(64, 64), "slashtorso");
+            string[] slashlegsAnim = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Slash/LEGS_pants_greenish"), new Vector2(64, 64), "slashlegs");
+            string[] slashRapier = atlas.PopulateFromSpriteSheet(content.Load<Texture2D>("Slash/WEAPON_rapier"),
                 new Vector2(192, 192), "slashRapier");
             slashLayers.Add(slashbodyAnim);
             slashLayers.Add(slashhairAnim);
@@ -138,7 +146,9 @@ namespace MonoTinker.Code.GameScreens
         {
             spriteBatch.Begin();
             controler.Draw(spriteBatch,position);
+            status.Draw(spriteBatch);
             spriteBatch.End();
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -233,8 +243,10 @@ namespace MonoTinker.Code.GameScreens
                     value.Layer(1).Tint = Color.FromNonPremultiplied(r, g, b, 255);
                     
                 }
-            }
 
+                status.IsVisible = !status.IsVisible;
+            }
+            status.Update(gameTime);
             if (Keys.Q.DownOnce())
             {
                 int r = ScreenManager.Rng.Next(0, 255);

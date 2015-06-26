@@ -1,9 +1,10 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoTinker.Code.Components.Tiles
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     public enum LightSimpleEffect
     {
         None, Shimmering, Puslating,Fading
@@ -83,7 +84,6 @@ namespace MonoTinker.Code.Components.Tiles
 
         private void Shimmering(GameTime gameTime)
         {
-            //TODO Shimmering "Effect"
             if (triggers[0])
             {
                 values[0] = random.Next(100, 250);
@@ -124,7 +124,7 @@ namespace MonoTinker.Code.Components.Tiles
         private void Fading(GameTime gameTime)
         {
             timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
-            if (timeElapsed >= timeToUpdate)
+            if (this.timeElapsed >= this.timeToUpdate)
             {
                 timeElapsed -= timeToUpdate;
                 this.Opacity -= 2;

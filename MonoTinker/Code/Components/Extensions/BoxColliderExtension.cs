@@ -1,14 +1,14 @@
-using Microsoft.Xna.Framework;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.Components.Extensions
 {
+    using Microsoft.Xna.Framework;
+    using Components.Elements;
+    using Utils;
+
     internal static class BoxColliderExtension
     {
         private const float Margin = 2.5f;
 
-        public static Rectangle Inflate(this Rectangle rect, Vector2 amount,bool debug = false)
+        public static Rectangle InflateExt(this Rectangle rect, Vector2 amount,bool debug = false)
         {
             rect.Location -= (amount/2f).ToPoint();
             rect.Size += amount.ToPoint();
@@ -17,6 +17,12 @@ namespace MonoTinker.Code.Components.Extensions
                 Debug.Warning(rect.ToString());
 
             }
+            return rect;
+        }
+
+        public static Rectangle OffsetExt(this Rectangle rect, Vector2 offset)
+        {
+            rect.Location += offset.ToPoint();
             return rect;
         }
 

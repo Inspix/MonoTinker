@@ -1,15 +1,18 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Utils;
+
 
 namespace MonoTinker.Code.GameScreens
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using Components;
+    using Components.Elements;
+    using Managers;
+    using Components.Extensions;
+    using Utils;
+
     public sealed class MenuScreen : Screen
     {
 

@@ -47,7 +47,6 @@
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
-    <Compile Include="Code\Components\Elements\CompoundAnimation.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
     <Compile Include="Code\Components\GameObjects\Projectile.cs" />
     <Compile Include="Code\Components\Extensions\BoxColliderExtension.cs" />
@@ -62,6 +61,10 @@
     <Compile Include="Code\Components\Tiles\Tile.cs" />
     <Compile Include="Code\Components\Tiles\Light.cs" />
     <Compile Include="Code\Components\Tiles\TileMap.cs" />
+    <Compile Include="Code\Components\UI\InterfaceElement.cs" />
+    <Compile Include="Code\Components\UI\Inventory.cs" />
+    <Compile Include="Code\Components\UI\PlayerHud.cs" />
+    <Compile Include="Code\Components\UI\Text.cs" />
     <Compile Include="Code\GameScreens\CharacterCreationScreen.cs" />
     <Compile Include="Code\GameScreens\GameScreen.cs" />
     <Compile Include="Code\GameScreens\MenuScreen.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Code\Utils\Debug.cs" />
     <Compile Include="Code\Utils\Helper.cs" />
     <Compile Include="Code\Utils\InputHandler.cs" />
+    <Compile Include="Code\Utils\SpriteNames.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,6 +143,11 @@
     <Content Include="Content\Shaders\SpriteInvert.fx" />
     <Content Include="Content\SplashScreen\logo.png" />
     <Content Include="Content\textures.png" />
+    <Content Include="Content\UI\frame.png" />
+    <Content Include="Content\UI\hud.png" />
+    <Content Include="Content\UI\hud.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\SplashScreen\SplashFont.spritefont" />
+    <None Include="Content\UI\InterfaceFont.spritefont" />
   </ItemGroup>
   <ItemGroup />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->

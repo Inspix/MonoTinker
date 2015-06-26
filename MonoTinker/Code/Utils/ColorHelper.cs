@@ -1,8 +1,8 @@
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
 
 namespace MonoTinker.Code.Utils
 {
+    using Microsoft.Xna.Framework;
+
     public static class ColorHelper
     {
         public static Color SmoothTransition(Color c1, Color c2, byte step)

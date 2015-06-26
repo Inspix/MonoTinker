@@ -1,7 +1,9 @@
-using System;
+
 
 namespace MonoTinker.Code.Components.Elements
 {
+    using System;
+
     public class AnimationEventArgs : EventArgs
     {
         public string StateName { get; internal set; }

@@ -1,12 +1,12 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Components.Interfaces;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.Components.Tiles
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Components.Elements;
+    using Components.Extensions;
+    using Components.Interfaces;
+
     public class CollisionTile : StaticTile,ICollidable
     {
         private Rectangle boundingBox;
@@ -28,7 +28,7 @@ namespace MonoTinker.Code.Components.Tiles
         {
             if (obj is Projectile)
             { 
-                if (BoundingBox.Inflate(Vector2.One*10).Intersects(obj.BoundingBox))
+                if (BoundingBox.InflateExt(Vector2.One*10).Intersects(obj.BoundingBox))
                 {
                     ((Projectile) obj).Active = false;
                     return true;

@@ -1,17 +1,19 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Tiles;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
+
 
 namespace MonoTinker.Code.GameScreens
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using Components;
+    using Components.Elements;
+    using Components.Tiles;
+    using Managers;
+    using Utils;
+
     public sealed class GameScreen : Screen
     {
         private SpriteAtlas TileAtlas;
@@ -25,7 +27,6 @@ namespace MonoTinker.Code.GameScreens
         private PlayerOld player;
         private TileMap map;
         private Color color;
-        private AnimationV2 projectileAnimationV2;
         private List<Projectile> projectiles;   
 
         public GameScreen(IServiceProvider service,int level = 0) : base(service, "Game")
@@ -40,9 +41,9 @@ namespace MonoTinker.Code.GameScreens
             light = content.Load<Texture2D>("lighting");
             lightEffect = content.Load<Effect>("LightingFX");
             TileAtlas = new SpriteAtlas();
-            TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("hyptosis_tile-art-batch-3"), new Vector2(32, 32), "TileSetOne");
-            TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("hyptosis_til-art-batch-2"), new Vector2(32, 32), "TileSetTwo");
-            TileAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("light"), new Vector2(32, 32), "Light");
+            TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("hyptosis_tile-art-batch-3"), new Vector2(32, 32), "TileSetOne");
+            TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("hyptosis_til-art-batch-2"), new Vector2(32, 32), "TileSetTwo");
+            TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("light"), new Vector2(32, 32), "Light");
             TileAtlas.Add("LaserProjectile",new Sprite(content.Load<Texture2D>("laser")));
             TileAtlas.Add("ArrowProjectile", new Sprite(content.Load<Texture2D>("arrow")));
             projectiles = new List<Projectile>();
@@ -50,12 +51,12 @@ namespace MonoTinker.Code.GameScreens
             crosshair = content.Load<Texture2D>("crosshair");
             map = new TileMap();
             map.LoadFromTiledFile(ref TileAtlas, content.RootDirectory + "/tt.txt");
-            camera = new Camera(ScreenManager.view);
+            camera = new Camera(ScreenManager.View);
             playerAtlas = new SpriteAtlas();
             lightMask = new RenderTarget2D(ScreenManager.Device,map.Widht,map.Height);
             main = new RenderTarget2D(ScreenManager.Device, map.Widht, map.Height);
 
-            string[] names = playerAtlas.PopulateFromSpritesheet(content.Load<Texture2D>("playerRun"),
+            string[] names = playerAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("playerRun"),
                 new Vector2(130, 150), "dude", 1);
             player = new PlayerOld(new Animation(names,playerAtlas));
             player.Transform.Scale = Vector2.One * 0.4f; 

@@ -1,9 +1,10 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.Tiles
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Components.Interfaces;
+
     public abstract class Tile : ISimpleDrawable
     {
         protected Vector2 position;

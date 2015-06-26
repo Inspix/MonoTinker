@@ -1,10 +1,12 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.Elements
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Components.Interfaces;
+
     public class Projectile : Sprite,IMovable,ICollidable
     {
         private Rectangle boudndingBox;
