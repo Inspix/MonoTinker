@@ -45,7 +45,7 @@
     <Compile Include="Code\Components\Elements\AnimationController.cs" />
     <Compile Include="Code\Components\Elements\AnimationEventArgs.cs" />
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
-    <Compile Include="Code\Components\Elements\BoxCollider.cs" />
+    <Compile Include="Code\Components\Elements\Deprecated\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\ExtensionMethods.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
-    <Compile Include="Code\Components\SpriteSheet.cs" />
+    <Compile Include="Code\Components\Elements\Deprecated\SpriteSheet.cs" />
     <Compile Include="Code\Components\Tiles\CollisionTile.cs" />
     <Compile Include="Code\Components\Tiles\StaticTile.cs" />
     <Compile Include="Code\Components\Tiles\Tile.cs" />
@@ -64,9 +64,11 @@
     <Compile Include="Code\Components\UI\Fadeable.cs" />
     <Compile Include="Code\Components\UI\InterfaceElement.cs" />
     <Compile Include="Code\Components\UI\Inventory.cs" />
+    <Compile Include="Code\Components\UI\ItemTile.cs" />
     <Compile Include="Code\Components\UI\StatusBar.cs" />
     <Compile Include="Code\Components\UI\Text.cs" />
     <Compile Include="Code\Components\UI\TextBox.cs" />
+    <Compile Include="Code\Components\UI\ToolTip.cs" />
     <Compile Include="Code\GameScreens\CharacterCreationScreen.cs" />
     <Compile Include="Code\GameScreens\GameScreen.cs" />
     <Compile Include="Code\GameScreens\MenuScreen.cs" />
@@ -77,7 +79,7 @@
     <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
-    <Compile Include="Code\PlayerOld.cs" />
+    <Compile Include="Code\Components\Elements\Deprecated\PlayerOld.cs" />
     <Compile Include="Code\Utils\ColorHelper.cs" />
     <Compile Include="Code\Utils\Debug.cs" />
     <Compile Include="Code\Utils\Helper.cs" />

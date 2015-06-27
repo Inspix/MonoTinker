@@ -24,8 +24,8 @@ namespace MonoTinker.Code.Components.UI
         {
             this.Transitioning = true;
             this.OverrideDrawElements = true;
-            Sprite handle = AssetManager.Instance.Get<Sprite>(SpriteNames.SliderTop).Clone() as Sprite;
-            Sprite handle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.SliderTop).Clone() as Sprite;
+            Sprite handle = AssetManager.Instance.Get<Sprite>(SpriteNames.SliderTop).DirectClone();
+            Sprite handle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.SliderTop).DirectClone();
             handle.Position = Vector2.UnitX * 13;
             handle2.Position = Vector2.UnitX * 165;
             Height += handle.SourceHeight - 2;
@@ -33,24 +33,24 @@ namespace MonoTinker.Code.Components.UI
             Elements.Add("Handle2",handle2);
 
             closeButton = new Button(handle2.Position + Vector2.One * 5,
-                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBall),
-                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBallHover),
-                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBallClick));
+                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBall).DirectClone(),
+                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBallHover).DirectClone(),
+                AssetManager.Instance.Get<Sprite>(SpriteNames.RedBallClick).DirectClone());
             moveButton = new Button(handle.Position + Vector2.One * 5,
-                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBall),
-                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallHover),
-                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallClick));
-            moveButton.Type = ClickType.Toggle;
+                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBall).DirectClone(),
+                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallHover).DirectClone(),
+                AssetManager.Instance.Get<Sprite>(SpriteNames.BlueBallClick).DirectClone());
+            moveButton.ClickType = ClickType.Toggle;
 
 
 
             for (int i = 1; i <= rows; i++)
             {
-                Sprite left = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemLeftSilver).Clone() as Sprite;
-                Sprite middle = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).Clone() as Sprite;
-                Sprite middle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).Clone() as Sprite;
+                Sprite left = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemLeftSilver).DirectClone();
+                Sprite middle = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).DirectClone();
+                Sprite middle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).DirectClone();
 
-                Sprite right = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemRightSilver).Clone() as Sprite;
+                Sprite right = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemRightSilver).DirectClone();
 
                 if (Width == 0)
                 {
@@ -77,10 +77,10 @@ namespace MonoTinker.Code.Components.UI
         {
             for (int i = 0; i < num; i++)
             {
-                Sprite left = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemLeftSilver).Clone() as Sprite;
-                Sprite middle = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).Clone() as Sprite;
-                Sprite middle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).Clone() as Sprite;
-                Sprite right = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemRightSilver).Clone() as Sprite;
+                Sprite left = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemLeftSilver).DirectClone();
+                Sprite middle = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).DirectClone();
+                Sprite middle2 = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemMiddleSilver).DirectClone();
+                Sprite right = AssetManager.Instance.Get<Sprite>(SpriteNames.ItemRightSilver).DirectClone();
                 
                 left.Position = Vector2.UnitY * this.Height;
                 middle.Position = left.Position + Vector2.UnitX * left.SourceWidth;
@@ -111,7 +111,7 @@ namespace MonoTinker.Code.Components.UI
 
             if (moveButton.Clicked)
             {
-                this.Transform.Position = InputHandler.MousePos() - new Vector2(25,10);
+                this.Transform.Position += InputHandler.MouseDelta();
             }
 
             if (closeButton.Clicked)

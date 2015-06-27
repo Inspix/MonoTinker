@@ -15,40 +15,17 @@ namespace MonoTinker.Code.Components.UI
 
         private string contents;
 
-        public Text(SpriteFont font, Vector2 position, string contents, byte alpha = 255)
+        public Text(SpriteFont font, Vector2 position, string contents, byte alpha = 255, bool isVisible = true)
         {
             this.font = font;
-            this.IsVisible = true;
+            this.isVisible = isVisible;
             this.Position = position;
             this.contents = contents;
             this.Clr = Color.White;
-            this.alpha = ColorHelper.AlphaChange(Color.White,alpha);
+            this.alpha = ColorHelper.AlphaChange(Color.White, alpha);
             this.DefaultAlpha = 255;
         }
-
-        public int FadeSpeed
-        {
-            get
-            {
-                return this.fadeSpeed;
-            }
-            set
-            {
-                if (value > 100)
-                {
-                    this.FadeSpeed = 100;
-                }
-                else if (value <= 0)
-                {
-                    this.fadeSpeed = 1;
-                }
-                else
-                {
-                    this.fadeSpeed = value;
-                }
-            }
-        }
-
+        
         public string Contents
         {
             get

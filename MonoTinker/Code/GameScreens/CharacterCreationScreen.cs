@@ -26,6 +26,8 @@ namespace MonoTinker.Code.GameScreens
 
         private Inventory inventory;
         private Inventory inventory2;
+
+        private ItemTile item;
         private bool attacking;
         private Vector2 position;
 
@@ -41,9 +43,12 @@ namespace MonoTinker.Code.GameScreens
             status.Transitioning = true;
             status.FadeSpeed = 10;
             inventory = new Inventory(Vector2.One*200, ScreenManager.Device,5);
+            inventory.FadeSpeed = 10;
             inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
             controler = new AnimationController();
             atlas = new SpriteAtlas();
+            item = new ItemTile(AssetManager.Instance.Get<Sprite>(SpriteNames.GearSilver).DirectClone(),Vector2.One * 400,"Test Item of the Cool", "Awesome");
+
 
             box = new TextBox(Vector2.One * 100,ScreenManager.Device, "Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool!", new Vector2(5,2));
 
@@ -77,16 +82,16 @@ namespace MonoTinker.Code.GameScreens
             slashLayers.Add(slashtorsoAnim);
             slashLayers.Add(slashlegsAnim);
             slashLayers.Add(slashRapier);
-            var slashUp = Factory.CreateAnimationWithLayers(atlas, slashLayers, 0, 6);
+            var slashUp = Factory.CreateAnimationWithLayers(atlas, slashLayers, 0, 6,10);
             slashUp.ChangeLayerOffset(4,Vector2.One * -64);
             slashUp.Looping = false;
-            var slashLeft = Factory.CreateAnimationWithLayers(atlas, slashLayers, 6, 6);
+            var slashLeft = Factory.CreateAnimationWithLayers(atlas, slashLayers, 6, 6, 10);
             slashLeft.ChangeLayerOffset(4, Vector2.One * -64);
             slashLeft.Looping = false;
-            var slashDown = Factory.CreateAnimationWithLayers(atlas, slashLayers, 12, 6);
+            var slashDown = Factory.CreateAnimationWithLayers(atlas, slashLayers, 12, 6, 10);
             slashDown.ChangeLayerOffset(4, Vector2.One * -64);
             slashDown.Looping = false;
-            var slashRight = Factory.CreateAnimationWithLayers(atlas, slashLayers, 18, 6);
+            var slashRight = Factory.CreateAnimationWithLayers(atlas, slashLayers, 18, 6, 10);
             slashRight.ChangeLayerOffset(4, Vector2.One * -64);
             slashRight.Looping = false;
             
@@ -102,11 +107,11 @@ namespace MonoTinker.Code.GameScreens
             controler.AddState("slashLeft", slashLeft);
             controler.AddState("slashDown", slashDown);
             controler.AddState("slashRight", slashRight);
-            controler.OnStateAnimationFinish += this.ControlerOnStateOnStateAnimationFinish;
+            controler.OnStateAnimationFinish += this.StateAnimationFinish;
 
         }
 
-        private void ControlerOnStateOnStateAnimationFinish(string stateName)
+        private void StateAnimationFinish(string stateName)
         {
             switch (stateName)
             {
@@ -147,12 +152,16 @@ namespace MonoTinker.Code.GameScreens
             inventory2.Draw(spriteBatch);
             inventory.Draw(spriteBatch);
             box.Draw(spriteBatch);
+            item.Draw(spriteBatch);
             spriteBatch.End();
             
         }
 
         public override void Update(GameTime gameTime)
         {
+            Console.WriteLine(InputHandler.MouseDelta());
+            item.Over(InputHandler.MousePos());
+            item.Update(gameTime);
             box.Update(gameTime);
             inventory.Update(gameTime);
             inventory2.Update(gameTime);

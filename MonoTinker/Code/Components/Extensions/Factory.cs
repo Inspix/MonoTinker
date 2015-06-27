@@ -1,11 +1,10 @@
-
-
 namespace MonoTinker.Code.Components.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
-    using Components.Elements;
+
+    using Elements;
 
     public static class Factory
     {

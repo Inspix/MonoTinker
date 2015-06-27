@@ -196,7 +196,19 @@ namespace MonoTinker.Code.Components
 
         public object Clone()
         {
-            Sprite toReturn = new Sprite(this.Texture,new Rectangle(this.DefaultSource.Location,this.DefaultSource.Size));
+            var toReturn = new Sprite(this.Texture,new Rectangle(this.DefaultSource.Location,this.DefaultSource.Size));
+            toReturn.OriginCustom = this.origin;
+            return toReturn;
+        }
+
+        public Sprite DirectClone()
+        {
+            var toReturn = new Sprite(this.Texture, new Rectangle(this.DefaultSource.Location, this.DefaultSource.Size));
+            toReturn.Clr = this.Clr;
+            toReturn.Position = new Vector2(this.Position.X,this.Position.Y);
+            toReturn.Center = this.Center;
+            toReturn.Transform.Scale = this.Transform.Scale;
+            toReturn.Transform.Rotation = this.Transform.Rotation;
             toReturn.OriginCustom = this.origin;
             return toReturn;
         }

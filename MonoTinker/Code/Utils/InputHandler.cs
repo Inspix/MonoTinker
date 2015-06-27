@@ -104,6 +104,11 @@ namespace MonoTinker.Code.Utils
             return currentMouseState.Position.ToVector2();
         }
 
+        public static Vector2 MouseDelta()
+        {
+            return (currentMouseState.Position - lastMouseState.Position).ToVector2();
+        }
+
         public static void Update(GameWindow win)
         {
             lastKeyboardState = currentKeyboardState;

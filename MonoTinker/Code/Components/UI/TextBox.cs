@@ -18,8 +18,9 @@ namespace MonoTinker.Code.Components.UI
 
     public enum BoxType
     {
+        Small,
         Big,
-        Small
+        Tooltip
     }
 
     public class TextBox : InterfaceElement
@@ -33,11 +34,8 @@ namespace MonoTinker.Code.Components.UI
         private int cPerLine;
         private int maxLines;
         private Vector2 charSize;
-
         private SpriteFont font;
-
         private int currentIndex;
-
         private Button nextPage;
 
         public TextBox(Vector2 position, GraphicsDevice device, string message = null, Vector2 size = default(Vector2))
@@ -52,169 +50,195 @@ namespace MonoTinker.Code.Components.UI
             this.Effect = effect;
         }
 
+        public Vector2 Position
+        {
+            get
+            {
+                return this.Transform.Position;
+            }
+
+            set
+            {
+                this.Transform.Position = value;
+            }
+        }        
+
         private void Init(Point size, string mesage)
         {
-            this.Effect = WriteEffect.LineByLine;
             this.Transitioning = true;
             this.timeToUpdate = TimeSpan.FromSeconds(1).TotalSeconds;
             this.OverrideDrawElements = true;
             this.OverrideDrawLabels = true;
-            Top(size.X);
+            this.Top(size.X);
             for (int i = 0; i < size.Y; i++)
             {
-                Middle(size.X, i);
+                this.Middle(size.X, i);
             }
-            Bottom(size.X);
+            this.Bottom(size.X);
 
-            font = AssetManager.Instance.Get<SpriteFont>("UIFont");
-            charSize = font.MeasureString("A");
+            this.font = AssetManager.Instance.Get<SpriteFont>("UIFont");
+            this.charSize = this.font.MeasureString("A");
 
 
-            this.maxLines = (int)(this.Height / charSize.Y)-1;
-            this.cPerLine = (int)(this.Width / charSize.X);
+            this.maxLines = (int)(this.Height / this.charSize.Y)-1;
+            this.cPerLine = (int)(this.Width / this.charSize.X);
             this.Current = mesage.SplitToPieces(this.cPerLine).ToArray();
 
-            if (maxLines < Current.Length)
+            if (this.maxLines < this.Current.Length)
             {
-                this.nextPage = new Button(new Vector2(Width-20,Height-20),
-                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBall).Clone() as Sprite,
-                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBallHover).Clone() as Sprite,
-                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBallClick).Clone() as Sprite);
-                this.nextPage.Type = ClickType.Single;
+                this.nextPage = new Button(new Vector2(this.Width -20, this.Height -20),
+                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBall).DirectClone(),
+                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBallHover).DirectClone(),
+                    AssetManager.Instance.Get<Sprite>(SpriteNames.DarkBallClick).DirectClone());
+                this.nextPage.ClickType = ClickType.Single;
             }
 
-            Generate(font);
+            this.Generate();
 
 
             this.RenderTarget2D = new RenderTarget2D(this.Device,this.Width,this.Height);
         }
 
-
-        private void Generate(SpriteFont font)
+        private void Generate()
         {
-            passed = 0;
-            effectDone = false;
-            switch (Effect)
+            this.passed = 0;
+            this.effectDone = false;
+            switch (this.Effect)
             {
                 case WriteEffect.LineByLine:
-                    this.LineByLineEffect(font);
+                    this.LineByLineEffect();
                     break;
                 case WriteEffect.WholeAtOnce:
-                    this.WholeAtOnceEffect(font);
+                    this.WholeAtOnceEffect();
                     break;
                 case WriteEffect.CharacterByCharacter:
-                    this.CharacterByCharacterEffect(font);
+                    this.CharacterByCharacterEffect();
                     break;
             }
         }
 
-        private void CharacterByCharacterEffect(SpriteFont font)
+        private void CharacterByCharacterEffect()
         {
             this.Labels.Clear();
-            timeToUpdate = TimeSpan.FromSeconds(0.01).TotalSeconds;
-            if (currentIndex + maxLines > Current.Length)
+            this.timeToUpdate = TimeSpan.FromSeconds(0.01).TotalSeconds;
+            if (this.currentIndex + this.maxLines > this.Current.Length)
             {
-                maxLines = Current.Length - currentIndex;
+                this.maxLines = this.Current.Length - this.currentIndex;
             }
             int row = 0;
-            for (int i = currentIndex; i < currentIndex + maxLines; i++)
+            for (int i = this.currentIndex; i < this.currentIndex + this.maxLines; i++)
             {
-                Text x = new Text(font, (Vector2.One * 10) + Vector2.UnitY * charSize.Y * row, Current[i]);
+                Text x = new Text(this.font, (Vector2.One * 10) + Vector2.UnitY * this.charSize.Y * row, this.Current[i]);
                 x.IsVisible = true;
-                Labels.Add(x);
+                this.Labels.Add(x);
                 row++;
 
             }
-            this.currentIndex += maxLines;
+            this.currentIndex += this.maxLines;
         }
 
-        private void LineByLineEffect(SpriteFont font)
+        private void LineByLineEffect()
         {
             this.Labels.Clear();
-            if (currentIndex + maxLines > Current.Length)
+            if (this.currentIndex + this.maxLines > this.Current.Length)
             {
-                maxLines = Current.Length - currentIndex;
+                this.maxLines = this.Current.Length - this.currentIndex;
             }
             int row = 0;
-            for (int i = currentIndex; i < currentIndex + maxLines; i++)
+            for (int i = this.currentIndex; i < this.currentIndex + this.maxLines; i++)
             {
-                Text x = new Text(font, (Vector2.One * 10) + Vector2.UnitY * charSize.Y * row, Current[i]);
+                Text x = new Text(this.font, (Vector2.One * 10) + Vector2.UnitY * this.charSize.Y * row, this.Current[i],0,false);
                 x.Transitioning = true;
-                x.IsVisible = false;
-                Labels.Add(x);
+                this.Labels.Add(x);
                 row++;
 
             }
-            this.currentIndex += maxLines;
+            this.currentIndex += this.maxLines;
         }
 
-        private void WholeAtOnceEffect(SpriteFont font)
+        private void WholeAtOnceEffect()
         {
             this.Labels.Clear();
-            string output = String.Join("\n",Current.Skip(currentIndex).Take(currentIndex > Current.Length ? Current.Length - currentIndex : maxLines));
-            Text x = new Text(font,Vector2.One*10,output,0);
+            string output = String.Join("\n",
+                this.Current.Skip(this.currentIndex)
+                    .Take(this.currentIndex > this.Current.Length
+                    ? this.Current.Length - this.currentIndex
+                    : this.maxLines));
+            Text x = new Text(this.font,Vector2.One*10,output,0);
             x.IsVisible = false;
             x.Transitioning = true;
             x.FadeSpeed = 1;
-            Labels.Add(x);
-            currentIndex += maxLines;
+            this.Labels.Add(x);
+            this.currentIndex += this.maxLines;
         }
 
-        private int counter= 1;
 
+        private int counter= 1;
         private int index;
+
         public override void Update(GameTime gameTime)
         {
             Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
 
-            if (nextPage != null)
+            if (this.nextPage != null)
             {
-                nextPage.Over(mousePos);
-                if (nextPage.Clicked)
+                bool generating = false;
+                this.nextPage.Over(mousePos);
+                if (this.nextPage.Clicked)
                 {
-                    if (currentIndex >= Current.Length)
+                    if (this.currentIndex >= this.Current.Length)
                     {
                         this.IsVisible = false;
                     }
                     else
                     {
-                        Generate(font);
+                        foreach (var label in this.Labels)
+                        {
+                            label.Transitioning = false;
+                            label.IsVisible = false;
+                        }
+                        this.Generate();
+                        generating = true;
                     }
                     
                 }
-                nextPage.Update();
+                this.nextPage.Update();
+                if (generating)
+                {
+                    return;
+                }
             }
 
-            if (!effectDone && Effect != WriteEffect.CharacterByCharacter)
+            if (!this.effectDone && this.Effect != WriteEffect.CharacterByCharacter)
             {
-                timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (timeElapsed >= timeToUpdate)
+                this.timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (this.timeElapsed >= this.timeToUpdate)
                 {
-                    timeElapsed -= timeToUpdate;
-                    Labels[passed++].IsVisible = true;
-                    if (passed>= Labels.Count)
+                    this.timeElapsed -= this.timeToUpdate;
+                    this.Labels[this.passed++].IsVisible = true;
+                    if (this.passed >= this.Labels.Count)
                     {
-                        effectDone = true;
+                        this.effectDone = true;
                     }
                 } 
             }
-            else if (!effectDone)
+            else if (!this.effectDone)
             {
-                timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (timeElapsed >= timeToUpdate)
+                this.timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (this.timeElapsed >= this.timeToUpdate)
                 {
-                    timeElapsed -= timeToUpdate;
-                    Labels[index].Contents = Current[index].Substring(0, counter++);
-                    passed = index + 1;
-                    if (counter > Current[index].Length)
+                    this.timeElapsed -= this.timeToUpdate;
+                    this.Labels[this.index].Contents = this.Current[this.index].Substring(0, this.counter++);
+                    this.passed = this.index + 1;
+                    if (this.counter > this.Current[this.index].Length)
                     {
-                        
-                        counter = 0;
-                        index++;
-                        if (index >= Labels.Count)
+
+                        this.counter = 0;
+                        this.index++;
+                        if (this.index >= this.Labels.Count)
                         {
-                            index = 0;
-                            effectDone = true;
+                            this.index = 0;
+                            this.effectDone = true;
                         }
                     }
                 }
@@ -228,26 +252,24 @@ namespace MonoTinker.Code.Components.UI
         {
             
             base.DrawElements();
-            for (int i = 0; i < passed; i++)
+            for (int i = 0; i < this.passed; i++)
             {
-                if (Labels.Count > 0 && Labels[i].IsVisible)
+                if (this.Labels.Count > 0 && this.Labels[i].IsVisible)
                 {
-                    Labels[i].Draw(Batch);
+                    this.Labels[i].Draw(this.Batch);
                 }
             }
-            if (nextPage.IsVisible && nextPage != null)
+            if (this.nextPage != null && this.nextPage.IsVisible)
             {
-                nextPage.Draw(Batch);
+                this.nextPage.Draw(this.Batch);
             }
-            Batch.End();
-            Device.SetRenderTarget(null);
+            this.Batch.End();
+            this.Device.SetRenderTarget(null);
         }
 
         #region Generation
         private void Top(int size)
         {
-
-
             Sprite topLeft = AssetManager.Instance.Get<Sprite>(SpriteNames.FrameTopLeft).Clone() as Sprite;
             topLeft.Position = Vector2.Zero;
             Width += topLeft.SourceWidth;

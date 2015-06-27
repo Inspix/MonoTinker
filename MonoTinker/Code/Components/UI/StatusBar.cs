@@ -21,18 +21,6 @@ namespace MonoTinker.Code.Components.UI
             this.Init();
         }
 
-        public int FadeSpeed
-        {
-            get
-            {
-                return this.fadeSpeed;
-            }
-            set
-            {
-                this.fadeSpeed = value;
-            }
-        }
-
         private void Init()
         {
             SpriteFont font = AssetManager.Instance.Get<SpriteFont>("UIFont");

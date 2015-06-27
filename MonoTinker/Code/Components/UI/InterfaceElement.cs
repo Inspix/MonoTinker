@@ -26,6 +26,7 @@ namespace MonoTinker.Code.Components.UI
         protected int Height;
 
         protected RenderTarget2D RenderTarget2D;
+
         protected GraphicsDevice Device;
 
         protected SpriteBatch Batch;
@@ -38,7 +39,9 @@ namespace MonoTinker.Code.Components.UI
             this.Device = device;
             this.Batch = new SpriteBatch(this.Device);
         }
-        
+
+        public Vector2 Offset { get; set; }
+
         public virtual void DrawElements()
         {
             this.Device.SetRenderTarget(this.RenderTarget2D);
@@ -84,7 +87,7 @@ namespace MonoTinker.Code.Components.UI
             if (this.IsVisible)
             {
                 //this.DrawElements();
-                 spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position,this.RenderTarget2D.Bounds,this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
+                 spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position + this.Offset,this.RenderTarget2D.Bounds,this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
             }
 
         }

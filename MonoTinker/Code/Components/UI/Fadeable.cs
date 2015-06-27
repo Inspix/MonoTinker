@@ -22,6 +22,29 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
+        public int FadeSpeed
+        {
+            get
+            {
+                return this.fadeSpeed;
+            }
+            set
+            {
+                if (value > 100)
+                {
+                    this.fadeSpeed = 100;
+                }
+                else if (value <= 0)
+                {
+                    this.fadeSpeed = 1;
+                }
+                else
+                {
+                    this.fadeSpeed = value;
+                }
+            }
+        }
+
         public bool IsVisible
         {
             get

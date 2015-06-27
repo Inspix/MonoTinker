@@ -24,16 +24,16 @@ namespace MonoTinker.Code.Components.UI
 
         public Button(Vector2 position, Sprite normalState, Sprite hoverState, Sprite clickState)
         {
-            this.normal = normalState.Clone() as Sprite;
-            this.hover = hoverState.Clone() as Sprite;
-            this.click = clickState.Clone() as Sprite;
-            normal.Position = position;
-            hover.Position = position;
-            click.Position = position;
+            this.normal = normalState;
+            this.hover = hoverState;
+            this.click = clickState;
+            this.normal.Position = position;
+            this.hover.Position = position;
+            this.click.Position = position;
             this.bounds = new Rectangle(position.ToPoint(), normalState.DefaultSource.Size);
         }
 
-        public ClickType Type
+        public ClickType ClickType
         {
             set
             {
