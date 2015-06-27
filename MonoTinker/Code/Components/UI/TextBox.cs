@@ -54,7 +54,7 @@ namespace MonoTinker.Code.Components.UI
 
         private void Init(Point size, string mesage)
         {
-            this.Effect = WriteEffect.WholeAtOnce;
+            this.Effect = WriteEffect.LineByLine;
             this.Transitioning = true;
             this.timeToUpdate = TimeSpan.FromSeconds(1).TotalSeconds;
             this.OverrideDrawElements = true;
@@ -131,7 +131,7 @@ namespace MonoTinker.Code.Components.UI
         private void LineByLineEffect(SpriteFont font)
         {
             this.Labels.Clear();
-            if (currentIndex > Current.Length)
+            if (currentIndex + maxLines > Current.Length)
             {
                 maxLines = Current.Length - currentIndex;
             }
@@ -145,7 +145,7 @@ namespace MonoTinker.Code.Components.UI
                 row++;
 
             }
-            this.currentIndex += Labels.Count;
+            this.currentIndex += maxLines;
         }
 
         private void WholeAtOnceEffect(SpriteFont font)

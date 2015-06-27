@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\Components\Elements\Animation.cs" />
-    <Compile Include="Code\Components\Elements\AnimationControler.cs" />
+    <Compile Include="Code\Components\Elements\AnimationController.cs" />
     <Compile Include="Code\Components\Elements\AnimationEventArgs.cs" />
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
     <Compile Include="Code\Components\Elements\BoxCollider.cs" />

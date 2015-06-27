@@ -18,7 +18,7 @@ namespace MonoTinker.Code.GameScreens
     public sealed class CharacterCreationScreen : Screen
     {
         private SpriteAtlas atlas;
-        private AnimationControler controler;
+        private AnimationController controler;
 
         private StatusBar status;
 
@@ -42,7 +42,7 @@ namespace MonoTinker.Code.GameScreens
             status.FadeSpeed = 10;
             inventory = new Inventory(Vector2.One*200, ScreenManager.Device,5);
             inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
-            controler = new AnimationControler();
+            controler = new AnimationController();
             atlas = new SpriteAtlas();
 
             box = new TextBox(Vector2.One * 100,ScreenManager.Device, "Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool!", new Vector2(5,2));
@@ -102,11 +102,11 @@ namespace MonoTinker.Code.GameScreens
             controler.AddState("slashLeft", slashLeft);
             controler.AddState("slashDown", slashDown);
             controler.AddState("slashRight", slashRight);
-            controler.OnAnimationFinish += ControlerOnOnAnimationFinish;
+            controler.OnStateAnimationFinish += this.ControlerOnStateOnStateAnimationFinish;
 
         }
 
-        private void ControlerOnOnAnimationFinish(string stateName)
+        private void ControlerOnStateOnStateAnimationFinish(string stateName)
         {
             switch (stateName)
             {
