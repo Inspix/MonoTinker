@@ -18,13 +18,6 @@ namespace MonoTinker.Code.Components.UI
         WholeAtOnce
     }
 
-    public enum BoxType
-    {
-        Small,
-        Big,
-        Tooltip
-    }
-
     public class TextBox : InterfaceElement
     {
         private WriteEffect Effect;
@@ -47,9 +40,11 @@ namespace MonoTinker.Code.Components.UI
         }
 
         public TextBox(Vector2 position, GraphicsDevice device, string message = null, Vector2 size = default(Vector2), WriteEffect effect = 0)
-            : this(position,device,message,size)
+            : base(position,device)
         {
             this.Effect = effect;
+            this.Init(size.ToPoint(), message);
+
         }
 
         public Vector2 Position
@@ -63,12 +58,20 @@ namespace MonoTinker.Code.Components.UI
             {
                 this.Transform.Position = value;
             }
-        }        
+        }
+
+        /// <summary>
+        /// Effect speed in seconds
+        /// </summary>
+        public double EffectSpeed
+        {
+            get { return this.timeToUpdate; }
+            set { this.timeToUpdate = TimeSpan.FromSeconds(value).TotalSeconds; }
+        }
 
         private void Init(Point size, string mesage)
         {
             this.Transitioning = true;
-            this.timeToUpdate = TimeSpan.FromSeconds(1).TotalSeconds;
             this.OverrideDrawElements = true;
             this.OverrideDrawLabels = true;
             this.Top(size.X);
@@ -95,88 +98,51 @@ namespace MonoTinker.Code.Components.UI
                 this.nextPage.ClickType = ClickType.Single;
             }
 
-            this.Generate();
+            this.GenerateLines();
 
 
             this.RenderTarget2D = new RenderTarget2D(this.Device,this.Width,this.Height);
         }
 
-        private void Generate()
+        private void GenerateLines()
         {
+            this.index = 0;
             this.passed = 0;
+            this.counter = 1;
             this.effectDone = false;
             switch (this.Effect)
             {
                 case WriteEffect.LineByLine:
-                    this.LineByLineEffect();
+                    //this.LineByLineEffect();
+                    if (timeToUpdate.Equals(default(double)))
+                    {
+                        this.EffectSpeed = 1;
+                    }
+                    TextHelper.LineByLineEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref Current);
                     break;
                 case WriteEffect.WholeAtOnce:
-                    this.WholeAtOnceEffect();
+                    if (timeToUpdate.Equals(default(double)))
+                    {
+                        this.EffectSpeed = 0.1;
+                    }
+                    TextHelper.WholeAtOnceEffect(ref font,ref Labels,ref currentIndex,maxLines,ref Current);
+                    //this.WholeAtOnceEffect();
                     break;
                 case WriteEffect.CharacterByCharacter:
-                    this.CharacterByCharacterEffect();
+                    if (timeToUpdate.Equals(default(double)))
+                    {
+                        this.EffectSpeed = 0.01d;
+                    }
+                    TextHelper.CharacterByCharacterEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref Current);
+                    //this.CharacterByCharacterEffect();
                     break;
             }
-        }
-
-        private void CharacterByCharacterEffect()
-        {
-            this.Labels.Clear();
-            this.timeToUpdate = TimeSpan.FromSeconds(0.01).TotalSeconds;
-            if (this.currentIndex + this.maxLines > this.Current.Length)
-            {
-                this.maxLines = this.Current.Length - this.currentIndex;
-            }
-            int row = 0;
-            for (int i = this.currentIndex; i < this.currentIndex + this.maxLines; i++)
-            {
-                Text x = new Text(this.font, (Vector2.One * 10) + Vector2.UnitY * this.charSize.Y * row, this.Current[i]);
-                x.IsVisible = true;
-                this.Labels.Add(x);
-                row++;
-
-            }
-            this.currentIndex += this.maxLines;
-        }
-
-        private void LineByLineEffect()
-        {
-            this.Labels.Clear();
-            if (this.currentIndex + this.maxLines > this.Current.Length)
-            {
-                this.maxLines = this.Current.Length - this.currentIndex;
-            }
-            int row = 0;
-            for (int i = this.currentIndex; i < this.currentIndex + this.maxLines; i++)
-            {
-                Text x = new Text(this.font, (Vector2.One * 10) + Vector2.UnitY * this.charSize.Y * row, this.Current[i],0,false);
-                x.Transitioning = true;
-                this.Labels.Add(x);
-                row++;
-
-            }
-            this.currentIndex += this.maxLines;
-        }
-
-        private void WholeAtOnceEffect()
-        {
-            this.Labels.Clear();
-            string output = String.Join("\n",
-                this.Current.Skip(this.currentIndex)
-                    .Take(this.currentIndex > this.Current.Length
-                    ? this.Current.Length - this.currentIndex
-                    : this.maxLines));
-            Text x = new Text(this.font,Vector2.One*10,output,0);
-            x.IsVisible = false;
-            x.Transitioning = true;
-            x.FadeSpeed = 1;
-            this.Labels.Add(x);
-            this.currentIndex += this.maxLines;
         }
 
 
         private int counter= 1;
         private int index;
+        private int mod;
 
         public override void Update(GameTime gameTime)
         {
@@ -199,7 +165,11 @@ namespace MonoTinker.Code.Components.UI
                             label.Transitioning = false;
                             label.IsVisible = false;
                         }
-                        this.Generate();
+                        if (!effectDone && Effect == WriteEffect.CharacterByCharacter)
+                        {
+                            this.mod += Labels.Count;
+                        }
+                        this.GenerateLines();
                         generating = true;
                     }
                     
@@ -230,15 +200,16 @@ namespace MonoTinker.Code.Components.UI
                 if (this.timeElapsed >= this.timeToUpdate)
                 {
                     this.timeElapsed -= this.timeToUpdate;
-                    this.Labels[this.index].Contents = this.Current[this.index].Substring(0, this.counter++);
-                    this.passed = this.index + 1;
-                    if (this.counter > this.Current[this.index].Length)
+                    this.Labels[this.index].Contents = this.Current[this.index + mod].Substring(0, this.counter++);
+                    this.passed = index + 1;
+                    if (this.counter > this.Current[this.index + mod].Length)
                     {
 
                         this.counter = 0;
                         this.index++;
                         if (this.index >= this.Labels.Count)
                         {
+                            this.mod += index;
                             this.index = 0;
                             this.effectDone = true;
                         }

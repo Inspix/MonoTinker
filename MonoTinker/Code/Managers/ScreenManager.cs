@@ -81,7 +81,7 @@ namespace MonoTinker.Code.Managers
                     newScreen = new GameScreen(service);
                     break;
                 case "CharacterCreation":
-                    newScreen = new CharacterCreationScreen(service);
+                    newScreen = new TestGround(service);
                     break;
             }
             transitioning = true;

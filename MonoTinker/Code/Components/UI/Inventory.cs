@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MonoTinker.Code.Components.UI
@@ -100,6 +99,9 @@ namespace MonoTinker.Code.Components.UI
                 this.Elements.Add("slot" + slotCount++, middle);
                 this.Elements.Add("slot" + slotCount++, middle2);
                 this.Elements.Add("slot" + slotCount++, right);
+                ItemTile[] newArray = new ItemTile[items.Length + 4];
+                Array.Copy(items,newArray,items.Length);
+                items = newArray;
             }
         }
 
@@ -121,7 +123,14 @@ namespace MonoTinker.Code.Components.UI
             Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
             Vector2 delta = InputHandler.MouseDelta();
             closeButton.Over(mousePos);
-            moveButton.Over(mousePos);
+            if (fadeIn || fadeOut)
+            {
+                
+            }
+            else
+            {
+                moveButton.Over(mousePos);
+            }
             foreach (var spriteAtla in Elements.Where(s => s.Key.Contains("slot")))
             {
                 bool result = spriteAtla.Value.Contains(mousePos);
@@ -154,7 +163,7 @@ namespace MonoTinker.Code.Components.UI
                 this.IsVisible = false;
             }
             var item = items.FirstOrDefault(s => s != null && s.Selected);
-            if (item != null)
+            if (item != null && !GameManager.ItemMoving)
             {
                 item.PositionOffset = this.Transform.Position + item.Position;
                 GameManager.GetItemFromInventory(this,Array.IndexOf(items,item));
