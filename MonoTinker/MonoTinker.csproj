@@ -49,7 +49,11 @@
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\ExtensionMethods.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
+    <Compile Include="Code\Components\GameComponents\Attribute.cs" />
+    <Compile Include="Code\Components\GameComponents\Item.cs" />
+    <Compile Include="Code\Components\GameComponents\Stats.cs" />
     <Compile Include="Code\Components\GameObjects\Projectile.cs" />
+    <Compile Include="Code\Components\Interfaces\IAdvancedDrawable.cs" />
     <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Code\Components\Elements\Transform.cs" />
     <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
+    <Compile Include="Code\Managers\GameManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Components\Elements\Deprecated\PlayerOld.cs" />
     <Compile Include="Code\Utils\ColorHelper.cs" />
@@ -85,7 +90,7 @@
     <Compile Include="Code\Utils\Helper.cs" />
     <Compile Include="Code\Utils\InputHandler.cs" />
     <Compile Include="Code\Utils\Keybindings.cs" />
-    <Compile Include="Code\Utils\SpriteNames.cs" />
+    <Compile Include="Code\Utils\Sn.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,6 +140,10 @@
     </Content>
     <Content Include="Content\Game\tt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\weapons.png" />
+    <Content Include="Content\Items\weapons.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Menu\menu.png" />
     <Content Include="Content\Menu\menu.txt">

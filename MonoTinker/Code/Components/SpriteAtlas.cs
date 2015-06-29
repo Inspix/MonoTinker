@@ -8,6 +8,9 @@ namespace MonoTinker.Code.Components
     using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
+
+    using Elements;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;

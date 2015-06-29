@@ -2,10 +2,9 @@ namespace MonoTinker.Code.Components.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Forms;
 
-    using global::MonoTinker.Code.Components.Elements;
-    using global::MonoTinker.Code.Utils;
+    using Elements;
+    using Utils;
 
     using Microsoft.Xna.Framework;
 
@@ -28,15 +27,6 @@ namespace MonoTinker.Code.Components.Extensions
                 Debug.Warning("Trying to split empty or null string to pieces");
                 yield break;
             }
-            /*
-                        for (int i = 0; i < str.Length; i+= pieceSize)
-                        {
-                            if (pieceSize + i > str.Length)
-                            {
-                                pieceSize = str.Length - i;
-                            }
-                            yield return str.Substring(i, pieceSize);
-                        }*/
             int index = 0;
             while (true)
             {

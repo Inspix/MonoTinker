@@ -69,6 +69,22 @@ namespace MonoTinker.Code.Components.UI
             this.Device.SetRenderTarget(null);
         }
 
+        public virtual void DrawToCurrentRenderTarget(SpriteBatch spriteBatch)
+        {
+
+            foreach (var element in Elements)
+            {
+                element.Value.Draw(spriteBatch);
+            }
+            foreach (var label in Labels)
+            {
+                if (label.IsVisible)
+                {
+                    label.Draw(spriteBatch);
+                }
+            }
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             if (fadeIn || fadeOut)
@@ -79,14 +95,12 @@ namespace MonoTinker.Code.Components.UI
             {
                 label.Update(gameTime);
             }
-            this.DrawElements();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (this.IsVisible)
             {
-                //this.DrawElements();
                  spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position + this.Offset,this.RenderTarget2D.Bounds,this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
             }
 

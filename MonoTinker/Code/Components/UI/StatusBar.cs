@@ -1,9 +1,12 @@
 namespace MonoTinker.Code.Components.UI
 {
     using System;
+
     using Extensions;
+    using Elements;
     using Utils;
     using Managers;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -33,13 +36,13 @@ namespace MonoTinker.Code.Components.UI
             Text sp = new Text(font,new Vector2(85,45),"100%");
             sp.IsVisible = false;
             sp.Transitioning = true;
-            Sprite hud = AssetManager.Instance.Get<Sprite>(SpriteNames.Hud).Clone() as Sprite;
+            Sprite hud = AssetManager.Instance.Get<Sprite>(Sn.Menu.Hud).Clone() as Sprite;
             hud.Position = Vector2.Zero;
-            Sprite healthbar = AssetManager.Instance.Get<Sprite>(SpriteNames.HealthBar).Clone() as Sprite;
+            Sprite healthbar = AssetManager.Instance.Get<Sprite>(Sn.Menu.HealthBar).Clone() as Sprite;
             healthbar.Position = new Vector2(83,6);
-            Sprite manaBar = AssetManager.Instance.Get<Sprite>(SpriteNames.ManaBar).Clone() as Sprite;
+            Sprite manaBar = AssetManager.Instance.Get<Sprite>(Sn.Menu.ManaBar).Clone() as Sprite;
             manaBar.Position = new Vector2(83, 26);
-            Sprite spiritBar = AssetManager.Instance.Get<Sprite>(SpriteNames.SpiritBar).Clone() as Sprite;
+            Sprite spiritBar = AssetManager.Instance.Get<Sprite>(Sn.Menu.SpiritBar).Clone() as Sprite;
             spiritBar.Position = new Vector2(83, 46);
             
             this.Labels.Add(hp);

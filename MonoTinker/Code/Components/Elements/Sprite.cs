@@ -1,15 +1,12 @@
 
-namespace MonoTinker.Code.Components
+namespace MonoTinker.Code.Components.Elements
 {
     using System;
-    using System.Runtime.CompilerServices;
+
+    using Interfaces;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
-    using Elements;
-    using Interfaces;
-
 
     public enum Origin
     {
@@ -50,10 +47,10 @@ namespace MonoTinker.Code.Components
                         this.origin = new Vector2(0, this.Size.Y);
                         break;
                     case Origin.BottomRight:
-                        this.origin = Size;
+                        this.origin = this.Size;
                         break;
                     case Origin.Center:
-                        this.origin = Center;
+                        this.origin = this.Center;
                         break;
                 }
             }
@@ -95,9 +92,9 @@ namespace MonoTinker.Code.Components
                 if (value < 0)
                 {
                     this.source.Width = 0;
-                }else if (value > DefaultSource.Width)
+                }else if (value > this.DefaultSource.Width)
                 {
-                    this.source.Width = DefaultSource.Width;
+                    this.source.Width = this.DefaultSource.Width;
                 }
                 else
                 {
@@ -146,10 +143,10 @@ namespace MonoTinker.Code.Components
         {
             this._texture2D = texture2D;
             this.source = texture2D.Bounds;
-            this.defaultSource = source;
+            this.defaultSource = this.source;
             this.Size = texture2D.Bounds.Size.ToVector2();
             this.Transform = new Transform();
-            this.Center = _texture2D.Bounds.Center.ToVector2();
+            this.Center = this._texture2D.Bounds.Center.ToVector2();
             this.Origin = Origin.Center;
             this.Clr = Color.White;
         }
@@ -160,7 +157,7 @@ namespace MonoTinker.Code.Components
             this.defaultSource = sourceRect;
             this.Size = sourceRect.Size.ToVector2();
             this.Transform = new Transform();
-            this.Center = source.Center.ToVector2();
+            this.Center = this.source.Center.ToVector2();
             this.Origin = Origin.Center;
             this.Clr = Color.White;
         }
@@ -182,7 +179,7 @@ namespace MonoTinker.Code.Components
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture,Position,Source,Clr,isRotated ? Transform.Rotation - NinetyDegreeRotation : Transform.Rotation,origin,Transform.Scale,effect,LayerDepth);
+            spriteBatch.Draw(this.Texture,this.Position,this.Source,this.Clr,this.isRotated ? this.Transform.Rotation - NinetyDegreeRotation : this.Transform.Rotation,this.origin,this.Transform.Scale,this.effect,this.LayerDepth);
         }
 
         public Vector2 Position

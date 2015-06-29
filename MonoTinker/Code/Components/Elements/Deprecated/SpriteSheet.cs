@@ -2,6 +2,9 @@
 namespace MonoTinker.Code.Components
 {
     using System;
+
+    using Elements;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 

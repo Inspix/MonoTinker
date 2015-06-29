@@ -45,6 +45,7 @@ namespace MonoTinker.Code.Managers
             this.content = content;
             this.AddSprite("UI/frame","UIFrame");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"UI/hud");
+            this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"Items/weapons");
             this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
         }
 

@@ -1,5 +1,7 @@
 
 
+using MonoTinker.Code.Components.GameComponents;
+
 namespace MonoTinker.Code.GameScreens
 {
     using System;
@@ -26,8 +28,7 @@ namespace MonoTinker.Code.GameScreens
 
         private Inventory inventory;
         private Inventory inventory2;
-
-        private ItemTile item;
+        
         private bool attacking;
         private Vector2 position;
 
@@ -47,9 +48,11 @@ namespace MonoTinker.Code.GameScreens
             inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
             controler = new AnimationController();
             atlas = new SpriteAtlas();
-            item = new ItemTile(AssetManager.Instance.Get<Sprite>(SpriteNames.GearSilver).DirectClone(),Vector2.One * 400,"Test Item of the Cool", "Awesome");
+            Item x = Factory.CreateItem("Ashbringer", 50, 25, 50, 10, 10, ItemRarity.Legendary);
+            Item y = Factory.CreateItem("Staff of Regrowth", 10, 5, 35, 50, 50, ItemRarity.Epic);
 
-
+            ItemTile item = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.Ashbringer).DirectClone(),Vector2.One * 400,x);
+            ItemTile item2 = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.StaffOfRegrowth).DirectClone(), Vector2.One * 400, y);
             box = new TextBox(Vector2.One * 100,ScreenManager.Device, "Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool!", new Vector2(5,2));
 
             List<string[]> layers = new List<string[]>();
@@ -95,6 +98,10 @@ namespace MonoTinker.Code.GameScreens
             slashRight.ChangeLayerOffset(4, Vector2.One * -64);
             slashRight.Looping = false;
             
+            inventory.AddItemToSlot(item,1);
+            inventory.AddItemToSlot(item2, 10);
+            inventory2.AddItemToSlot(item,5);
+            inventory2.AddItemToSlot(item2,3);
             controler.AddState("idleUp", idleUp);
             controler.AddState("idleLeft", idleLeft);
             controler.AddState("idleDown", idleDown);
@@ -152,7 +159,7 @@ namespace MonoTinker.Code.GameScreens
             inventory2.Draw(spriteBatch);
             inventory.Draw(spriteBatch);
             box.Draw(spriteBatch);
-            item.Draw(spriteBatch);
+            GameManager.Draw(spriteBatch);
             spriteBatch.End();
             
         }
@@ -160,8 +167,6 @@ namespace MonoTinker.Code.GameScreens
         public override void Update(GameTime gameTime)
         {
             Console.WriteLine(InputHandler.MouseDelta());
-            item.Over(InputHandler.MousePos());
-            item.Update(gameTime);
             box.Update(gameTime);
             inventory.Update(gameTime);
             inventory2.Update(gameTime);
@@ -278,8 +283,9 @@ namespace MonoTinker.Code.GameScreens
                     value.RemoveLayer(0);
                 }
             }
-
             controler.Update(gameTime);
+            GameManager.Update(gameTime);
+
         }
 
     }
