@@ -1,14 +1,15 @@
-using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.Components.UI
 {
+    using System;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Elements;
+    using Extensions;
+    using Managers;
+    using Utils;
+
     public class FancyTextBox : InterfaceElement
     {
         private WriteEffect effect;

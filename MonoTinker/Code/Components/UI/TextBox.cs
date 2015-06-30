@@ -69,7 +69,7 @@ namespace MonoTinker.Code.Components.UI
             set { this.timeToUpdate = TimeSpan.FromSeconds(value).TotalSeconds; }
         }
 
-        private void Init(Point size, string mesage)
+        protected void Init(Point size, string mesage)
         {
             this.Transitioning = true;
             this.OverrideDrawElements = true;
@@ -243,19 +243,19 @@ namespace MonoTinker.Code.Components.UI
         #region Generation
         private void Top(int size)
         {
-            Sprite topLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopLeft).Clone() as Sprite;
+            Sprite topLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopLeft).DirectClone();
             topLeft.Position = Vector2.Zero;
             Width += topLeft.SourceWidth;
             Height += topLeft.SourceHeight;
             this.Elements.Add("topLeft", topLeft);
             for (int i = 1; i <= size; i++)
             {
-                Sprite topMiddle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopMiddle).Clone() as Sprite;
+                Sprite topMiddle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopMiddle).DirectClone();
                 topMiddle.Position = Vector2.UnitX * this.Width;
                 Width += topMiddle.SourceWidth;
                 this.Elements.Add("topMiddle" + i, topMiddle);
             }
-            Sprite topRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopRight).Clone() as Sprite;
+            Sprite topRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopRight).DirectClone();
             topRight.Position = Vector2.UnitX * Width;
             Width += topRight.SourceWidth;
             this.Elements.Add("topRight", topRight);
@@ -263,34 +263,34 @@ namespace MonoTinker.Code.Components.UI
 
         private void Middle(int size, int mod)
         {
-            Sprite middleLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddleLeft).Clone() as Sprite;
+            Sprite middleLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddleLeft).DirectClone();
             middleLeft.Position = Vector2.UnitY * Height;
             Height += middleLeft.SourceHeight;
             this.Elements.Add("middleLeft" + mod, middleLeft);
             for (int i = 1; i <= size; i++)
             {
-                Sprite middle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddle).Clone() as Sprite;
+                Sprite middle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddle).DirectClone();
                 middle.Position = middleLeft.Position + (Vector2.UnitX * middleLeft.SourceWidth * i);
                 this.Elements.Add("middle" + i + "_" + mod, middle);
             }
-            Sprite middleRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddleRight).Clone() as Sprite;
+            Sprite middleRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameMiddleRight).DirectClone();
             middleRight.Position = middleLeft.Position + (Vector2.UnitX * (Width - middleRight.SourceWidth));
             this.Elements.Add("middleRight" + mod, middleRight);
         }
 
         private void Bottom(int size)
         {
-            Sprite bottomLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomLeft).Clone() as Sprite;
+            Sprite bottomLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomLeft).DirectClone();
             bottomLeft.Position = Vector2.UnitY * Height;
             Height += bottomLeft.SourceHeight;
             this.Elements.Add("bottomLeft", bottomLeft);
             for (int i = 1; i <= size; i++)
             {
-                Sprite bottomMiddle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomMiddle).Clone() as Sprite;
+                Sprite bottomMiddle = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomMiddle).DirectClone();
                 bottomMiddle.Position = bottomLeft.Position + (Vector2.UnitX * bottomMiddle.SourceWidth * i);
                 this.Elements.Add("bottomMiddle" + i, bottomMiddle);
             }
-            Sprite bottomRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomRight).Clone() as Sprite;
+            Sprite bottomRight = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameBottomRight).DirectClone();
             bottomRight.Position = bottomLeft.Position + (Vector2.UnitX * (Width - bottomRight.SourceWidth));
             this.Elements.Add("bottomRight", bottomRight);
         } 

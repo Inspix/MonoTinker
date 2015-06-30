@@ -72,7 +72,7 @@ namespace MonoTinker.Code.Managers
                     newScreen = new MenuScreen(service);
                     break;
                 case "Other":
-                    newScreen = new OtherScreen(service);
+                    newScreen = new CharacterCreationScreen(service);
                     break;
                 case "Splash":
                     newScreen = new SplashScreen(service);

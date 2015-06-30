@@ -30,7 +30,7 @@ namespace MonoTinker.Code.Components.UI
         protected GraphicsDevice Device;
 
         protected SpriteBatch Batch;
-
+        
         protected InterfaceElement(Vector2 position,GraphicsDevice device)
         {
             this.Elements = new SpriteAtlas();
@@ -41,6 +41,8 @@ namespace MonoTinker.Code.Components.UI
         }
 
         public Vector2 Offset { get; set; }
+
+        public Vector2 Size { get { return new Vector2(Width,Height);} }
 
         public virtual void DrawElements()
         {

@@ -70,6 +70,7 @@
     <Compile Include="Code\Components\UI\InterfaceElement.cs" />
     <Compile Include="Code\Components\UI\Inventory.cs" />
     <Compile Include="Code\Components\UI\ItemTile.cs" />
+    <Compile Include="Code\Components\UI\MenuBox.cs" />
     <Compile Include="Code\Components\UI\StatusBar.cs" />
     <Compile Include="Code\Components\UI\Text.cs" />
     <Compile Include="Code\Components\UI\TextBox.cs" />

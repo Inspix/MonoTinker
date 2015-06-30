@@ -22,7 +22,7 @@ namespace MonoTinker.Code.Managers
         private ContentManager content;
 
         private SpriteAtlas spriteAtlas;          // To Store our sprite sheets
-
+        private Dictionary<string, Effect> shaders; 
         private Dictionary<string, Animation> animations;  // To Store our animations
 
         private Dictionary<string, SpriteFont> fonts;
@@ -33,6 +33,7 @@ namespace MonoTinker.Code.Managers
             this.spriteAtlas = new SpriteAtlas();
             this.animations = new Dictionary<string, Animation>();
             this.fonts = new Dictionary<string, SpriteFont>();
+            this.shaders = new Dictionary<string, Effect>();
         }
 
         public static AssetManager Instance                         // Instance Getter
@@ -43,10 +44,12 @@ namespace MonoTinker.Code.Managers
         public void LoadContent(ContentManager content)             // Preload Content
         {
             this.content = content;
+            this.shaders.Add("Grayscale",content.Load<Effect>("Shaders/SpriteGrayscale"));
+            this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
+            this.fonts.Add("SplashScreenFont",content.Load<SpriteFont>("SplashScreen/SplashFont"));
             this.AddSprite("UI/frame","UIFrame");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"UI/hud");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"Items/weapons");
-            this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
         }
 
         public void UnloadContent()
@@ -81,6 +84,11 @@ namespace MonoTinker.Code.Managers
             {
                 object toReturn = this.fonts[id];
                 return (T)toReturn;
+            }
+            if (typeof(T) == typeof(Effect))
+            {
+                object toReturn = this.shaders[id];
+                return (T) toReturn;
             }
 
             Debug.Error("error at Get<T> method: unsupported type ({0})", (typeof(T)));
