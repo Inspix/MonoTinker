@@ -45,10 +45,12 @@
     <Compile Include="Code\Components\Elements\AnimationController.cs" />
     <Compile Include="Code\Components\Elements\AnimationEventArgs.cs" />
     <Compile Include="Code\Components\Elements\AnimationV2.cs" />
+    <Compile Include="Code\Components\Elements\DebugGraphics\DebugShapes.cs" />
     <Compile Include="Code\Components\Elements\Deprecated\BoxCollider.cs" />
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\ExtensionMethods.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
+    <Compile Include="Code\Components\Extensions\TextBoxFactory.cs" />
     <Compile Include="Code\Components\GameComponents\Attribute.cs" />
     <Compile Include="Code\Components\GameComponents\Item.cs" />
     <Compile Include="Code\Components\GameComponents\Stats.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Code\Components\UI\Button.cs" />
     <Compile Include="Code\Components\UI\Fadeable.cs" />
     <Compile Include="Code\Components\UI\FancyTextBox.cs" />
+    <Compile Include="Code\Components\UI\InputBox.cs" />
     <Compile Include="Code\Components\UI\InterfaceElement.cs" />
     <Compile Include="Code\Components\UI\Inventory.cs" />
     <Compile Include="Code\Components\UI\ItemTile.cs" />

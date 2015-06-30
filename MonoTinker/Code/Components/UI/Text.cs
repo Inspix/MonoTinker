@@ -1,3 +1,4 @@
+using System.Text;
 using MonoTinker.Code.Components.Elements;
 
 namespace MonoTinker.Code.Components.UI
@@ -14,14 +15,14 @@ namespace MonoTinker.Code.Components.UI
 
         public Color Clr;
 
-        private string contents;
+        private StringBuilder contents;
 
         public Text(SpriteFont font, Vector2 position, string contents, byte alpha = 255, bool isVisible = true)
         {
             this.font = font;
             this.isVisible = isVisible;
             this.transform = new Transform(position);
-            this.contents = contents;
+            this.contents = new StringBuilder(contents);
             this.Clr = Color.White;
             this.alpha = ColorHelper.AlphaChange(Color.White, alpha);
             this.DefaultAlpha = 255;
@@ -36,20 +37,34 @@ namespace MonoTinker.Code.Components.UI
         {
             get
             {
-                return this.contents;
+                return this.contents.ToString();
             }
             set {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    this.contents = "...";
+                    this.contents = new StringBuilder("...");
                 }
                 else
                 {
-                    this.contents = value;
+                    this.contents = new StringBuilder(value);
                 }
             }
         }
 
+        public void Append(string text)
+        {
+            this.contents.Append(text);
+        }
+
+        public void Append(char c)
+        {
+            this.contents.Append(c);
+        }
+
+        public void RemoveLast()
+        {
+            this.contents.Remove(contents.Length - 1, 1);
+        }
         public Vector2 Position
         {
             get { return this.transform.Position; }

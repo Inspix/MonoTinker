@@ -87,7 +87,7 @@ namespace MonoTinker.Code.Components.UI
         {
             this.index = 0;
             this.passed = 0;
-            this.counter = 1;
+            this.counter = 0;
             this.effectDone = false;
             switch (this.effect)
             {
@@ -174,9 +174,9 @@ namespace MonoTinker.Code.Components.UI
                 if (this.timeElapsed >= this.timeToUpdate)
                 {
                     this.timeElapsed -= this.timeToUpdate;
-                     this.Labels[this.index].Contents = this.text[this.index + mod].Substring(0, this.counter++);
+                    this.Labels[this.index].Append(this.text[index + mod][counter++]);
                     this.passed = index + 1;
-                    if (this.counter > this.text[this.index + mod].Length)
+                    if (this.counter >= this.text[this.index + mod].Length)
                     {
 
                         this.counter = 0;

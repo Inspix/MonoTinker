@@ -1,4 +1,6 @@
 
+using System.Runtime.CompilerServices;
+
 namespace MonoTinker.Code.Utils
 {
     using System;
@@ -17,6 +19,11 @@ namespace MonoTinker.Code.Utils
         public static bool IsKeyDown(Keys key)
         {
             return currentKeyboardState.IsKeyDown(key) && lastKeyboardState.IsKeyUp(key);
+        }
+
+        public static Keys[] GetCurrentKeys()
+        {
+            return currentKeyboardState.GetPressedKeys();
         }
 
         public static bool Down(this Keys key)
@@ -113,11 +120,6 @@ namespace MonoTinker.Code.Utils
         {
             lastKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
-
-            foreach (var pressedKey in currentKeyboardState.GetPressedKeys())
-            {
-                Console.WriteLine(pressedKey);
-            }
             lastMouseState = currentMouseState;
             currentMouseState = Mouse.GetState(win);
         }

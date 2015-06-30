@@ -38,7 +38,7 @@ namespace MonoTinker.Code.Utils
             int row = 0;
             for (int i = currentIndex; i < currentIndex + maxlines; i++)
             {
-                Text x = new Text(font, (Vector2.One * 10 + offset) + Vector2.UnitY * charSize.Y * row, text[i]);
+                Text x = new Text(font, (Vector2.One * 10 + offset) + Vector2.UnitY * charSize.Y * row, "");
                 x.IsVisible = true;
                 labels.Add(x);
                 row++;
