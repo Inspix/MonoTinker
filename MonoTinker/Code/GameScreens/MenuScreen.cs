@@ -76,7 +76,7 @@ namespace MonoTinker.Code.GameScreens
 
             bigGear = atlas["bigGear"];
             bigGear.Transform.Position = Vector2.One * 100;
-            bigGear.OriginCustom = bigGear.Center + new Vector2(-1,2);
+            bigGear.OriginCustom = bigGear.SpriteCenter + new Vector2(-1,2);
 
             smallGear = atlas["smallGear"];
             smallGear.Transform.Position = bigGear.Transform.Position + Vector2.UnitY * 105 - Vector2.UnitX * 20;

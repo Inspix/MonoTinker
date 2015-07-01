@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace MonoTinker.Code.Components.GameComponents
 {
+    
     public class Stats
     {
         private int strength;
@@ -9,6 +11,8 @@ namespace MonoTinker.Code.Components.GameComponents
         private int vitality;
         private int intelect;
         private int wisdom;
+        private Action onStatChange;
+        private bool onStatChangeCallback;
 
         private Stats()
         {
@@ -30,8 +34,13 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 //TODO Softcap of strenght
                 this.strength = value;
+                if (!onStatChangeCallback)
+                {
+                    return;
+                }
+                OnStatChange.Invoke();
             }
-            
+
         }
 
         public int Agility
@@ -41,6 +50,11 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 //TODO Softcap of Agility
                 this.agility = value;
+                if (!onStatChangeCallback)
+                {
+                    return;
+                }
+                OnStatChange.Invoke();
             }
         }
         public int Vitality
@@ -50,6 +64,11 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 //TODO Softcap of Vitality
                 this.vitality = value;
+                if (!onStatChangeCallback)
+                {
+                    return;
+                }
+                OnStatChange.Invoke();
             }
         }
         public int Intellect
@@ -59,6 +78,11 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 //TODO Softcap of Intelect
                 this.intelect = value;
+                if (!onStatChangeCallback)
+                {
+                    return;
+                }
+                OnStatChange.Invoke();
             }
         }
         public int Wisdom
@@ -68,12 +92,33 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 //TODO Softcap of Wisdom
                 this.wisdom = value;
+                if (!onStatChangeCallback)
+                {
+                    return;
+                }
+                OnStatChange.Invoke();
             }
+        }
+
+        public Action OnStatChange
+        {
+            private get { return this.onStatChange; }
+            set
+            {
+                this.onStatChange = value;
+                onStatChangeCallback = true;
+            }
+
         }
 
         public static Stats Zero
         {
             get { return new Stats();}
+        }
+
+        public static Stats Ten
+        {
+            get { return new Stats(10,10,10,10,10);}
         }
 
         public int TotalStats

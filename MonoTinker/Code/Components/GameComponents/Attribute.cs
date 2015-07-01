@@ -1,3 +1,5 @@
+using System;
+
 namespace MonoTinker.Code.Components.GameComponents
 {
     public enum AttributeType
@@ -5,19 +7,21 @@ namespace MonoTinker.Code.Components.GameComponents
         Block,
         Charisma,
         Dodge,
-        Stamina
+        Stamina,
+        Health,
+        Mana,
+        Spirit
         // TODO: Add more attributes
     }
 
     public class AttributeStat
     {
-        private AttributeType type;
+        private readonly AttributeType type;
         private double currentValue;
-        private double maxValue;
+        private readonly double maxValue;
 
-        public AttributeStat(double current, AttributeType type)
+        public AttributeStat(AttributeType type, Func<double> calculation)
         {
-            this.currentValue = current;
             this.type = type;
             this.maxValue = this.InitMax();
         }
@@ -28,18 +32,20 @@ namespace MonoTinker.Code.Components.GameComponents
             {
                 return this.currentValue;
             }
-
-            set
-            {
-                if (value > this.maxValue)
-                {
-                    this.currentValue = this.maxValue;
-                    return;
-                }
-                this.currentValue = value;
-            }
-
         }
+
+        public void Calculate(Stats stats)
+        {
+            double result = Calculation(stats);
+            if (result > this.maxValue)
+            {
+                this.currentValue = this.maxValue;
+                return;
+            }
+            this.currentValue = result;
+        }
+
+        public Func<Stats,double> Calculation { get; set; }
 
         private double InitMax()
         {
@@ -53,6 +59,8 @@ namespace MonoTinker.Code.Components.GameComponents
                     return 50;
                 case AttributeType.Stamina:
                     return 200;
+                    case AttributeType.Health:
+                    return 10000;
                 default:
                     return 33;
             }

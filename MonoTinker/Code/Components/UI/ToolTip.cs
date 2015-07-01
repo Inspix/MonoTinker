@@ -35,15 +35,7 @@ namespace MonoTinker.Code.Components.UI
                 this.Transform.Position = value;
             }
         }
-
-        public Vector2 Size
-        {
-            get
-            {
-                return new Vector2(this.Width,this.Height);
-            }
-        }
-
+        
         private void InitToolTip(Item item)
         {
             this.font = AssetManager.Instance.Get<SpriteFont>("UIFont");

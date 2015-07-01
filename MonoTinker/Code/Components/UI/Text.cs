@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using MonoTinker.Code.Components.Elements;
 
@@ -33,6 +34,8 @@ namespace MonoTinker.Code.Components.UI
             get { return this.font.MeasureString(this.Contents); }
         }
 
+        public Action<Text> OnLabelChange { get; set; }
+
         public string Contents
         {
             get
@@ -43,10 +46,24 @@ namespace MonoTinker.Code.Components.UI
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     this.contents = new StringBuilder("...");
+                    if (OnLabelChange == null)
+                    {
+                        return;
+                    }
+                    OnLabelChange.Invoke(this);
                 }
                 else
                 {
+                    if (value == this.Contents)
+                    {
+                        return;
+                    }
                     this.contents = new StringBuilder(value);
+                    if (OnLabelChange == null)
+                    {
+                        return;
+                    }
+                    OnLabelChange.Invoke(this);
                 }
             }
         }

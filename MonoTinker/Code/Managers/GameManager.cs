@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoTinker.Code.Components.GameComponents;
 using MonoTinker.Code.Components.UI;
 
 namespace MonoTinker.Code.Managers
@@ -66,6 +67,22 @@ namespace MonoTinker.Code.Managers
                 item.Update(gameTime);
             }
         }
-        
+
+
+
+        public static double CalculateHealth(Stats stats)
+        {
+            return (stats.Vitality*15d)+(stats.Strenght*0.25f);
+        }
+
+        public static double CalculateMana(Stats stats)
+        {
+            return (stats.Intellect*20) + (stats.Wisdom*0.35);
+        }
+
+        public static double CalculateSpirit(Stats stats)
+        {
+            return stats.TotalStats/2d;
+        }
     }
 }

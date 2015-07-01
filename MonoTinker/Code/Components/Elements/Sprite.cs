@@ -19,7 +19,6 @@ namespace MonoTinker.Code.Components.Elements
         protected const float NinetyDegreeRotation = (float)(Math.PI/2f);
         public Transform Transform;
         protected Rectangle source;
-
         protected Rectangle defaultSource;
         protected SpriteEffects effect;
         protected Vector2 origin;
@@ -50,7 +49,7 @@ namespace MonoTinker.Code.Components.Elements
                         this.origin = this.Size;
                         break;
                     case Origin.Center:
-                        this.origin = this.Center;
+                        this.origin = this.SpriteCenter;
                         break;
                 }
             }
@@ -132,7 +131,7 @@ namespace MonoTinker.Code.Components.Elements
 
         public Vector2 Size { get; private set; }
 
-        public Vector2 Center { get; private set; }
+        public Vector2 SpriteCenter { get; private set; }
 
         public Texture2D Texture
         {
@@ -146,7 +145,7 @@ namespace MonoTinker.Code.Components.Elements
             this.defaultSource = this.source;
             this.Size = texture2D.Bounds.Size.ToVector2();
             this.Transform = new Transform();
-            this.Center = this._texture2D.Bounds.Center.ToVector2();
+            this.SpriteCenter = this._texture2D.Bounds.Center.ToVector2();
             this.Origin = Origin.Center;
             this.Clr = Color.White;
         }
@@ -157,7 +156,7 @@ namespace MonoTinker.Code.Components.Elements
             this.defaultSource = sourceRect;
             this.Size = sourceRect.Size.ToVector2();
             this.Transform = new Transform();
-            this.Center = this.source.Center.ToVector2();
+            this.SpriteCenter = Size/2f;
             this.Origin = Origin.Center;
             this.Clr = Color.White;
         }
@@ -167,7 +166,7 @@ namespace MonoTinker.Code.Components.Elements
             this._texture2D = texture;
             this.source = source;
             this.defaultSource = source;
-            this.Center = isRotated
+            this.SpriteCenter = isRotated
                 ? new Vector2(source.Width*(1 - center.Y), source.Height*center.X)
                 : new Vector2(source.Width*center.X, source.Height*center.Y);
             this.isRotated = isRotated;
@@ -180,6 +179,11 @@ namespace MonoTinker.Code.Components.Elements
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.Texture,this.Position,this.Source,this.Clr,this.isRotated ? this.Transform.Rotation - NinetyDegreeRotation : this.Transform.Rotation,this.origin,this.Transform.Scale,this.effect,this.LayerDepth);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2 scale)
+        {
+            spriteBatch.Draw(this.Texture,position,this.Source,this.Clr, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
         }
 
         public Vector2 Position
@@ -203,7 +207,7 @@ namespace MonoTinker.Code.Components.Elements
             var toReturn = new Sprite(this.Texture, new Rectangle(this.DefaultSource.Location, this.DefaultSource.Size));
             toReturn.Clr = this.Clr;
             toReturn.Position = new Vector2(this.Position.X,this.Position.Y);
-            toReturn.Center = this.Center;
+            toReturn.SpriteCenter = this.SpriteCenter;
             toReturn.Transform.Scale = this.Transform.Scale;
             toReturn.Transform.Rotation = this.Transform.Rotation;
             toReturn.OriginCustom = this.origin;

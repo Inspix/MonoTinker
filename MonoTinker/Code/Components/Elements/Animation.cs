@@ -42,6 +42,11 @@ namespace MonoTinker.Code.Components.Elements
         private bool finished;
 
         /// <summary>
+        /// Number of frames per second
+        /// </summary>
+        private int fps;
+
+        /// <summary>
         /// Time counter used to check how much time is passed
         /// </summary>
         private double timeElapsed;
@@ -92,8 +97,10 @@ namespace MonoTinker.Code.Components.Elements
         /// </summary>
         public int FramesPerSecond
         {
+            get { return this.fps; }
             set
             {
+                this.fps = value;
                 this.timeToUpdate = 1f / value;
             }
         }
@@ -273,6 +280,11 @@ namespace MonoTinker.Code.Components.Elements
             }
         }
 
+        public Animation Copy()
+        {
+            return new Animation(this.frameNames,this.atlas,this.fps);
+        }
+
         /// <summary>
         /// Invoke the <see cref="OnAnimationFinish"/> event if there are any subscribers
         /// </summary>
@@ -289,6 +301,7 @@ namespace MonoTinker.Code.Components.Elements
                 this.OnAnimationFinish(sender, e);
             }
         } 
+
         #endregion
     }
 }

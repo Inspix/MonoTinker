@@ -39,6 +39,12 @@ namespace MonoTinker.Code.Components.Elements
         /// Stores the current state
         /// </summary>
         private string currentState;
+
+
+        /// <summary>
+        /// Contains position, scale and rotation
+        /// </summary>
+        private Transform transform;
         #endregion
 
         #region Constructors
@@ -93,6 +99,13 @@ namespace MonoTinker.Code.Components.Elements
                 this.states = value;
             }
         }
+
+        public Transform Transform
+        {
+            get { return this.transform ?? (this.transform = new Transform()); }
+        }
+
+        public string Tag { private get; set; }
 
         /// <summary>
         /// Gets or sets if the current state animation should reset on state change
@@ -212,7 +225,7 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public void ChangeState(string statename)
         {
-            this.CurrentState = statename;
+            this.CurrentState = Tag+statename;
         }
 
         /// <summary>
@@ -226,6 +239,11 @@ namespace MonoTinker.Code.Components.Elements
             this.states[this.currentState].Update(gameTime);
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            this.Draw(spriteBatch, this.Transform.Position,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale);
+        }
+
         /// <summary>
         /// Simple draw method
         /// </summary>
@@ -237,7 +255,7 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            this.states[this.currentState].Draw(spriteBatch, position, 0);
+            this.Draw(spriteBatch,position,this.Transform.Rotation);
         }
 
         /// <summary>

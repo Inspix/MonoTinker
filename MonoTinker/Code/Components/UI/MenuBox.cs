@@ -21,6 +21,7 @@ namespace MonoTinker.Code.Components.UI
         private SpriteFont font;
         private string[] options;
         private Vector2 charSize;
+        private Vector2 itemsOffset;
         private double timeToUpdate;
         private double timeElapsed;
         private bool effectDone;
@@ -29,34 +30,49 @@ namespace MonoTinker.Code.Components.UI
         private int selectedIndex;
         private Vector2 textScale;
 
-        public MenuBox(Vector2 position, GraphicsDevice device, string[] options, Vector2 size) : base(position, device)
+        public MenuBox(Vector2 position, GraphicsDevice device, string[] options, Vector2 size,Vector2 itemsOffset = default(Vector2)) : base(position, device)
         {
             this.options = options;
+            this.itemsOffset = itemsOffset;
             this.Init(size.ToPoint());
         }
 
         private void Init(Point size)
         {
             this.grayScale = AssetManager.Instance.Get<Effect>("Grayscale").Clone();
-            this.font = AssetManager.Instance.Get<SpriteFont>("SplashScreenFont");
-            this.timeToUpdate = TimeSpan.FromSeconds(1.2).TotalSeconds;
+            this.font = AssetManager.Instance.Get<SpriteFont>("Standart");
+            this.timeToUpdate = TimeSpan.FromSeconds(0.5).TotalSeconds;
             this.charSize = font.MeasureString("A");
             this.FadeSpeed = 1;
             this.Transitioning = true;
             TextBoxFactory.GenerateBox(size,ref this.Elements,ref this.Width,ref this.Height);
             textScale = new Vector2(
                 Width/(charSize.X * (options.Max(s => s.Length)+2)),
-                Height/(charSize.Y * (options.Length+5) ));
+                1 );
             int currentIndex = 0;
-            TextHelper.LineByLineEffect(ref font, ref this.Labels, ref currentIndex, options.Length, charSize * textScale, ref options);
+            TextHelper.LineByLineEffect(ref font, ref this.Labels, ref currentIndex, options.Length, charSize * textScale + Vector2.UnitY*25, ref options,itemsOffset);
             foreach (var label in Labels)
             {
                 label.Transform.Scale = textScale;
+                label.FadeSpeed = 2;
                 label.Clr = Color.Wheat;
                 label.Transform.Position = new Vector2((this.Width/2f) - (label.Size.X/2)*textScale.X, label.Transform.PosY);
             }
             
+
+
             this.RenderTarget2D = new RenderTarget2D(Device,Width,Height);
+        }
+
+        public Text Label(int index)
+        {
+            Labels[index].OnLabelChange = OnLabelChange;
+            return this.Labels[index];
+        }
+
+        private void OnLabelChange(Text txt)
+        {
+            txt.Position = new Vector2((this.Width/2f) - (txt.Size.X/2)*textScale.X, txt.Transform.PosY);
         }
 
         public Transform MenuTransform
@@ -118,8 +134,8 @@ namespace MonoTinker.Code.Components.UI
             for (int i = 0; i < options.Length; i++)
             {
                 Labels[i].Transform.Scale = SelectedIndex == i
-                    ? new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y, 0.1f)))
-                    : new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y -0.2f, 0.1f)));
+                    ? new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y, 0.5f)))
+                    : new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y -0.1f, 0.5f)));
                 Labels[i].Clr = SelectedIndex == i
                     ? ColorHelper.SmoothTransition(Labels[i].Clr, Color.OrangeRed, 0.02f)
                     : ColorHelper.SmoothTransition(Labels[i].Clr, Color.Wheat, 0.02f);

@@ -6,7 +6,7 @@ namespace MonoTinker.Code.Components.Interfaces
     public interface ICollidable
     {
         Rectangle BoundingBox { get; }
-
+        bool CollisionEnabled { get; }
         bool Collided(ICollidable obj);
     }
 }

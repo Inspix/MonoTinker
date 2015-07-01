@@ -62,7 +62,9 @@ namespace MonoTinker.Code.Components.Elements
         {
             get { return this.boudndingBox; }
         }
-        
+
+        public bool CollisionEnabled { get; set; }
+
         public bool Collided(ICollidable obj)
         {
             return this.BoundingBox.Intersects(obj.BoundingBox);

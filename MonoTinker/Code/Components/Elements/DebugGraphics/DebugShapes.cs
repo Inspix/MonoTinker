@@ -50,5 +50,18 @@ namespace MonoTinker.Code.Components.Elements.DebugGraphics
             DrawLine(spribaBatch, new Vector2(x2,y1), new Vector2(x2, y2), thickness, color);
             DrawLine(spribaBatch, new Vector2(x1,y2-thickness/2), new Vector2(x2, y2 - thickness / 2), thickness, color);
         }
+
+        public static void DrawFilledRectangle(SpriteBatch spriteBatch, Vector2 position, Vector2 size,Color color)
+        {
+            float x1 = position.X + 1;
+            float x2 = position.X + size.X - (1 / 2f);
+            float y1 = position.Y;
+            float y2 = position.Y + size.Y - 1;
+            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x2, y1), 1, color);
+            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x1, y2 + 1 / 2f), 1, color);
+            DrawLine(spriteBatch, new Vector2((x1 + size.X-1),y1), new Vector2((x1 + size.X-1), y2), x2 - x1, color);
+            DrawLine(spriteBatch, new Vector2(x2, y1), new Vector2(x2, y2), 1, color);
+            DrawLine(spriteBatch, new Vector2(x1, y2 - 1 / 2f), new Vector2(x2, y2 - 1 / 2f), 1, color);
+        }
     }
 }

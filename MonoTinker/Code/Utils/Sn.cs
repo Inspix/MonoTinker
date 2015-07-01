@@ -1,6 +1,6 @@
 namespace MonoTinker.Code.Utils
 {
-    public class Sn
+    public class Sn // Sprite names
     {
         public class Menu
         {
@@ -162,6 +162,26 @@ namespace MonoTinker.Code.Utils
             public const string UberBow = "UberBow";
             public const string Wand = "Wand";
         }
+        
+    }
+
+    public class An // Animation names
+    {
+        public class Walk
+        {
+            public const string Human = "humanWalk";
+            public const string Skeleton = "skeletonWalk";
+            public const string Hair = "hairWalk";
+            public const string PlateHelm = "plateHelmWalk";
+            public const string ChainHelm = "chainHelmWalk";
+        }
+
+        public class Thrust
+        {
+            public const string Human = "humanThrust";
+        }
+
+        // TODO add more constants
 
     }
 }

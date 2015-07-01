@@ -1,16 +1,16 @@
-using System;
-using System.Runtime.InteropServices;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Elements.DebugGraphics;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.Components.UI
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using Elements;
+    using Elements.DebugGraphics;
+    using Extensions;
+    using Managers;
+    using Utils;
+
     public class InputBox : InterfaceElement
     {
         private Vector2 cursorPosition;
@@ -29,9 +29,8 @@ namespace MonoTinker.Code.Components.UI
         {
             int boxWidth = 0;
             int boxHeight = 0;
-            font = AssetManager.Instance.Get<SpriteFont>("SplashScreenFont");
-            font.MeasureString("A");
-            fontScale = new Vector2(0.5f,0.3f);
+            font = AssetManager.Instance.Get<SpriteFont>("Standart");
+            fontScale = Vector2.One;
             TextBoxFactory.GenerateBox(new Point(10,0),ref Elements,ref boxWidth,ref boxHeight);
             Vector2 center = new Vector2((this.Width/2f) - (boxWidth/2f), (this.Height / 2f) - (boxHeight / 2f));
             foreach (Sprite sprite in Elements.Values)
@@ -41,7 +40,6 @@ namespace MonoTinker.Code.Components.UI
             defaultCursorPosition = Elements[0].Position + Vector2.One * 12;
             cursorPosition = defaultCursorPosition;
             Text input = new Text(font, defaultCursorPosition, "");
-            input.Transform.Scale = fontScale;
             Labels.Add(input);
 
             timeToUpdate = TimeSpan.FromSeconds(1).TotalSeconds;
@@ -79,7 +77,7 @@ namespace MonoTinker.Code.Components.UI
             {
                 if ((int) currentKey >= 65 && (int) currentKey <= 90 && currentKey.DownOnce())
                 {
-                    Labels[0].Append(currentKey.ToString());
+                    Labels[0].Append(Keys.LeftShift.Down() || Keys.RightShift.Down() ? currentKey.ToString() : currentKey.ToString().ToLower());
                     cursorPosition = new Vector2((font.MeasureString(Labels[0].Contents).X)*fontScale.X, 0) +
                                      defaultCursorPosition;
                 }

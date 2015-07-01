@@ -24,6 +24,8 @@ namespace MonoTinker.Code.Components.Tiles
         }
 
         public Rectangle BoundingBox { get { return this.boundingBox; } }
+        public bool CollisionEnabled { get; set; }
+
         public bool Collided(ICollidable obj)
         {
             if (obj is Projectile)
