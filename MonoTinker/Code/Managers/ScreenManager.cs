@@ -15,7 +15,7 @@ namespace MonoTinker.Code.Managers
         public static GraphicsDevice Device;
 
         public static GameWindow Window;
-
+        public static SpriteBatch Batch;
         public static ContentManager Content;
         public static bool ShouldExit;
         public static readonly Random Rng = new Random();
@@ -34,6 +34,7 @@ namespace MonoTinker.Code.Managers
         public ScreenManager(ContentManager content,GameWindow window,GraphicsDevice gdevice)
         {
             Window = window;
+            Batch = new SpriteBatch(gdevice);
             width = gdevice.Viewport.Width;
             height = gdevice.Viewport.Height;
             Device = gdevice;

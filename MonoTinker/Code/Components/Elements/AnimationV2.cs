@@ -47,7 +47,6 @@ namespace MonoTinker.Code.Components.Elements
             this.layerTags.Add("base");
             this.atlas = source;
             this.FramesPerSecond = fps;
-            this.Tint = Color.White;
             this.Looping = true;
         }
 
@@ -58,7 +57,6 @@ namespace MonoTinker.Code.Components.Elements
             this.layers.Add(baseAnim);
             this.layerTags.Add("base");
             this.FramesPerSecond = baseAnim.FramesPerSecond;
-            this.Tint = baseAnim.Tint;
             this.Looping = baseAnim.Looping;
         }
 
@@ -131,22 +129,6 @@ namespace MonoTinker.Code.Components.Elements
         public Transform Transform
         {
             get { return this.transform ?? (this.transform = new Transform()); }
-        }
-
-        public Color Tint
-        {
-            get { return this.tint; }
-            set
-            {
-                if (value != Color.White)
-                {
-                    this.tint = value*0.75f;
-                }
-                else
-                {
-                    this.tint = value;
-                }
-            }
         }
         
         public void Update(GameTime gameTime)

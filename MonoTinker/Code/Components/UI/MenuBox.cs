@@ -17,6 +17,7 @@ namespace MonoTinker.Code.Components.UI
     {
         private Action[] optionActions;
         private Action[] callbacks;
+        private Action<int> onIndexChange;
 
         private SpriteFont font;
         private string[] options;
@@ -80,6 +81,15 @@ namespace MonoTinker.Code.Components.UI
             get { return base.Transform; }
         }
 
+        public Action<int> OnIndexChange
+        {
+            private get
+            {
+                return onIndexChange;
+            }
+            set { this.onIndexChange = value; }
+        }
+
         public Action this[int x, bool callback = false]
         {
             get
@@ -125,6 +135,10 @@ namespace MonoTinker.Code.Components.UI
                     return;
                 }
                 this.selectedIndex = value;
+                if (onIndexChange != null)
+                {
+                    onIndexChange.Invoke(value);
+                }
             }
         }
 

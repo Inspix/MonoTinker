@@ -53,19 +53,17 @@ namespace MonoTinker.Code.Components.UI
             }
             set
             {
-                if (this.fadeIn || this.fadeOut)
-                {
-                    return;
-                }
                 if (this.transitioning)
                 {
                     if (value)
                     {
                         this.fadeIn = true;
+                        this.fadeOut = false;
                         this.isVisible = true;
                     }
                     else
                     {
+                        this.fadeIn = false;
                         this.fadeOut = true;
                     }
                 }
@@ -131,7 +129,7 @@ namespace MonoTinker.Code.Components.UI
             }
             set
             {
-                this.alpha = ColorHelper.AlphaChange(this.alpha, value);
+                this.alpha = ColorHelper.Fade(this.alpha, value);
             }
         }
     }

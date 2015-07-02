@@ -1,3 +1,6 @@
+using System;
+using MonoTinker.Code.Components.Extensions;
+
 namespace MonoTinker.Code.Components.UI
 {
     using Elements;
@@ -23,15 +26,18 @@ namespace MonoTinker.Code.Components.UI
         private bool hovering;
         private bool clicked;
         private ClickType type;
+        private Transform transform;
+        private bool inflate;
+        private Vector2 inflateSize;
+        private bool callbackOnClick;
+        private Action clickCallback;
 
         public Button(Vector2 position, Sprite normalState, Sprite hoverState, Sprite clickState)
         {
             this.normal = normalState;
             this.hover = hoverState;
             this.click = clickState;
-            this.normal.Position = position;
-            this.hover.Position = position;
-            this.click.Position = position;
+            this.transform = new Transform(position);
             this.bounds = new Rectangle(position.ToPoint(), normalState.DefaultSource.Size);
         }
 
@@ -43,11 +49,58 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
+        public Transform Transform
+        {
+            get { return this.transform; }
+        }
+
+        public Vector2 InflateBox
+        {
+            set
+            {
+                this.inflate = true;
+                this.inflateSize = value;
+                this.Position = this.Position;
+            }
+        }
+
+        public Vector2 Position
+        {
+            get { return this.transform.Position; }
+            set
+            {
+                this.transform.Position = value;
+                this.bounds = new Rectangle(this.transform.Position.ToPoint(),(normal.DefaultSource.Size.ToVector2() * Transform.Scale).ToPoint());
+                if (inflate)
+                {
+                    this.bounds = bounds.InflateExt(inflateSize);
+                }
+            }
+        }
+
+        public Vector2 Size
+        {
+            get { return this.normal.Size*this.Transform.Scale; }
+        }
+
         public bool Clicked
         {
             get
             {
                 return this.clicked;
+            }
+        }
+
+        /// <summary>
+        /// Working only on single click mode
+        /// </summary>
+        public Action ClickCallback
+        {
+            private get { return this.clickCallback; }
+            set
+            {
+                this.callbackOnClick = true;
+                this.clickCallback = value;
             }
         }
 
@@ -76,6 +129,10 @@ namespace MonoTinker.Code.Components.UI
             else
             {
                 this.clicked = this.hovering && InputHandler.MouseDownOnce("left");
+                if (clicked && callbackOnClick)
+                {
+                    ClickCallback.Invoke();
+                }
             }
         }
 
@@ -85,18 +142,20 @@ namespace MonoTinker.Code.Components.UI
             {
                 if (clicked)
                 {
-                    click.Draw(spriteBatch);
+                    click.Draw(spriteBatch,Transform.Position,Transform.Rotation,Transform.Scale);
                 }
                 else
                 {
-                    hover.Draw(spriteBatch);
+                    hover.Draw(spriteBatch, Transform.Position, Transform.Rotation, Transform.Scale);
                 }
                 
             }
             else
             {
-                normal.Draw(spriteBatch);
+                normal.Draw(spriteBatch, Transform.Position, Transform.Rotation, Transform.Scale);
             }
         }
+
+        
     }
 }

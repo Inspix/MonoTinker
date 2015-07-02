@@ -1,5 +1,7 @@
 using System;
+using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.GameComponents;
+using MonoTinker.Code.Components.UI;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
 using OpenTK.Graphics.OpenGL;
@@ -80,6 +82,76 @@ namespace MonoTinker.Code.Components.Extensions
         public static void AddLayer(ref AnimationV2 anim, string layertag,Vector2 offset = default(Vector2))
         { 
             anim.AddLayer(AssetManager.Instance.Get<Animation>(layertag).Copy(), layertag,offset);
+        }
+
+
+        public static Button FancyButton(SpriteBatch batch,Vector2 position,string balltype = Sn.Menu.BlueBall, float scale = 1)
+        {
+            Sprite buttonL = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyLeft).DirectClone();
+            buttonL.Clr = ColorHelper.Saturation(buttonL.Clr, 0.8f);
+            Sprite buttonLHover = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyLeft).DirectClone();
+            Sprite buttonLClicked = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyLeftClicked).DirectClone();
+            Sprite buttonR = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyRight).DirectClone();
+            buttonR.Clr = ColorHelper.Saturation(buttonR.Clr, 0.8f);
+            Sprite buttonRHover = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyRight).DirectClone();
+            Sprite buttonRClicked = AssetManager.Instance.Get<Sprite>(Sn.Menu.ButtonFancyRightClicked).DirectClone();
+
+            Sprite ball = AssetManager.Instance.Get<Sprite>(balltype).DirectClone();
+            Sprite ball2 = AssetManager.Instance.Get<Sprite>(balltype).DirectClone();
+
+
+            buttonL.Position = Vector2.Zero;
+            buttonR.Position = Vector2.Zero + Vector2.UnitX * buttonL.SourceWidth;
+
+            buttonLHover.Position = Vector2.Zero;
+            buttonRHover.Position = Vector2.Zero + Vector2.UnitX * buttonL.SourceWidth;
+
+            buttonLClicked.Position = Vector2.Zero;
+            buttonRClicked.Position = Vector2.Zero + Vector2.UnitX * buttonL.SourceWidth;
+
+            ball.Position = buttonL.Position + Vector2.One * 5;
+            ball2.Position = buttonR.Position + new Vector2((buttonR.SourceWidth - ball2.SourceWidth), 10) - Vector2.One * 5;
+
+            RenderTarget2D button = new RenderTarget2D(batch.GraphicsDevice, buttonL.SourceWidth + buttonR.SourceWidth, buttonL.SourceHeight);
+            RenderTarget2D buttonH = new RenderTarget2D(batch.GraphicsDevice, buttonL.SourceWidth + buttonR.SourceWidth, buttonL.SourceHeight);
+            RenderTarget2D buttonC = new RenderTarget2D(batch.GraphicsDevice, buttonL.SourceWidth + buttonR.SourceWidth, buttonL.SourceHeight);
+
+            ScreenManager.Device.SetRenderTarget(button);
+            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.Begin();
+            buttonL.Draw(batch);
+            buttonR.Draw(batch);
+            ball.Draw(batch);
+            ball2.Draw(batch);
+            batch.End();
+
+            ScreenManager.Device.SetRenderTarget(buttonH);
+            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.Begin();
+            buttonLHover.Draw(batch);
+            buttonRHover.Draw(batch);
+            ball.Draw(batch);
+            ball2.Draw(batch);
+            batch.End();
+
+            ScreenManager.Device.SetRenderTarget(buttonC);
+            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.Begin();
+            buttonLClicked.Draw(batch);
+            buttonRClicked.Draw(batch);
+            ball.Draw(batch);
+            ball2.Draw(batch);
+            batch.End();
+
+            ScreenManager.Device.SetRenderTarget(null);
+            Sprite b = new Sprite(button);
+            Sprite h = new Sprite(buttonH);
+            Sprite c = new Sprite(buttonC);
+
+            Button result = new Button(Vector2.Zero, b, h, c);
+            result.Transform.Scale = new Vector2(scale, scale);
+            result.Position = position;
+            return result;
         }
     }
    

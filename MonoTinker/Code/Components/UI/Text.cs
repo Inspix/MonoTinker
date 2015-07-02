@@ -25,7 +25,7 @@ namespace MonoTinker.Code.Components.UI
             this.transform = new Transform(position);
             this.contents = new StringBuilder(contents);
             this.Clr = Color.White;
-            this.alpha = ColorHelper.AlphaChange(Color.White, alpha);
+            this.alpha = ColorHelper.Fade(Color.White, alpha);
             this.DefaultAlpha = 255;
         }
 

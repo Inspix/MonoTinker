@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.Elements;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
@@ -70,6 +71,25 @@ namespace MonoTinker.Code.Components.Extensions
                 Middle(size.X, ref elements, ref width, ref height, i);
             }
             Bottom(size.X,ref elements,ref width,ref height);
+        }
+
+        public static Sprite GenerateBoxSprite(SpriteBatch spriteBatch, Vector2 size)
+        {
+            SpriteAtlas elements = new SpriteAtlas();
+            int width = 0, height = 0;
+            GenerateBox(size.ToPoint(),ref elements,ref width,ref height);
+
+            RenderTarget2D resultTexture = new RenderTarget2D(spriteBatch.GraphicsDevice,width,height);
+            spriteBatch.GraphicsDevice.SetRenderTarget(resultTexture);
+            spriteBatch.GraphicsDevice.Clear(Color.FromNonPremultiplied(0,0,0,0));
+            spriteBatch.Begin();
+            foreach (var sprite in elements)
+            {
+                sprite.Value.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.SetRenderTarget(null);
+            return new Sprite(resultTexture);
         }
 
         #endregion

@@ -145,14 +145,7 @@ namespace MonoTinker.Code.Components.Elements
 
             set
             {
-                if (value != Color.White)
-                {
-                    this.tint = value * 0.75f;
-                }
-                else
-                {
-                    this.tint = value;
-                }
+                this.tint = value;
             }
         } 
         #endregion

@@ -146,7 +146,7 @@ namespace MonoTinker.Code.Components.Elements
             this.Size = texture2D.Bounds.Size.ToVector2();
             this.Transform = new Transform();
             this.SpriteCenter = this._texture2D.Bounds.Center.ToVector2();
-            this.Origin = Origin.Center;
+            this.Origin = Origin.TopLeft;
             this.Clr = Color.White;
         }
         public Sprite(Texture2D texture2D, Rectangle sourceRect)
@@ -157,7 +157,7 @@ namespace MonoTinker.Code.Components.Elements
             this.Size = sourceRect.Size.ToVector2();
             this.Transform = new Transform();
             this.SpriteCenter = Size/2f;
-            this.Origin = Origin.Center;
+            this.Origin = Origin.TopLeft;
             this.Clr = Color.White;
         }
 
