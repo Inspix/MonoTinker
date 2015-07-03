@@ -58,7 +58,7 @@ namespace MonoTinker.Code.Utils
             Text x = new Text(font, Vector2.One * 10+offset, output, 0);
             x.IsVisible = false;
             x.Transitioning = true;
-            x.FadeSpeed = 2;
+            x.FadeSpeed = 0.1f;
             labels.Add(x);
             currentIndex += maxlines;
         }

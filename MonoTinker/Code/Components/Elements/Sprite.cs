@@ -186,6 +186,12 @@ namespace MonoTinker.Code.Components.Elements
             spriteBatch.Draw(this.Texture,position,this.Source,this.Clr, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
         }
 
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2 scale, Color color)
+        {
+            spriteBatch.Draw(this.Texture,position,this.Source,color, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
+
+        }
+
         public Vector2 Position
         {
             get
@@ -206,6 +212,7 @@ namespace MonoTinker.Code.Components.Elements
         {
             var toReturn = new Sprite(this.Texture, new Rectangle(this.DefaultSource.Location, this.DefaultSource.Size));
             toReturn.Clr = this.Clr;
+            toReturn.Effect = this.effect;
             toReturn.Position = new Vector2(this.Position.X,this.Position.Y);
             toReturn.SpriteCenter = this.SpriteCenter;
             toReturn.Transform.Scale = this.Transform.Scale;

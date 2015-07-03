@@ -7,12 +7,12 @@ namespace MonoTinker.Code.Components.UI
     public abstract class Fadeable
     {
         protected bool isVisible = true;
-        protected Color alpha = Color.White;
-        protected int defaultAlpha = 255;
+        protected float alpha = 1f;
+        protected float defaultAlpha = 1f;
         protected bool fadeIn;
         protected bool fadeOut;
         protected bool transitioning;
-        protected int fadeSpeed = 5;
+        protected float fadeSpeed = 0.1f;
 
         public bool Transitioning
         {
@@ -22,7 +22,7 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
-        public int FadeSpeed
+        public float FadeSpeed
         {
             get
             {
@@ -30,13 +30,13 @@ namespace MonoTinker.Code.Components.UI
             }
             set
             {
-                if (value > 100)
-                {
-                    this.fadeSpeed = 100;
-                }
-                else if (value <= 0)
+                if (value > 1)
                 {
                     this.fadeSpeed = 1;
+                }
+                else if (value <= 0.0004f)
+                {
+                    this.fadeSpeed = 0.0004f;
                 }
                 else
                 {
@@ -96,40 +96,24 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
-        public int DefaultAlpha
+        public float DefaultAlpha
         {
             get
             {
                 return this.defaultAlpha;
             }
-            set
-            {
-                if (value > 255)
-                {
-                    this.defaultAlpha = 255;
-
-                }
-                else if (value < 0)
-                {
-                    this.defaultAlpha = 0;
-                }
-                else
-                {
-                    this.defaultAlpha = value;
-                }
-
-            }
+            set { this.defaultAlpha = MathHelper.Clamp(value, 0.0004f, 1f); }
         }
 
-        protected int Alpha
+        protected float Alpha
         {
             get
             {
-                return this.alpha.A;
+                return this.alpha;
             }
             set
             {
-                this.alpha = ColorHelper.Fade(this.alpha, value);
+                this.alpha = MathHelper.Clamp(value,-0.001f,1f);
             }
         }
     }

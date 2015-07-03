@@ -4,7 +4,6 @@ using MonoTinker.Code.Components.GameComponents;
 using MonoTinker.Code.Components.UI;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
-using OpenTK.Graphics.OpenGL;
 
 namespace MonoTinker.Code.Components.Extensions
 {
@@ -79,9 +78,11 @@ namespace MonoTinker.Code.Components.Extensions
             return toReturn;
         }
 
-        public static void AddLayer(ref AnimationV2 anim, string layertag,Vector2 offset = default(Vector2))
-        { 
-            anim.AddLayer(AssetManager.Instance.Get<Animation>(layertag).Copy(), layertag,offset);
+        public static void AddLayer(ref AnimationV2 anim, string layertag,Color clr = default(Color),Vector2 offset = default(Vector2))
+        {
+            Animation result = AssetManager.Instance.Get<Animation>(layertag).Copy();
+            result.Tint = clr;
+            anim.AddLayer(result, layertag,offset);
         }
 
 
@@ -116,8 +117,8 @@ namespace MonoTinker.Code.Components.Extensions
             RenderTarget2D buttonH = new RenderTarget2D(batch.GraphicsDevice, buttonL.SourceWidth + buttonR.SourceWidth, buttonL.SourceHeight);
             RenderTarget2D buttonC = new RenderTarget2D(batch.GraphicsDevice, buttonL.SourceWidth + buttonR.SourceWidth, buttonL.SourceHeight);
 
-            ScreenManager.Device.SetRenderTarget(button);
-            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.GraphicsDevice.SetRenderTarget(button);
+            batch.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
             batch.Begin();
             buttonL.Draw(batch);
             buttonR.Draw(batch);
@@ -125,8 +126,8 @@ namespace MonoTinker.Code.Components.Extensions
             ball2.Draw(batch);
             batch.End();
 
-            ScreenManager.Device.SetRenderTarget(buttonH);
-            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.GraphicsDevice.SetRenderTarget(buttonH);
+            batch.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
             batch.Begin();
             buttonLHover.Draw(batch);
             buttonRHover.Draw(batch);
@@ -134,8 +135,8 @@ namespace MonoTinker.Code.Components.Extensions
             ball2.Draw(batch);
             batch.End();
 
-            ScreenManager.Device.SetRenderTarget(buttonC);
-            ScreenManager.Device.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            batch.GraphicsDevice.SetRenderTarget(buttonC);
+            batch.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
             batch.Begin();
             buttonLClicked.Draw(batch);
             buttonRClicked.Draw(batch);
@@ -143,15 +144,30 @@ namespace MonoTinker.Code.Components.Extensions
             ball2.Draw(batch);
             batch.End();
 
-            ScreenManager.Device.SetRenderTarget(null);
+            batch.GraphicsDevice.SetRenderTarget(null);
             Sprite b = new Sprite(button);
             Sprite h = new Sprite(buttonH);
             Sprite c = new Sprite(buttonC);
 
             Button result = new Button(Vector2.Zero, b, h, c);
-            result.Transform.Scale = new Vector2(scale, scale);
+            result.Scale = new Vector2(scale, scale);
             result.Position = position;
             return result;
+        }
+
+        public static Button ArrowButton(SpriteBatch batch, Vector2 position, Color color, float scale, bool flip)
+        {
+            Sprite arrow = AssetManager.Instance.Get<Sprite>("BasicArrow").DirectClone();
+            arrow.Effect = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Sprite arrowHover = arrow.DirectClone();
+            Sprite arrowClick = arrow.DirectClone();
+
+
+            arrow.Clr = color;
+            arrowHover.Clr = Color.OrangeRed*0.6f;
+            arrowClick.Clr = color*0.5f;
+
+            return new Button(position,arrow,arrowHover,arrowClick) { Scale = Vector2.One*scale};
         }
     }
    

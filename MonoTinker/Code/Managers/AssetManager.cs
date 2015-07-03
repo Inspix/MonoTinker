@@ -22,6 +22,7 @@ namespace MonoTinker.Code.Managers
     {
         private static AssetManager instance;
         private ContentManager content;
+        private GraphicsDevice device;
 
         private SpriteAtlas spriteAtlas;          // To Store our sprite sheets
         private Dictionary<string, Effect> shaders; 
@@ -45,17 +46,24 @@ namespace MonoTinker.Code.Managers
             get { return instance ?? (instance = new AssetManager()); }
         }
 
-        public void LoadContent(ContentManager content)             // Preload Content
+        public void LoadContent(ContentManager content,GraphicsDevice device)             // Preload Content
         {
             this.content = content;
+            this.device = device;
             this.shaders.Add("Grayscale",content.Load<Effect>("Shaders/SpriteGrayscale"));
             this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
             this.fonts.Add("Standart", content.Load<SpriteFont>("UI/Standart"));
             this.fonts.Add("SplashScreenFont",content.Load<SpriteFont>("SplashScreen/SplashFont"));
-            this.AddSprite("UI/frame","UIFrame");
-            this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"UI/hud");
-            this.spriteAtlas.PopulateFromSpriteSheetAlt(content,"Items/weapons");
+            this.LoadSprites();
             this.LoadAnimationFrames();
+        }
+
+        private void LoadSprites()
+        {
+            this.spriteAtlas.Add("BasicArrow",new Sprite(TextureMaker.Arrow(device,32,Color.Transparent,Color.White,Color.Transparent)));
+            this.AddSprite("UI/frame","UIFrame");
+            this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "UI/hud");
+            this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "Items/weapons");
         }
 
         private void LoadAnimationFrames()

@@ -47,7 +47,7 @@ namespace MonoTinker
             IsMouseVisible = true;
             sm = new ScreenManager(Content,Window,GraphicsDevice);
             ScreenManager.View = graphics.GraphicsDevice.Viewport;
-            AssetManager.Instance.LoadContent(Content);
+            AssetManager.Instance.LoadContent(Content,GraphicsDevice);
             base.Initialize();
         }
 

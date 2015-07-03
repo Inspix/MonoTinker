@@ -44,9 +44,9 @@ namespace MonoTinker.Code.Components.UI
             this.font = AssetManager.Instance.Get<SpriteFont>("Standart");
             this.timeToUpdate = TimeSpan.FromSeconds(0.5).TotalSeconds;
             this.charSize = font.MeasureString("A");
-            this.FadeSpeed = 1;
+            this.FadeSpeed = 0.01f;
             this.Transitioning = true;
-            TextBoxFactory.GenerateBox(size,ref this.Elements,ref this.Width,ref this.Height);
+            BoxFactory.GenerateBox(size,ref this.Elements,ref this.Width,ref this.Height);
             textScale = new Vector2(
                 Width/(charSize.X * (options.Max(s => s.Length)+2)),
                 1 );
@@ -55,7 +55,7 @@ namespace MonoTinker.Code.Components.UI
             foreach (var label in Labels)
             {
                 label.Transform.Scale = textScale;
-                label.FadeSpeed = 2;
+                label.FadeSpeed = 0.005f;
                 label.Clr = Color.Wheat;
                 label.Transform.Position = new Vector2((this.Width/2f) - (label.Size.X/2)*textScale.X, label.Transform.PosY);
             }
@@ -145,6 +145,7 @@ namespace MonoTinker.Code.Components.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             for (int i = 0; i < options.Length; i++)
             {
                 Labels[i].Transform.Scale = SelectedIndex == i
@@ -176,6 +177,24 @@ namespace MonoTinker.Code.Components.UI
                 }
             }
             
+        }
+
+        public void MouseUpdate(GameTime gameTime)
+        {
+            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            for (int i = 0; i < Labels.Count; i++)
+            {
+                Rectangle box = new Rectangle(Labels[i].Position.ToPoint(),Labels[i].Size.ToPoint());
+                if (box.Contains(mousePos))
+                {
+                    
+                    SelectedIndex = i;
+                    if (InputHandler.MouseDownOnce("left") && optionActions[SelectedIndex] != null)
+                    {
+                        optionActions[SelectedIndex].Invoke();
+                    }
+                }
+            }
         }
 
         public override void DrawElements()

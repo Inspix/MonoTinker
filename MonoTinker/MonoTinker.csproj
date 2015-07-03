@@ -50,7 +50,7 @@
     <Compile Include="Code\Components\Camera.cs" />
     <Compile Include="Code\Components\Extensions\ExtensionMethods.cs" />
     <Compile Include="Code\Components\Extensions\Factory.cs" />
-    <Compile Include="Code\Components\Extensions\TextBoxFactory.cs" />
+    <Compile Include="Code\Components\Extensions\BoxFactory.cs" />
     <Compile Include="Code\Components\GameComponents\Attribute.cs" />
     <Compile Include="Code\Components\GameComponents\Item.cs" />
     <Compile Include="Code\Components\GameComponents\Stats.cs" />
@@ -79,6 +79,7 @@
     <Compile Include="Code\Components\UI\ItemTile.cs" />
     <Compile Include="Code\Components\UI\MenuBox.cs" />
     <Compile Include="Code\Components\UI\Slider.cs" />
+    <Compile Include="Code\Components\UI\StatPicker.cs" />
     <Compile Include="Code\Components\UI\StatusBar.cs" />
     <Compile Include="Code\Components\UI\Text.cs" />
     <Compile Include="Code\Components\UI\TextBox.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Code\Utils\Keybindings.cs" />
     <Compile Include="Code\Utils\Sn.cs" />
     <Compile Include="Code\Utils\TextHelper.cs" />
+    <Compile Include="Code\Utils\TextureMaker.cs" />
     <Compile Include="MonoTinker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

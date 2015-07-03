@@ -67,30 +67,9 @@ namespace MonoTinker.Code.Utils
             return SmoothTransition(c1, c2, step1);
         }
 
-        public static Color Fade(Color clr, int amount)
+        public static Color Alpha(this Color clr, byte alpha)
         {
-            if (amount >= 255)
-            {
-                clr.A = 255;
-                clr.R = 255;
-                clr.G = 255;
-                clr.B = 255;
-
-            }
-            else if (amount <= 0)
-            {
-                clr.A = 0;
-                clr.R = 0;
-                clr.G = 0;
-                clr.B = 0;
-            }
-            else
-            {
-                clr.A = (byte)amount;
-                clr.R = (byte)amount;
-                clr.G = (byte)amount;
-                clr.B = (byte)amount;
-            }
+            clr.A = alpha;
             return clr;
         }
 

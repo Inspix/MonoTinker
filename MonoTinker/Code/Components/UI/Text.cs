@@ -18,15 +18,15 @@ namespace MonoTinker.Code.Components.UI
 
         private StringBuilder contents;
 
-        public Text(SpriteFont font, Vector2 position, string contents, byte alpha = 255, bool isVisible = true)
+        public Text(SpriteFont font, Vector2 position, string contents, float alpha = 1, bool isVisible = true)
         {
             this.font = font;
             this.isVisible = isVisible;
             this.transform = new Transform(position);
             this.contents = new StringBuilder(contents);
             this.Clr = Color.White;
-            this.alpha = ColorHelper.Fade(Color.White, alpha);
-            this.DefaultAlpha = 255;
+            this.alpha = alpha;
+            this.DefaultAlpha = 1;
         }
 
         public Vector2 Size
@@ -105,7 +105,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(this.font,this.Contents,this.Position,this.Clr * (this.Alpha/255f),this.transform.Rotation,Vector2.Zero, this.transform.Scale,SpriteEffects.None, 0);
+            spriteBatch.DrawString(this.font,this.Contents,this.Position,this.Clr * this.Alpha,this.transform.Rotation,Vector2.Zero, this.transform.Scale,SpriteEffects.None, 0);
         }
     }
 }

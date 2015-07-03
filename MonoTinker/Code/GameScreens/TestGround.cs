@@ -41,11 +41,11 @@ namespace MonoTinker.Code.GameScreens
         protected override void LoadContent()
         {
             status = new StatusBar(Vector2.One, ScreenManager.Device);
-            status.DefaultAlpha = 255;
+            status.DefaultAlpha = 1;
             status.Transitioning = true;
-            status.FadeSpeed = 10;
+            status.FadeSpeed = 0.01f;
             inventory = new Inventory(Vector2.One*200, ScreenManager.Device,5);
-            inventory.FadeSpeed = 10;
+            inventory.FadeSpeed = 0.01f;
             inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
             controler = new AnimationController();
             atlas = new SpriteAtlas();

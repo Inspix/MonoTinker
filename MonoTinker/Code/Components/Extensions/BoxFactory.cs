@@ -1,16 +1,26 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.Components.UI;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
 
 namespace MonoTinker.Code.Components.Extensions
 {
-    public static class TextBoxFactory
+    public enum TextAlignment
+    {
+        Left,Right,Center
+    }
+
+    public static class BoxFactory
     {
         #region Generation
         public static void Top(int size, ref SpriteAtlas elements, ref int width, ref int height)
         {
+            
             Sprite topLeft = AssetManager.Instance.Get<Sprite>(Sn.Menu.FrameTopLeft).DirectClone();
             topLeft.Position = Vector2.Zero;
             width += topLeft.SourceWidth;
@@ -73,7 +83,7 @@ namespace MonoTinker.Code.Components.Extensions
             Bottom(size.X,ref elements,ref width,ref height);
         }
 
-        public static Sprite GenerateBoxSprite(SpriteBatch spriteBatch, Vector2 size)
+        public static Sprite BoxSprite(SpriteBatch spriteBatch, Vector2 size)
         {
             SpriteAtlas elements = new SpriteAtlas();
             int width = 0, height = 0;
@@ -92,6 +102,60 @@ namespace MonoTinker.Code.Components.Extensions
             return new Sprite(resultTexture);
         }
 
+
+        public static Sprite BoxSpriteWithText(SpriteBatch spriteBatch, string[] text, TextAlignment alignment = TextAlignment.Left, float scale = 1,bool spaceforHeader = false,bool spaceforFooter = false)
+        {
+            SpriteFont font = AssetManager.Instance.Get<SpriteFont>("Standart");
+            Vector2 fontSize = font.MeasureString("A") * scale;
+            Vector2 boxSize = new Vector2((text.Select(s => s.Length).Max()*fontSize.X)/32, (text.Length*(fontSize.Y + 5))/32);
+            boxSize.Y += spaceforFooter ? +1 : 0;
+            boxSize.Y += spaceforHeader ? +1 : 0;
+            Sprite box = BoxSprite(ScreenManager.Batch, boxSize+Vector2.One);
+            Vector2 textpos = Vector2.Zero;
+            switch (alignment)
+            {
+                case TextAlignment.Left:
+                    textpos = new Vector2(10,20);
+                break;
+                case TextAlignment.Right:
+                    textpos = new Vector2(box.SourceWidth - 20, 20);
+                    break;
+                case TextAlignment.Center:
+                    textpos = new Vector2(box.SpriteCenter.X,20);
+                    break;
+            }
+            textpos.Y += spaceforHeader ? fontSize.Y + 15 : 0;
+            List<Text> labels = new List<Text>();
+            foreach (var s in text)
+            {
+                Text toAdd = new Text(font,textpos,s);
+                toAdd.Transform.Scale = Vector2.One * scale;
+                if (alignment == TextAlignment.Center)
+                {
+                    toAdd.Transform.PosX -= (toAdd.Size.X/2)*scale;
+                }else if (alignment == TextAlignment.Right)
+                {
+                    toAdd.Transform.PosX -= toAdd.Size.X*scale;
+                }
+                textpos.Y += fontSize.Y + 15f;
+                labels.Add(toAdd);
+            }
+
+            RenderTarget2D target = new RenderTarget2D(spriteBatch.GraphicsDevice,box.SourceWidth,box.SourceHeight);
+
+            spriteBatch.GraphicsDevice.SetRenderTarget(target);
+            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin();
+            box.Draw(spriteBatch);
+            foreach (var label in labels)
+            {
+                label.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.SetRenderTarget(null);
+            return new Sprite(target);
+
+        }
         #endregion
     }
 }

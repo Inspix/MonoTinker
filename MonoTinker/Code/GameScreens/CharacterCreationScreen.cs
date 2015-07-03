@@ -1,3 +1,6 @@
+using MonoTinker.Code.Components.Elements.DebugGraphics;
+using MonoTinker.Code.Components.GameComponents;
+
 namespace MonoTinker.Code.GameScreens
 {
     using System;
@@ -15,9 +18,11 @@ namespace MonoTinker.Code.GameScreens
         private InputBox inputBox;
         private Color selectedHairColor = Color.White;
         private Color selectedSkinColor = Color.White;
+        private Sprite arrow;
         private float selectedHairSaturation;
         private float selectedSkinSaturation;
         private Sprite characterBox;
+        private StatPicker statPicker;
         private ColorPicker picker;
         private ColorPicker skinTonePicker;
         private Slider slider;
@@ -33,25 +38,37 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
-            characterBox = TextBoxFactory.GenerateBoxSprite(ScreenManager.Batch, new Vector2(3, 2));
-            
+            characterBox = BoxFactory.BoxSprite(ScreenManager.Batch, new Vector2(4, 2));
+            arrow = AssetManager.Instance.Get<Sprite>("BasicArrow").DirectClone();
+            arrow.Position = Vector2.One*150;
+
+
             picker = new ColorPicker(new Vector2(332, 300), ScreenManager.Device,4,true);
             picker.IsVisible = false;
+            picker.FadeSpeed = 0.03f;
             picker.Transitioning = true;
             picker.PickCallback = OnColorPick;
-
+            
             skinTonePicker = ColorPicker.SkinTonePicker(new Vector2(332, 300));
             skinTonePicker.IsVisible = false;
+            skinTonePicker.FadeSpeed = 0.03f;
             skinTonePicker.Transitioning = true;
             skinTonePicker.PickCallback = OnSkinColorPick;
 
+            statPicker = new StatPicker(new Vector2(325, 300), ScreenManager.Device, Stats.Ten);
+            statPicker.IsVisible = false;
+            statPicker.Transitioning = true;
+            statPicker.FadeSpeed = 0.03f;
+
+
             slider = new Slider(new Vector2(550, 300),ScreenManager.Device,20);
             slider.IsVisible = false;
+            slider.FadeSpeed = 0.03f;
             slider.Transitioning = true;
             slider.OnValueChangeCallback = OnValueChangeCallback;
 
             character = Factory.CharacterAnimation();
-            character.Transform.Position = new Vector2(400,200);
+            character.Transform.Position = new Vector2(400,150);
             characterBox.Position = character.Transform.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter;
 
             font = AssetManager.Instance.Get<SpriteFont>("Standart");
@@ -76,6 +93,7 @@ namespace MonoTinker.Code.GameScreens
             menuBox.OnIndexChange = OnIndexChange;
             menuBox.MenuTransform.Position -= new Vector2(0, menuBox.Size.Y/2);
             menuBox[0] = () => this.enterName = true;
+            menuBox[1] = ToggleHair;
             menuBox[6] = () => ScreenManager.ShouldExit = true;
         }
 
@@ -106,16 +124,19 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+
             if (enterName)
             {
                 inputBox.DrawElements();
             }
+            statPicker.DrawElements();
             menuBox.DrawElements();
             slider.DrawElements();
             picker.DrawElements();
             skinTonePicker.DrawElements();
 
             spriteBatch.Begin();
+
             menuBox.Draw(spriteBatch);
             characterBox.Draw(spriteBatch);
             character.Draw(spriteBatch);
@@ -127,6 +148,8 @@ namespace MonoTinker.Code.GameScreens
             {
                 inputBox.Draw(spriteBatch);
             }
+            arrow.Draw(spriteBatch);
+            statPicker.Draw(spriteBatch);
             spriteBatch.End();
         }
 
@@ -167,16 +190,7 @@ namespace MonoTinker.Code.GameScreens
 
             if (this.menuBox.SelectedIndex == 1 && (InputHandler.DirectionDownOnce("left") || InputHandler.DirectionDownOnce("right")))
             {
-                if (character.ContainsLayerTag(An.Walk.Hair + "Down"))
-                {
-                    character.Reset();
-                    character.RemoveLayer(An.Walk.Hair + "Down");
-                }
-                else
-                {
-                    character.Reset();
-                    Factory.AddLayer(ref character, An.Walk.Hair + "Down");
-                }
+                ToggleHair();
             }
             picker.Update(gameTime);
             skinTonePicker.Update(gameTime);
@@ -184,7 +198,23 @@ namespace MonoTinker.Code.GameScreens
             character.Update(gameTime);
             name.Update(gameTime);
             menuBox.Update(gameTime);
+            menuBox.MouseUpdate(gameTime);
+            statPicker.Update(gameTime);
 
+        }
+
+        private void ToggleHair()
+        {
+            if (character.ContainsLayerTag(An.Walk.Hair + "Down"))
+            {
+                character.Reset();
+                character.RemoveLayer(An.Walk.Hair + "Down");
+            }
+            else
+            {
+                character.Reset();
+                Factory.AddLayer(ref character, An.Walk.Hair + "Down",selectedHairColor);
+            }
         }
 
         private void OnIndexChange(int index)
@@ -194,7 +224,8 @@ namespace MonoTinker.Code.GameScreens
             menuBox.Label(1).Contents = menuBox.SelectedIndex == 1 ? "<Hair>" : "Hair";
             picker.IsVisible = pickerCheck;
             skinTonePicker.IsVisible = menuBox.SelectedIndex == 3;
-            slider.IsVisible = pickerCheck || menuBox.SelectedIndex == 3; 
+            statPicker.IsVisible = menuBox.SelectedIndex == 5;
+            slider.IsVisible = pickerCheck; 
 
         }
     }

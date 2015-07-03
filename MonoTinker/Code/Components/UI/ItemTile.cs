@@ -36,7 +36,7 @@ namespace MonoTinker.Code.Components.UI
         {
             this.toolTip = new ToolTip(this.Position, ScreenManager.Device, this.item);
             toolTip.IsVisible = false;
-            toolTip.FadeSpeed = 10;
+            toolTip.FadeSpeed = 0.5f;
             toolTip.Transitioning = true;
             toolTipOffset = new Vector2(this.DefaultSource.Width, -this.toolTip.Size.Y);
             toolTip.Position = this.Position + this.toolTipOffset;

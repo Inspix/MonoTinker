@@ -31,7 +31,7 @@ namespace MonoTinker.Code.Components.UI
             int boxHeight = 0;
             font = AssetManager.Instance.Get<SpriteFont>("Standart");
             fontScale = Vector2.One;
-            TextBoxFactory.GenerateBox(new Point(10,0),ref Elements,ref boxWidth,ref boxHeight);
+            BoxFactory.GenerateBox(new Point(10,0),ref Elements,ref boxWidth,ref boxHeight);
             Vector2 center = new Vector2((this.Width/2f) - (boxWidth/2f), (this.Height / 2f) - (boxHeight / 2f));
             foreach (Sprite sprite in Elements.Values)
             {
@@ -77,9 +77,13 @@ namespace MonoTinker.Code.Components.UI
             {
                 if ((int) currentKey >= 65 && (int) currentKey <= 90 && currentKey.DownOnce())
                 {
-                    Labels[0].Append(Keys.LeftShift.Down() || Keys.RightShift.Down() ? currentKey.ToString() : currentKey.ToString().ToLower());
-                    cursorPosition = new Vector2((font.MeasureString(Labels[0].Contents).X)*fontScale.X, 0) +
-                                     defaultCursorPosition;
+                    if (Labels[0].Contents.Length < 13)
+                    {
+                        Labels[0].Append(Keys.LeftShift.Down() || Keys.RightShift.Down() ? currentKey.ToString() : currentKey.ToString().ToLower());
+                        cursorPosition = new Vector2((font.MeasureString(Labels[0].Contents).X) * fontScale.X, 0) +
+                                         defaultCursorPosition;
+                    }
+                   
                 }
 
                 if (currentKey.DownOnce() && currentKey == Keys.Back)

@@ -74,7 +74,7 @@ namespace MonoTinker.Code.Components.UI
             this.Transitioning = true;
             this.OverrideDrawElements = true;
             this.OverrideDrawLabels = true;
-            TextBoxFactory.GenerateBox(size,ref this.Elements,ref this.Width,ref this.Height);
+            BoxFactory.GenerateBox(size,ref this.Elements,ref this.Width,ref this.Height);
 
             this.font = AssetManager.Instance.Get<SpriteFont>("UIFont");
             this.charSize = this.font.MeasureString("A");
