@@ -68,13 +68,13 @@ namespace MonoTinker.Code.GameScreens
             slider.OnValueChangeCallback = OnValueChangeCallback;
 
             character = Factory.CharacterAnimation();
-            character.Transform.Position = new Vector2(400,150);
-            characterBox.Position = character.Transform.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter; ;
+            character.Position = new Vector2(400,150);
+            characterBox.Position = character.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter; ;
 
             font = AssetManager.Instance.Get<SpriteFont>("Standart");
 
-            name = new Text(font, character.Transform.Position - Vector2.UnitY*20, "");
-            name.Transform.Scale = Vector2.One*0.5f;
+            name = new Text(font, character.Position - Vector2.UnitY*20, "");
+            name.Scale = Vector2.One*0.5f;
 
             inputBox = new InputBox(new Vector2(ScreenManager.ScreenCenter.X/3, ScreenManager.ScreenCenter.Y/3),
                 ScreenManager.Device, (int) (ScreenManager.ScreenDimensions.X - (ScreenManager.ScreenDimensions.X/3)),
@@ -82,16 +82,16 @@ namespace MonoTinker.Code.GameScreens
             inputBox.Callback = (x) =>
             {
                 this.name.Contents = x;
-                this.name.Transform.Position = this.character.Transform.Position - Vector2.UnitY * 20 + (this.character.Layer(0).CurrentFrame.SpriteCenter * Vector2.UnitX)
-                                            - (this.name.Size/4f*Vector2.UnitX);
+                this.name.Position = this.character.Position - Vector2.UnitY * 20 + (this.character.Layer(0).CurrentFrame.SpriteCenter * Vector2.UnitX)
+                                            - (this.name.Size/2f*Vector2.UnitX);
                 this.enterName = false;
             };
 
             menuBox = new MenuBox(new Vector2(50, ScreenManager.ScreenCenter.Y), ScreenManager.Device,
                 new string[] {"Name", "Hair", "Hair color", "Skin color","Class","Bonus stat","Confirm"}, new Vector2(5, 15),Vector2.UnitY*50);
-            menuBox.Label(6).Transform.Position += new Vector2(0, menuBox.Label(6).Size.Y + 25);
+            menuBox.Label(6).Position += new Vector2(0, menuBox.Label(6).Size.Y + 25);
             menuBox.OnIndexChange = OnIndexChange;
-            menuBox.MenuTransform.Position -= new Vector2(0, menuBox.Size.Y/2);
+            menuBox.Position -= new Vector2(0, menuBox.Size.Y/2);
             menuBox[0] = () => this.enterName = true;
             menuBox[1] = ToggleHair;
             menuBox[6] = () => ScreenManager.ShouldExit = true;

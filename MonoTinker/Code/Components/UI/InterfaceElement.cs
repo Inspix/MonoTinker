@@ -9,40 +9,61 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public abstract class InterfaceElement : Fadeable, IElementDrawable
+    public abstract class InterfaceElement : Fadeable, IElementDrawable,ITransformable
     {
-        protected Transform Transform;
-
         protected SpriteAtlas Elements;
-
         protected List<Text> Labels;
-
         protected bool OverrideDrawElements;
-
         protected bool OverrideDrawLabels;
-
         protected int Width;
-
         protected int Height;
-
         protected RenderTarget2D RenderTarget2D;
-
         protected GraphicsDevice Device;
-
         protected SpriteBatch Batch;
         
         protected InterfaceElement(Vector2 position,GraphicsDevice device)
         {
             this.Elements = new SpriteAtlas();
             this.Labels = new List<Text>();
-            this.Transform = new Transform(position);
+            this.Position = position;
             this.Device = device;
             this.Batch = new SpriteBatch(this.Device);
+            this.ScaleF = 1;
         }
 
         public Vector2 Offset { get; set; }
 
-        public Vector2 Size { get { return new Vector2(Width,Height);} }
+        public Vector2 Size { get { return new Vector2(Width,Height) * Scale;} }
+
+        public Vector2 Position { get; set; }
+
+        public float PosX
+        {
+            get { return this.Position.X; }
+            set
+            {
+                this.Position = new Vector2(value, Position.Y);
+            }
+        }
+
+        public float PosY
+        {
+            get { return this.Position.Y; }
+            set
+            {
+                this.Position = new Vector2(Position.X, value);
+            }
+        }
+
+        public Vector2 Scale { get; set; }
+
+        public float ScaleF
+        {
+            get { return (this.Scale.X + this.Scale.Y)/2f; }
+            set { this.Scale = Vector2.One*value; }
+        }
+
+        public float Rotation { get; set; }
 
         public virtual void DrawElements()
         {
@@ -103,7 +124,7 @@ namespace MonoTinker.Code.Components.UI
         {
             if (this.IsVisible)
             {
-                 spriteBatch.Draw(this.RenderTarget2D, this.Transform.Position + this.Offset,this.RenderTarget2D.Bounds,Color.White * this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
+                 spriteBatch.Draw(this.RenderTarget2D, this.Position + this.Offset,this.RenderTarget2D.Bounds,Color.White * this.alpha,this.Rotation,Vector2.Zero,this.Scale,SpriteEffects.None, 0);
             }
 
         }

@@ -6,6 +6,9 @@
 // AnimationController class
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using MonoTinker.Code.Components.Interfaces;
+
 namespace MonoTinker.Code.Components.Elements
 {
     using System.Collections.Generic;
@@ -27,7 +30,7 @@ namespace MonoTinker.Code.Components.Elements
     /// <summary>
     /// Controller for Multiple animations - States
     /// </summary>
-    public class AnimationController
+    public class AnimationController : IAdvancedDrawable,ITransformable
     {
         #region Private fields
         /// <summary>
@@ -39,12 +42,7 @@ namespace MonoTinker.Code.Components.Elements
         /// Stores the current state
         /// </summary>
         private string currentState;
-
-
-        /// <summary>
-        /// Contains position, scale and rotation
-        /// </summary>
-        private Transform transform;
+        
         #endregion
 
         #region Constructors
@@ -54,6 +52,7 @@ namespace MonoTinker.Code.Components.Elements
         /// </summary>
         public AnimationController()
         {
+            this.ScaleF = 1;
             this.states = new Dictionary<string, AnimationV2>();
             this.ResetOnStateChange = true;
         }
@@ -66,6 +65,7 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public AnimationController(Dictionary<string, AnimationV2> states)
         {
+            this.ScaleF = 1;
             this.ResetOnStateChange = true;
             this.States = states;
         } 
@@ -100,9 +100,17 @@ namespace MonoTinker.Code.Components.Elements
             }
         }
 
-        public Transform Transform
+        public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; }
+        public float Rotation { get; set; }
+
+        public float ScaleF
         {
-            get { return this.transform ?? (this.transform = new Transform()); }
+            get
+            {
+                return (this.Scale.X + this.Scale.Y)/2;
+            }
+            set { this.Scale = Vector2.One*value; }
         }
 
         public string Tag { private get; set; }
@@ -152,7 +160,10 @@ namespace MonoTinker.Code.Components.Elements
                     this.currentState = value;
                 }
             }
-        } 
+        }
+
+        public bool IsVisible { get; set; }
+
         #endregion
 
         /// <summary>
@@ -170,6 +181,7 @@ namespace MonoTinker.Code.Components.Elements
         }
 
         #region Methods
+
         /// <summary>
         /// Add a state to the controller and subscribe to the Animations OnAnimationFinish event
         /// </summary>
@@ -236,12 +248,18 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public void Update(GameTime gameTime)
         {
-            this.states[this.currentState].Update(gameTime);
+            if (IsVisible)
+            {
+                this.states[this.currentState].Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.Draw(spriteBatch, this.Transform.Position,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale);
+            if (IsVisible)
+            {
+                this.Draw(spriteBatch, this.Position,this.Rotation,Vector2.Zero,this.Scale);
+            }
         }
 
         /// <summary>
@@ -255,7 +273,10 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            this.Draw(spriteBatch,position,this.Transform.Rotation);
+            if (IsVisible)
+            {
+                this.Draw(spriteBatch, position, this.Rotation);
+            }
         }
 
         /// <summary>
@@ -281,7 +302,10 @@ namespace MonoTinker.Code.Components.Elements
         /// </param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2? origin = null, Vector2? scale = null, SpriteEffects effect = SpriteEffects.None)
         {
-            this.states[this.currentState].Draw(spriteBatch, position, rotation, origin, scale, effect);
+            if (IsVisible)
+            {
+                this.states[this.currentState].Draw(spriteBatch, position, rotation, origin, scale, effect);
+            }
         }
 
         /// <summary>
@@ -293,7 +317,8 @@ namespace MonoTinker.Code.Components.Elements
             {
                 this.OnStateAnimationFinish(this.CurrentState);
             }
-        } 
+        }
+
         #endregion
     }
 }

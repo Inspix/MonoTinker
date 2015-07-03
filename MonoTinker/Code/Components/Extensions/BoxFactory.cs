@@ -129,13 +129,13 @@ namespace MonoTinker.Code.Components.Extensions
             foreach (var s in text)
             {
                 Text toAdd = new Text(font,textpos,s);
-                toAdd.Transform.Scale = Vector2.One * scale;
+                toAdd.Scale = Vector2.One * scale;
                 if (alignment == TextAlignment.Center)
                 {
-                    toAdd.Transform.PosX -= (toAdd.Size.X/2)*scale;
+                    toAdd.PosX -= toAdd.Size.X/2;
                 }else if (alignment == TextAlignment.Right)
                 {
-                    toAdd.Transform.PosX -= toAdd.Size.X*scale;
+                    toAdd.PosX -= toAdd.Size.X;
                 }
                 textpos.Y += fontSize.Y + 15f;
                 labels.Add(toAdd);

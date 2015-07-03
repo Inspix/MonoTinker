@@ -12,20 +12,21 @@ namespace MonoTinker.Code.Components.UI
 
     public class FancyTextBox : InterfaceElement
     {
-        private WriteEffect effect;
-        private bool effectDone;
         private int passed;
         private int index;
+        private int mod;
+        private int counter = 1;
         private int maxLines = 3;
-        private Button nextPage;
         private int cPerLine;
         private int currentIndex;
-        private string[] text;
-        private double timeToUpdate;
         private double timeElapsed;
+        private double timeToUpdate;
+        private string[] text;
         private SpriteFont font;
-
+        private Button nextPage;
         private Vector2 charSize;
+        private bool effectDone;
+        private WriteEffect effect;
 
 
         public FancyTextBox(Vector2 position, GraphicsDevice device, string message, int width, WriteEffect effect = WriteEffect.LineByLine) : base(position, device)
@@ -40,21 +41,26 @@ namespace MonoTinker.Code.Components.UI
             {
                 width = 28;
             }
-            this.OverrideDrawElements = true;
-            this.OverrideDrawLabels = true;
+            this.OverrideDrawElements = true; // Enable DrawElements partial override
+            this.OverrideDrawLabels = true; // Enable custom DrawElements label override
             this.Transitioning = true;
             this.Alpha = 0;
             this.IsVisible = true;
+
             this.font = AssetManager.Instance.Get<SpriteFont>("UIFont");
+            this.charSize = font.MeasureString("a");
+
             Sprite leftPart = AssetManager.Instance.Get<Sprite>(Sn.Menu.BigFrameLeft).DirectClone();
             Sprite middlePart = AssetManager.Instance.Get<Sprite>(Sn.Menu.BigFrameMiddle).DirectClone();
             Sprite buttonClick = AssetManager.Instance.Get<Sprite>(Sn.Menu.BigFrameRightButtonClick).DirectClone();
-            this.charSize = font.MeasureString("a");
+
             this.Width = leftPart.SourceWidth + (middlePart.SourceWidth * width);
             this.Height = middlePart.SourceHeight;
-            this.cPerLine = (int)(this.Width / this.charSize.X);
             this.Width += buttonClick.SourceWidth;
+
+            this.cPerLine = (int)(this.Width / this.charSize.X);
             this.text = message.SplitToPieces(this.cPerLine).ToArray();
+
             leftPart.Position = Vector2.Zero;
             for (int i = 1; i <= width; i++)
             {
@@ -66,9 +72,8 @@ namespace MonoTinker.Code.Components.UI
                     AssetManager.Instance.Get<Sprite>(Sn.Menu.BigFrameRightButton).DirectClone(),
                     AssetManager.Instance.Get<Sprite>(Sn.Menu.BigFrameRightButtonHover).DirectClone(),
                     buttonClick);
-                this.nextPage.ClickType = ClickType.Single;
+            this.nextPage.ClickType = ClickType.Single;
             
-
             Generate();
 
             Elements.Add("left", leftPart);
@@ -82,7 +87,6 @@ namespace MonoTinker.Code.Components.UI
             set { this.timeToUpdate = TimeSpan.FromSeconds(value).TotalSeconds; }
         }
 
-        private int counter = 1;
         private void Generate()
         {
             this.index = 0;
@@ -116,11 +120,10 @@ namespace MonoTinker.Code.Components.UI
 
 
         }
-        private int mod;
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
 
             if (this.nextPage != null)
             {
@@ -148,7 +151,7 @@ namespace MonoTinker.Code.Components.UI
                     }
 
                 }
-                this.nextPage.Update();
+                this.nextPage.Update(gameTime);
                 if (generating)
                 {
                     return;

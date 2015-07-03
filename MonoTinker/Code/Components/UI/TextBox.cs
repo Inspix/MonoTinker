@@ -47,19 +47,6 @@ namespace MonoTinker.Code.Components.UI
 
         }
 
-        public Vector2 Position
-        {
-            get
-            {
-                return this.Transform.Position;
-            }
-
-            set
-            {
-                this.Transform.Position = value;
-            }
-        }
-
         /// <summary>
         /// Effect speed in seconds
         /// </summary>
@@ -141,7 +128,7 @@ namespace MonoTinker.Code.Components.UI
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
 
             if (this.nextPage != null)
             {
@@ -169,7 +156,7 @@ namespace MonoTinker.Code.Components.UI
                     }
                     
                 }
-                this.nextPage.Update();
+                this.nextPage.Update(gameTime);
                 if (generating)
                 {
                     return;

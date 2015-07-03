@@ -23,18 +23,6 @@ namespace MonoTinker.Code.Components.UI
         {
             this.InitToolTip(item);
         }
-
-        public Vector2 Position
-        {
-            get
-            {
-                return this.Transform.Position;
-            }
-            set
-            {
-                this.Transform.Position = value;
-            }
-        }
         
         private void InitToolTip(Item item)
         {
@@ -88,7 +76,7 @@ namespace MonoTinker.Code.Components.UI
         {
             if (!IsVisible) return;
             DrawElements();
-            spriteBatch.Draw(this.RenderTarget2D,this.Position + position,this.RenderTarget2D.Bounds,Color.White * this.alpha,this.Transform.Rotation,Vector2.Zero,this.Transform.Scale,SpriteEffects.None, 0);
+            spriteBatch.Draw(this.RenderTarget2D,this.Position + position,this.RenderTarget2D.Bounds,Color.White * this.alpha,this.Rotation,Vector2.Zero,this.Scale,SpriteEffects.None, 0);
         }
 
         #region Generation

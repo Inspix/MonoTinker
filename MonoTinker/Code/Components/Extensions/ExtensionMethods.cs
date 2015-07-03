@@ -10,10 +10,6 @@ namespace MonoTinker.Code.Components.Extensions
 
     public static class ExtensionMethods
     {
-        public static void Scale(this Transform tr, float increment)
-        {
-            tr.Scale += Vector2.One * increment;
-        }
 
         public static IEnumerable<string> SplitToPieces(this string str, int pieceSize)
         {

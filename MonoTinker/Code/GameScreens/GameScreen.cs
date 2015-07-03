@@ -59,7 +59,7 @@ namespace MonoTinker.Code.GameScreens
             string[] names = playerAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("playerRun"),
                 new Vector2(130, 150), "dude", 1);
             player = new PlayerOld(new Animation(names,playerAtlas));
-            player.Transform.Scale = Vector2.One * 0.4f; 
+            player.Scale = Vector2.One * 0.4f; 
             
         }
 
@@ -72,12 +72,12 @@ namespace MonoTinker.Code.GameScreens
         {
             map.Update(gameTime);
             player.Update(gameTime);
-            camera.Update(gameTime,player.Transform.Position);
+            camera.Update(gameTime,player.Position);
             if (InputHandler.MouseDown("left"))
             {
-                Projectile p = new Projectile(TileAtlas["LaserProjectile"], player.Transform.Position, 0);
+                Projectile p = new Projectile(TileAtlas["LaserProjectile"], player.Position, 0);
                 p.Velocity =
-                    Vector2.Normalize(player.Transform.Position - player.Transform.Position +
+                    Vector2.Normalize(player.Position - player.Position +
                                      Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter);
                 p.RotationAngles = (float) Math.Atan2(p.Velocity.Y, p.Velocity.X) + 29.8f;
                 projectiles.Add(p);
@@ -85,9 +85,9 @@ namespace MonoTinker.Code.GameScreens
             }
             if (InputHandler.MouseDown("right"))
             {
-                Projectile p = new Projectile(TileAtlas["ArrowProjectile"], player.Transform.Position, 0);
+                Projectile p = new Projectile(TileAtlas["ArrowProjectile"], player.Position, 0);
                 p.Velocity =
-                    Vector2.Normalize(player.Transform.Position - player.Transform.Position +
+                    Vector2.Normalize(player.Position - player.Position +
                                      Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter);
                 p.RotationAngles = (float)Math.Atan2(p.Velocity.Y, p.Velocity.X) + 29.8f;
                 p.Effect = SpriteEffects.FlipVertically;
@@ -118,7 +118,7 @@ namespace MonoTinker.Code.GameScreens
             ScreenManager.Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
             spriteBatch.Draw(light,Vector2.Zero,light.Bounds,color,0,light.Bounds.Center.ToVector2(),Vector2.One*50,SpriteEffects.None,0);
-            spriteBatch.Draw(light,player.Transform.Position,light.Bounds,Color.White,0,Vector2.Zero, Vector2.One*0.5f,SpriteEffects.None, 0 );
+            spriteBatch.Draw(light,player.Position,light.Bounds,Color.White,0,Vector2.Zero, Vector2.One*0.5f,SpriteEffects.None, 0 );
             foreach (var lightTile in map.LightTiles)
             {
                 lightTile.Draw(spriteBatch);
@@ -152,7 +152,7 @@ namespace MonoTinker.Code.GameScreens
             lightEffect.CurrentTechnique.Passes[0].Apply();
             spriteBatch.Draw(main,Vector2.Zero,Color.White);
 
-            spriteBatch.Draw(crosshair, player.Transform.Position + Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter, crosshair.Bounds,Color.White,0,crosshair.Bounds.Center.ToVector2(),Vector2.One,SpriteEffects.None, 0);
+            spriteBatch.Draw(crosshair, player.Position + Mouse.GetState().Position.ToVector2() - ScreenManager.ScreenCenter, crosshair.Bounds,Color.White,0,crosshair.Bounds.Center.ToVector2(),Vector2.One,SpriteEffects.None, 0);
             
             spriteBatch.End();
         }

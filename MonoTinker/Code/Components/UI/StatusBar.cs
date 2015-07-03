@@ -58,7 +58,7 @@ namespace MonoTinker.Code.Components.UI
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 mousePosition = Mouse.GetState(ScreenManager.Window).Position.ToVector2() - this.Transform.Position;
+            Vector2 mousePosition = Mouse.GetState(ScreenManager.Window).Position.ToVector2() - this.Position;
             
             this.Labels[0].IsVisible = Elements[HP].Contains(mousePosition);
             this.Labels[1].IsVisible = Elements[MP].Contains(mousePosition);

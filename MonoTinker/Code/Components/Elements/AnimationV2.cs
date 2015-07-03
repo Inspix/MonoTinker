@@ -9,7 +9,7 @@ namespace MonoTinker.Code.Components.Elements
     using Interfaces;
     using Utils;
 
-    public class AnimationV2 : IAdvancedDrawable
+    public class AnimationV2 : IAdvancedDrawable, ITransformable
     {
         #region Private Fields
         /// <summary>
@@ -21,11 +21,7 @@ namespace MonoTinker.Code.Components.Elements
         /// Contains the layer tags
         /// </summary>
         private List<string> layerTags;
-
-        /// <summary>
-        /// For positioning scalling, rotating
-        /// </summary>
-        private Transform transform;
+        
 
         /// <summary>
         /// Tint fro the whole animation
@@ -64,6 +60,7 @@ namespace MonoTinker.Code.Components.Elements
             this.layerTags.Add("base");
             this.FramesPerSecond = fps;
             this.Looping = true;
+            this.ScaleF = 1;
         }
 
         /// <summary>
@@ -78,7 +75,8 @@ namespace MonoTinker.Code.Components.Elements
             this.layerTags.Add("base");
             this.FramesPerSecond = baseAnim.FramesPerSecond;
             this.Looping = baseAnim.Looping;
-        } 
+            this.ScaleF = 1;
+        }
         #endregion
 
 
@@ -111,12 +109,16 @@ namespace MonoTinker.Code.Components.Elements
         /// </summary>
         public bool Looping { get; set; }
 
-        /// <summary>
-        /// Gets the transform of the <see cref="AnimationV2"/>
-        /// </summary>
-        public Transform Transform
+        public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; }
+        public float Rotation { get; set; }
+        public float ScaleF
         {
-            get { return this.transform ?? (this.transform = new Transform()); }
+            get
+            {
+                return (this.Scale.X + this.Scale.Y)/2;
+            }
+            set { this.Scale = Vector2.One*value; }
         }
 
         /// <summary>
@@ -144,9 +146,12 @@ namespace MonoTinker.Code.Components.Elements
             }
         }
 
+        public bool IsVisible { get; set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Add layer to the animation (Use the same atlas as the base animation)
         /// </summary>
@@ -242,6 +247,10 @@ namespace MonoTinker.Code.Components.Elements
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
+            if (!IsVisible)
+            {
+                return;
+            }
             timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
             if (timeElapsed > timeToUpdate)
             {
@@ -274,6 +283,10 @@ namespace MonoTinker.Code.Components.Elements
         /// </summary>
         public void Update()
         {
+            if (!IsVisible)
+            {
+                return;
+            }
             this.currentFrame++;
             if (currentFrame >= this.layers[0].Count)
             {
@@ -291,7 +304,7 @@ namespace MonoTinker.Code.Components.Elements
         /// <param name="spriteBatch">SpriteBatch to draw with</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.Draw(spriteBatch, this.transform.Position, this.Transform.Rotation, Vector2.Zero, this.Transform.Scale);
+            this.Draw(spriteBatch, this.Position, this.Rotation, Vector2.Zero, this.Scale);
         }
 
         /// <summary>
@@ -347,7 +360,8 @@ namespace MonoTinker.Code.Components.Elements
             {
                 OnAnimationFinish(sender, e);
             }
-        } 
+        }
+
         #endregion
     }
 }

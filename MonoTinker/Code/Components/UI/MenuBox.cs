@@ -8,8 +8,11 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
+#if DEBUG
+    using Elements.DebugGraphics; 
+#endif
+
     using Elements;
-    using Elements.DebugGraphics;
     using Managers;
     using Utils;
 
@@ -54,10 +57,10 @@ namespace MonoTinker.Code.Components.UI
             TextHelper.LineByLineEffect(ref font, ref this.Labels, ref currentIndex, options.Length, charSize * textScale + Vector2.UnitY*25, ref options,itemsOffset);
             foreach (var label in Labels)
             {
-                label.Transform.Scale = textScale;
+                label.Scale = textScale;
                 label.FadeSpeed = 0.005f;
                 label.Clr = Color.Wheat;
-                label.Transform.Position = new Vector2((this.Width/2f) - (label.Size.X/2)*textScale.X, label.Transform.PosY);
+                label.Position = new Vector2((this.Width/2f) - (label.Size.X/2), label.PosY);
             }
             
 
@@ -73,14 +76,9 @@ namespace MonoTinker.Code.Components.UI
 
         private void OnLabelChange(Text txt)
         {
-            txt.Position = new Vector2((this.Width/2f) - (txt.Size.X/2)*textScale.X, txt.Transform.PosY);
+            txt.Position = new Vector2((this.Width/2f) - (txt.Size.X/2), txt.PosY);
         }
-
-        public Transform MenuTransform
-        {
-            get { return base.Transform; }
-        }
-
+        
         public Action<int> OnIndexChange
         {
             private get
@@ -148,9 +146,9 @@ namespace MonoTinker.Code.Components.UI
 
             for (int i = 0; i < options.Length; i++)
             {
-                Labels[i].Transform.Scale = SelectedIndex == i
-                    ? new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y, 0.5f)))
-                    : new Vector2(this.Labels[i].Transform.Scale.X, (MathHelper.SmoothStep(Labels[i].Transform.Scale.Y, textScale.Y -0.1f, 0.5f)));
+                Labels[i].Scale = SelectedIndex == i
+                    ? new Vector2(this.Labels[i].Scale.X, (MathHelper.SmoothStep(Labels[i].Scale.Y, textScale.Y, 0.5f)))
+                    : new Vector2(this.Labels[i].Scale.X, (MathHelper.SmoothStep(Labels[i].Scale.Y, textScale.Y -0.1f, 0.5f)));
                 Labels[i].Clr = SelectedIndex == i
                     ? ColorHelper.SmoothTransition(Labels[i].Clr, Color.OrangeRed, 0.02f)
                     : ColorHelper.SmoothTransition(Labels[i].Clr, Color.Wheat, 0.02f);
@@ -181,7 +179,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void MouseUpdate(GameTime gameTime)
         {
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
             for (int i = 0; i < Labels.Count; i++)
             {
                 Rectangle box = new Rectangle(Labels[i].Position.ToPoint(),Labels[i].Size.ToPoint());
@@ -213,7 +211,9 @@ namespace MonoTinker.Code.Components.UI
             {
                 option.Draw(Batch);
             }
-            DebugShapes.DrawRectagnle(Batch,Vector2.One, new Vector2(Width,Height), 1f,Color.Red);
+#if DEBUG
+            DebugShapes.DrawRectagnle(Batch, Vector2.One, new Vector2(Width, Height), 1f, Color.Red); 
+#endif
             Batch.End();
             Device.SetRenderTarget(null);
         }

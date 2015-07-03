@@ -11,7 +11,7 @@ namespace MonoTinker.Code
     using Components.Interfaces;
     using Utils;
 
-    public class PlayerOld : IMovable, ICollidable
+    public class PlayerOld : IMovable, ICollidable,ITransformable
     {
         private Animation animation;
         private Vector2 velocity;
@@ -19,15 +19,14 @@ namespace MonoTinker.Code
         private bool flip;
         public bool grounded = true;
         private bool jumped;
-
-        public Transform Transform;
+        
         public Rectangle boundingBox;
 
         public PlayerOld(Animation anim)
         {
             animation = anim;
-            this.Transform = new Transform(Vector2.Zero);
-            boundingBox = new Rectangle(this.Transform.Position.ToPoint(),animation.CurrentFrame.Size.ToPoint());
+
+            boundingBox = new Rectangle(this.Position.ToPoint(),animation.CurrentFrame.Size.ToPoint());
             Speed = normalSpeed;
         }
 
@@ -60,7 +59,7 @@ namespace MonoTinker.Code
 
         public Vector2 SpriteSize { get { return this.animation.CurrentFrame.Size; } }
 
-        public Vector2 Center { get { return new Vector2(this.Transform.PosX + SpriteCenter.X, this.Transform.PosY + SpriteCenter.Y);} }
+        public Vector2 Center { get { return new Vector2(this.PosX + SpriteCenter.X, this.PosY + SpriteCenter.Y);} }
 
         public void Update(GameTime gameTime)
         {
@@ -71,13 +70,13 @@ namespace MonoTinker.Code
        
         public void Move(GameTime gametime)
         {
-            this.Transform.Position += Velocity * Speed;
-            if (Transform.PosY >= 480 - this.SpriteSize.Y)
+            this.Position += Velocity * Speed;
+            if (PosY >= 480 - this.SpriteSize.Y)
             {
                 jumped = false;
-                Transform.PosY = 480 - this.SpriteSize.Y;
+                PosY = 480 - this.SpriteSize.Y;
             }
-            this.boundingBox.Location = this.Transform.Position.ToPoint();
+            this.boundingBox.Location = this.Position.ToPoint();
 
         }
 
@@ -124,7 +123,7 @@ namespace MonoTinker.Code
             if (!jumped && Keys.Space.Down())
             {
                 jumped = true;
-                Transform.PosY -= 10f;
+                PosY -= 10f;
                 VelocityY = -5f;
             }
             if (!jumped)
@@ -140,7 +139,7 @@ namespace MonoTinker.Code
         public void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(animation.CurrentFrame.Texture, Transform.Position, animation.CurrentFrame.Source, Color.White, 0, Vector2.Zero, Transform.Scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
-            animation.Draw(spriteBatch,Transform.Position,0,null,Transform.Scale,flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            animation.Draw(spriteBatch,Position,0,null,Scale,flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
         }
 
         public Rectangle BoundingBox
@@ -159,5 +158,29 @@ namespace MonoTinker.Code
             }
             return result;
         }
+
+        public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; }
+        public float Rotation { get; set; }
+        public float ScaleF { get; set; }
+        public float PosX
+        {
+            get { return this.Position.X; }
+            set
+            {
+                this.Position = new Vector2(value, Position.Y);
+               
+            }
+        }
+
+        public float PosY
+        {
+            get { return this.Position.Y; }
+            set
+            {
+                this.Position = new Vector2(Position.X, value);
+            }
+        }
+
     }
 }

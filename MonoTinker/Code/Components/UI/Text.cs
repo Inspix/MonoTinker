@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.UI
 {
@@ -9,10 +10,9 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Text : Fadeable
+    public class Text : Fadeable , ITransformable
     {
         private SpriteFont font;
-        private Transform transform;
 
         public Color Clr;
 
@@ -22,17 +22,50 @@ namespace MonoTinker.Code.Components.UI
         {
             this.font = font;
             this.isVisible = isVisible;
-            this.transform = new Transform(position);
+            this.Position = position;
             this.contents = new StringBuilder(contents);
             this.Clr = Color.White;
             this.alpha = alpha;
             this.DefaultAlpha = 1;
+            this.ScaleF = 1;
         }
 
         public Vector2 Size
         {
-            get { return this.font.MeasureString(this.Contents); }
+            get { return this.font.MeasureString(this.Contents)*Scale; }
         }
+
+        public Vector2 Position { get; set; }
+
+        public Vector2 Scale { get; set; }
+
+        public float Rotation { get; set; }
+
+        public float ScaleF
+        {
+            get { return (this.Scale.X + this.Scale.Y) / 2; }
+            set { this.Scale = new Vector2(value, value); }
+        }
+
+        public float PosX
+        {
+            get { return this.Position.X; }
+            set
+            {
+                this.Position = new Vector2(value, Position.Y);
+            }
+        }
+
+        public float PosY
+        {
+            get { return this.Position.Y; }
+            set
+            {
+                this.Position = new Vector2(Position.X, value);
+            }
+        }
+
+
 
         public Action<Text> OnLabelChange { get; set; }
 
@@ -82,18 +115,7 @@ namespace MonoTinker.Code.Components.UI
         {
             this.contents.Remove(contents.Length - 1, 1);
         }
-        public Vector2 Position
-        {
-            get { return this.transform.Position; }
-            set { this.transform.Position = value; }
 
-        }
-
-        public Transform Transform
-        {
-            get { return this.transform;}
-            set { this.transform = value; }
-        }
 
         public virtual void Update(GameTime gameTime)
         {
@@ -105,7 +127,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(this.font,this.Contents,this.Position,this.Clr * this.Alpha,this.transform.Rotation,Vector2.Zero, this.transform.Scale,SpriteEffects.None, 0);
+            spriteBatch.DrawString(this.font,this.Contents,this.Position,this.Clr * this.Alpha,this.Rotation,Vector2.Zero, this.Scale,SpriteEffects.None, 0);
         }
     }
 }

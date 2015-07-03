@@ -66,8 +66,8 @@ namespace MonoTinker.Code.GameScreens
 
             string[] names = textures.PopulateFromSpriteSheet(bg, new Vector2(130, 150), "dude", 1);
             player = new PlayerOld(new Animation(names,textures));
-            player.Transform.Position = Vector2.One*50;
-            player.Transform.Scale = Vector2.One*0.5f;
+            player.Position = Vector2.One*50;
+            player.Scale = Vector2.One*0.5f;
 
         }
 
@@ -84,7 +84,7 @@ namespace MonoTinker.Code.GameScreens
                 l.Update(gameTime);
             }
             player.Update(gameTime);
-            camera.Update(gameTime,player.Transform.Position);
+            camera.Update(gameTime,player.Position);
             InputUpdate(gameTime);
         }
 
@@ -111,7 +111,7 @@ namespace MonoTinker.Code.GameScreens
             Device.SetRenderTarget(lightMask);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
-            spriteBatch.Draw(light,player.Transform.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20,0f,Vector2.One + Vector2.One *(float)rnd.NextDouble() * 0.5f);
+            spriteBatch.Draw(light,player.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20,0f,Vector2.One + Vector2.One *(float)rnd.NextDouble() * 0.5f);
             foreach (var simpleDrawable in lights)
             {
                 simpleDrawable.Draw(spriteBatch);

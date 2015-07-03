@@ -6,11 +6,11 @@ using MonoTinker.Code.Components.Interfaces;
 
 namespace MonoTinker.Code.Components.GameObjects
 {
-    public abstract class Entity : ICollidable,IAdvancedDrawable
+    public abstract class Entity : ICollidable,IAdvancedDrawable,ITransformable
     {
         protected AnimationController animation;
         protected Sprite sprite;
-        protected Transform transform;
+        protected Vector2 position;
         protected Rectangle boundingBox;
         protected int? updatesOnScreen;
         protected bool isVisible;
@@ -21,27 +21,29 @@ namespace MonoTinker.Code.Components.GameObjects
         protected Entity(Sprite sprite, Vector2 position, int? lifeonscreen = null, bool isvisible = true)
         {
             this.sprite = sprite;
-            this.transform = new Transform(position);
+            this.Position = position;
             this.updatesOnScreen = lifeonscreen;
             this.isVisible = isvisible;
             this.isAnimated = false;
+            this.ScaleF = 1;
         }
 
         protected Entity(AnimationController animation, Vector2 position, int? lifeonscreen = null, bool isvisible = true)
         {
             this.animation = animation;
-            this.transform = new Transform(position);
+            this.Position = position;
             this.updatesOnScreen = lifeonscreen;
             this.isVisible = isvisible;
             this.isAnimated = true;
+            this.ScaleF = 1;
         }
 
         public Vector2 Position
         {
-            get { return this.transform.Position; }
+            get { return this.position; }
             set
             {
-                this.transform.Position = value;
+                this.position = value;
                 if (!isAnimated)
                 {
                     this.sprite.Position = value;
@@ -49,6 +51,12 @@ namespace MonoTinker.Code.Components.GameObjects
                 this.boundingBox.Location = value.ToPoint();
             }
         }
+
+        public Vector2 Scale { get; set; }
+        public float Rotation { get; set; }
+        public float ScaleF { get; set; }
+
+        public bool IsVisible { get; set; }
 
         public virtual void Update(GameTime gameTime)
         {
@@ -79,11 +87,11 @@ namespace MonoTinker.Code.Components.GameObjects
             }
             if (isAnimated)
             {
-                animation.Draw(spriteBatch,this.transform.Position,this.transform.Rotation,null,this.transform.Scale);
+                animation.Draw(spriteBatch,this.Position,this.Rotation,null,this.Scale);
             }
             else
             {
-                sprite.Draw(spriteBatch,this.transform.Position,this.transform.Rotation,this.transform.Scale);
+                sprite.Draw(spriteBatch,this.Position,this.Rotation,this.Scale);
             }
         }
 

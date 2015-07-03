@@ -14,6 +14,7 @@ namespace MonoTinker.Code.Components.UI
         protected bool transitioning;
         protected float fadeSpeed = 0.1f;
 
+        #region Properties
         public bool Transitioning
         {
             set
@@ -34,9 +35,9 @@ namespace MonoTinker.Code.Components.UI
                 {
                     this.fadeSpeed = 1;
                 }
-                else if (value <= 0.0004f)
+                else if (value <= 0.004f)
                 {
-                    this.fadeSpeed = 0.0004f;
+                    this.fadeSpeed = 0.004f;
                 }
                 else
                 {
@@ -74,6 +75,28 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
+        public float DefaultAlpha
+        {
+            get
+            {
+                return this.defaultAlpha;
+            }
+            set { this.defaultAlpha = MathHelper.Clamp(value, 0f, 1f); }
+        }
+
+        protected float Alpha
+        {
+            get
+            {
+                return this.alpha;
+            }
+            set
+            {
+                this.alpha = MathHelper.Clamp(value, -0.001f, 1f);
+            }
+        } 
+        #endregion
+
         protected virtual void Transition()
         {
             if (this.fadeIn)
@@ -93,27 +116,6 @@ namespace MonoTinker.Code.Components.UI
                     this.fadeOut = false;
                     this.isVisible = false;
                 }
-            }
-        }
-
-        public float DefaultAlpha
-        {
-            get
-            {
-                return this.defaultAlpha;
-            }
-            set { this.defaultAlpha = MathHelper.Clamp(value, 0.0004f, 1f); }
-        }
-
-        protected float Alpha
-        {
-            get
-            {
-                return this.alpha;
-            }
-            set
-            {
-                this.alpha = MathHelper.Clamp(value,-0.001f,1f);
             }
         }
     }

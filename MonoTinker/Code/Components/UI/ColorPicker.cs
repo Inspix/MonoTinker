@@ -1,21 +1,21 @@
-using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Elements.DebugGraphics;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
-using OpenTK.Graphics.ES11;
-
 namespace MonoTinker.Code.Components.UI
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Elements;
+    using Elements.DebugGraphics;
+    using Extensions;
+    using Managers;
+    using Utils;
+
     public class ColorPicker : InterfaceElement
     {
         private Color[] colors;
         private Button rngButton;
         private bool hasRandomButton;
+
         public ColorPicker(Vector2 position, GraphicsDevice device,int rows,bool hasRandomButton = false,Color[] colors = null) : base(position, device)
         {
             this.colors = colors;
@@ -39,30 +39,35 @@ namespace MonoTinker.Code.Components.UI
                     this.Width += middle.DefaultSource.Width * 2;
                     this.Width += right.DefaultSource.Width;
                 }
+
                 left.Position = Vector2.UnitY * this.Height;
                 middle.Position = left.Position + Vector2.UnitX * left.SourceWidth;
                 middle2.Position = middle.Position + Vector2.UnitX * middle.SourceWidth;
                 right.Position = middle2.Position + Vector2.UnitX * middle2.SourceWidth;
                 Height += left.SourceHeight;
+
                 this.Elements.Add("slot" + slotCount++, left);
                 this.Elements.Add("slot" + slotCount++, middle);
                 this.Elements.Add("slot" + slotCount++, middle2);
                 this.Elements.Add("slot" + slotCount++, right);
             }
+
             if (hasRandomButton)
             {
                 rngButton = Factory.FancyButton(Batch, Vector2.Zero, Sn.Menu.BlueBall, 1.3f);
                 rngButton.Position = new Vector2((this.Width/2f - rngButton.Size.X/2f),this.Height+10);
                 rngButton.ClickType = ClickType.Single;
                 rngButton.ClickCallback = RandomizeColors;
+
                 Text rngText = new Text(AssetManager.Instance.Get<SpriteFont>("Standart"),rngButton.Position + new Vector2(40,12),"Random");
                 rngText.Clr = Color.Black;
-                rngText.Transform.Scale = Vector2.One * 0.25f; 
+                rngText.Scale = Vector2.One * 0.25f; 
+
                 Labels.Add(rngText);
+
                 this.Height += 50;
 
             }
-
 
             if (colors == null)
             {
@@ -74,6 +79,8 @@ namespace MonoTinker.Code.Components.UI
         }
 
 
+        public Action<Color> PickCallback { private get; set; }
+
         private void RandomizeColors()
         {
             for (int i = 0; i < colors.Length; i++)
@@ -84,7 +91,6 @@ namespace MonoTinker.Code.Components.UI
                     ScreenManager.Rng.Next(0, 256));
             }
         }
-        public Action<Color> PickCallback { private get; set; }
 
         public override void Update(GameTime gameTime)
         {
@@ -94,11 +100,11 @@ namespace MonoTinker.Code.Components.UI
                 return;
             }
             
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
             if (hasRandomButton)
             {
                 rngButton.Over(mousePos);
-                rngButton.Update();
+                rngButton.Update(gameTime);
             }
             foreach (var spriteAtla in Elements)
             {

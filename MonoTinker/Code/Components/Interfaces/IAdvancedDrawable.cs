@@ -7,5 +7,6 @@ namespace MonoTinker.Code.Components.Interfaces
     {
         void Draw(SpriteBatch spriteBatch);
         void Update(GameTime gameTime);
+        bool IsVisible { get; set; }
     }
 }

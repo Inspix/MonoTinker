@@ -1,13 +1,16 @@
-using System;
-using MonoTinker.Code.Components.Elements.DebugGraphics;
-using MonoTinker.Code.Components.Extensions;
-
 namespace MonoTinker.Code.Components.UI
 {
-    using Elements;
+    using System;
 
+#if DEBUG
+    using Elements.DebugGraphics; 
+#endif
+
+    using Elements;
+    using Extensions;
+    using Interfaces;
     using Utils;
-    
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -18,8 +21,12 @@ namespace MonoTinker.Code.Components.UI
         Continuous
     }
 
-    public class Button : Fadeable
+    public class Button : Fadeable, IAdvancedDrawable,ITransformable
     {
+        #region Fields
+
+        private Vector2 position;
+        private Vector2 scale;
         private Sprite normal;
         private Sprite hover;
         private Sprite click;
@@ -27,57 +34,77 @@ namespace MonoTinker.Code.Components.UI
         private bool hovering;
         private bool clicked;
         private ClickType type;
-        private Transform transform;
         private string tag;
         private bool inflate;
         private Vector2 inflateSize;
         private bool callbackOnClick;
         private Action simpleClickCallback;
-        private Action<string> clickCallback;
+        private Action<string> clickCallback; 
+        #endregion
 
         public Button(Vector2 position, Sprite normalState, Sprite hoverState, Sprite clickState)
         {
             this.normal = normalState;
             this.hover = hoverState;
             this.click = clickState;
-            this.transform = new Transform(position);
+            this.position = position;
             this.bounds = new Rectangle(position.ToPoint(), normalState.DefaultSource.Size);
+            this.ScaleF = 1;
         }
 
-        public ClickType ClickType
+        #region Properties
+
+        public Vector2 Position
         {
+            get { return this.position; }
             set
             {
-                this.type = value;
+                this.position = value;
+                RecalculateBounds();
             }
         }
 
-        public string Tag
+        public float PosX
         {
-            get { return this.tag; }
-            set { if (string.IsNullOrWhiteSpace(value))
-                {
-                    Debug.Error("Empty button tag...");
-                    return;
-                }
-                this.tag = value;
+            get { return this.position.X; }
+            set
+            {
+                this.position = new Vector2(value,Position.Y);
+                RecalculateBounds();
             }
         }
 
-        public float Rotation
+        public float PosY
         {
-            get { return this.transform.Rotation; }
-            set { this.transform.Rotation = value; }
+            get { return this.position.Y; }
+            set
+            {
+                this.position = new Vector2(Position.X, value);
+                RecalculateBounds();
+            }
+        }
+
+        public float Rotation { get; set; }
+
+        public float ScaleF
+        {
+            get { return (this.Scale.X + this.Scale.Y)/2; }
+            set { this.Scale = new Vector2(value,value);}
         }
 
         public Vector2 Scale
         {
-            get { return this.transform.Scale; }
+            get { return this.scale; }
             set
             {
-                this.transform.Scale = value;
+                this.scale = value;
                 RecalculateBounds();
             }
+        }
+
+        public Vector2 Size
+        {
+            get { return this.normal.Size*this.Scale; }
         }
 
         public Vector2 InflateBox
@@ -90,49 +117,26 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
-        public Vector2 Position
+        public string Tag
         {
-            get { return this.transform.Position; }
+            get { return this.tag; }
             set
             {
-                this.transform.Position = value;
-                RecalculateBounds();
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    Debug.Error("Empty button tag...");
+                    return;
+                }
+                this.tag = value;
             }
         }
 
-        public float PosX
+        public ClickType ClickType
         {
-            get { return this.transform.PosX; }
             set
             {
-                this.transform.PosX = value;
-                RecalculateBounds();
+                this.type = value;
             }
-        }
-
-        public float PosY
-        {
-            get { return this.transform.PosY; }
-            set
-            {
-                this.transform.PosY = value;
-                RecalculateBounds();
-            }
-
-        }
-
-        public void RecalculateBounds()
-        {
-            this.bounds = new Rectangle(this.transform.Position.ToPoint(), (normal.DefaultSource.Size.ToVector2() * Scale).ToPoint());
-            if (inflate)
-            {
-                this.bounds = bounds.InflateExt(inflateSize);
-            }
-        }
-
-        public Vector2 Size
-        {
-            get { return this.normal.Size*this.Scale; }
         }
 
         public bool Clicked
@@ -141,16 +145,6 @@ namespace MonoTinker.Code.Components.UI
             {
                 return this.clicked;
             }
-        }
-
-        /// <summary>
-        /// Working only on single click mode
-        /// </summary>
-        public void SetClickCallbackWithTag(string buttontag, Action<string> action)
-        {
-            this.Tag = buttontag;
-            this.callbackOnClick = true;
-            this.clickCallback = action;
         }
 
         public Action ClickCallback
@@ -163,6 +157,10 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public bool Over(Vector2 point)
         {
             bool result = bounds.Contains(point);
@@ -170,7 +168,26 @@ namespace MonoTinker.Code.Components.UI
             return result;
         }
 
-        public void Update()
+        /// <summary>
+        /// Working only on single click mode
+        /// </summary>
+        public void SetClickCallbackWithTag(string buttontag, Action<string> action)
+        {
+            this.Tag = buttontag;
+            this.callbackOnClick = true;
+            this.clickCallback = action;
+        }
+
+        public void RecalculateBounds()
+        {
+            this.bounds = new Rectangle(this.Position.ToPoint(), (normal.DefaultSource.Size.ToVector2() * Scale).ToPoint());
+            if (inflate)
+            {
+                this.bounds = bounds.InflateExt(inflateSize);
+            }
+        }
+
+        public void Update(GameTime gameTime)
         {
             if (fadeIn || fadeOut)
             {
@@ -183,7 +200,7 @@ namespace MonoTinker.Code.Components.UI
                     this.clicked = !InputHandler.MouseDownOnce("left");
                     return;
                 }
-                this.clicked = this.hovering && InputHandler.MouseDownOnce("left"); 
+                this.clicked = this.hovering && InputHandler.MouseDownOnce("left");
             }
             else if (type == ClickType.Continuous)
             {
@@ -212,7 +229,7 @@ namespace MonoTinker.Code.Components.UI
                 {
                     if (clicked)
                     {
-                        click.Draw(spriteBatch, Position, Rotation, Scale,click.Clr * Alpha);
+                        click.Draw(spriteBatch, Position, Rotation, Scale, click.Clr * Alpha);
                     }
                     else
                     {
@@ -227,13 +244,13 @@ namespace MonoTinker.Code.Components.UI
             }
 
 #if DEBUG
-            DebugShapes.DrawRectagnle(spriteBatch, this.bounds.Location.ToVector2(), this.bounds.Size.ToVector2(), 1, Color.Red);
+            DebugShapes.DrawRectagnle(spriteBatch, this.bounds.Location.ToVector2(), this.bounds.Size.ToVector2(), 1, Color.Blue);
 #endif
         }
 
         public Button DirectCopy()
         {
-            Button copy = new Button(this.Position,normal.DirectClone(),hover.DirectClone(),click.DirectClone());
+            Button copy = new Button(this.Position, normal.DirectClone(), hover.DirectClone(), click.DirectClone());
             copy.ClickType = type;
             copy.Scale = this.Scale;
             copy.Rotation = this.Rotation;
@@ -242,7 +259,8 @@ namespace MonoTinker.Code.Components.UI
             copy.Transitioning = this.transitioning;
             copy.FadeSpeed = this.fadeSpeed;
             return copy;
-        }
-        
+        } 
+        #endregion
+
     }
 }

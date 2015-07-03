@@ -15,11 +15,10 @@ namespace MonoTinker.Code.Components.Elements
         Center,TopLeft, TopRight,BottomLeft,BottomRight
     }
 
-    public class Sprite : ISimpleDrawable
+    public class Sprite : ISimpleDrawable,ITransformable
     {
         protected const float NinetyDegreeRotation = (float)(Math.PI/2f);
         protected Texture2D _texture2D;
-        protected Transform Transform;
         protected Rectangle source;
         protected Vector2 origin;
         protected bool isRotated;
@@ -32,7 +31,7 @@ namespace MonoTinker.Code.Components.Elements
 
         }
 
-        public Sprite(Texture2D texture2D, Rectangle sourceRect) : this(texture2D, sourceRect, new Vector2(0.5f, 0.5f), (bool) (bool) (bool) (bool) (bool) (bool) (bool) (bool) false)
+        public Sprite(Texture2D texture2D, Rectangle sourceRect) : this(texture2D, sourceRect, new Vector2(0.5f, 0.5f), false)
         {
             this.Origin = Origin.TopLeft;
         }
@@ -47,7 +46,8 @@ namespace MonoTinker.Code.Components.Elements
             bool isrotated)
         {
             this._texture2D = texture;
-            this.Transform = new Transform(position);
+            this.ScaleF = 1;
+            this.Position = position;
             this.source = source;
             this.DefaultSource = source;
             this.SpriteCenter = isRotated
@@ -118,16 +118,12 @@ namespace MonoTinker.Code.Components.Elements
 
         public Vector2 Size
         {
-            get { return this.DefaultSource.Size.ToVector2() * this.Transform.Scale; }
+            get { return this.DefaultSource.Size.ToVector2() * this.Scale; }
         }
 
         public Vector2 SpriteCenter { get; private set; }
 
-        public Vector2 Scale
-        {
-            get { return this.Transform.Scale; }
-            set { this.Transform.Scale = value; }
-        }
+        public Vector2 Scale { get; set; }
 
         public float ScaleF
         {
@@ -135,31 +131,20 @@ namespace MonoTinker.Code.Components.Elements
             set { this.Scale = Vector2.One * value; }
         }
 
-        public float Rotation
-        {
-            get { return this.Transform.Rotation; }
-            set { this.Transform.Rotation = value; }
-        }
+        public float Rotation { get; set; }
 
-        public Vector2 Position
-        {
-            get
-            {
-                return this.Transform.Position;
-            }
-            set { this.Transform.Position = value; }
-        }
+        public Vector2 Position { get; set; }
 
         public float PosX
         {
-            get { return this.Transform.PosX; }
-            set { this.Transform.PosX = value; }
+            get { return this.Position.X; }
+            set { this.Position = new Vector2(value,Position.Y); }
         }
 
         public float PosY
         {
-            get { return this.Transform.PosY; }
-            set { this.Transform.PosY = value; }
+            get { return this.Position.Y; }
+            set { this.Position = new Vector2(Position.X,value); }
         }
 
         public float LayerDepth { get; set; }
@@ -224,8 +209,8 @@ namespace MonoTinker.Code.Components.Elements
             toReturn.Effect = this.effect;
             toReturn.Position = new Vector2(this.Position.X,this.Position.Y);
             toReturn.SpriteCenter = this.SpriteCenter;
-            toReturn.Transform.Scale = this.Transform.Scale;
-            toReturn.Transform.Rotation = this.Transform.Rotation;
+            toReturn.Scale = this.Scale;
+            toReturn.Rotation = this.Rotation;
             toReturn.OriginCustom = this.origin;
             return toReturn;
         }

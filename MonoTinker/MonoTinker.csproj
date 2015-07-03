@@ -62,6 +62,7 @@
     <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
     <Compile Include="Code\Components\Interfaces\IElementDrawable.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
+    <Compile Include="Code\Components\Interfaces\ITransformable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
     <Compile Include="Code\Components\Elements\Deprecated\SpriteSheet.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Code\GameScreens\OtherScreen.cs" />
     <Compile Include="Code\Components\Elements\Screen.cs" />
     <Compile Include="Code\Components\Elements\Sprite.cs" />
-    <Compile Include="Code\Components\Elements\Transform.cs" />
     <Compile Include="Code\GameScreens\SplashScreen.cs" />
     <Compile Include="Code\Managers\AssetManager.cs" />
     <Compile Include="Code\Managers\GameManager.cs" />

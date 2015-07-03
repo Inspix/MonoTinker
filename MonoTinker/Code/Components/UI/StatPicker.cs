@@ -37,23 +37,23 @@ namespace MonoTinker.Code.Components.UI
             Height = box.SourceHeight;
             
             Text strengtValue = new Text(font,new Vector2(box.SourceWidth-30,22), currentStats.Strenght.ToString());
-            strengtValue.Transform.Scale = Vector2.One*0.4f;
+            strengtValue.Scale = Vector2.One*0.4f;
             Text agilityValue = new Text(font, strengtValue.Position, currentStats.Agility.ToString());
-            agilityValue.Transform.PosY += fontSize.Y+15;
-            agilityValue.Transform.Scale = Vector2.One * 0.4f;
+            agilityValue.PosY += fontSize.Y+15;
+            agilityValue.Scale = Vector2.One * 0.4f;
             Text vitalityValue = new Text(font, agilityValue.Position, currentStats.Vitality.ToString());
-            vitalityValue.Transform.PosY += fontSize.Y + 15;
-            vitalityValue.Transform.Scale = Vector2.One * 0.4f;
+            vitalityValue.PosY += fontSize.Y + 15;
+            vitalityValue.Scale = Vector2.One * 0.4f;
             Text intellectValue = new Text(font, vitalityValue.Position, currentStats.Intellect.ToString());
-            intellectValue.Transform.PosY += fontSize.Y + 15;
-            intellectValue.Transform.Scale = Vector2.One * 0.4f;
+            intellectValue.PosY += fontSize.Y + 15;
+            intellectValue.Scale = Vector2.One * 0.4f;
             Text wisdomValue = new Text(font, intellectValue.Position, currentStats.Wisdom.ToString());
-            wisdomValue.Transform.PosY += fontSize.Y + 15;
-            wisdomValue.Transform.Scale = Vector2.One * 0.4f;
+            wisdomValue.PosY += fontSize.Y + 15;
+            wisdomValue.Scale = Vector2.One * 0.4f;
             Text pointsLeft = new Text(font,box.SpriteCenter * Vector2.UnitX,"Points left: "+pointsRemaining);
-            pointsLeft.Transform.Scale = Vector2.One*0.35f;
-            pointsLeft.Transform.PosX -= (pointsLeft.Size.X*0.35f)/2;
-            pointsLeft.Transform.PosY += box.SourceHeight - (fontSize.Y + 15);
+            pointsLeft.Scale = Vector2.One*0.35f;
+            pointsLeft.PosX -= (pointsLeft.Size.X)/2;
+            pointsLeft.PosY += box.SourceHeight - (fontSize.Y + 15);
 
             buttons[0] = Factory.ArrowButton(Batch, strengtValue.Position - new Vector2(25,2), Color.White, 0.5f, false);
             buttons[0].ClickType = ClickType.Single;
@@ -213,7 +213,7 @@ namespace MonoTinker.Code.Components.UI
 
             
 
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
             foreach (var button in buttons)
             {
                 if (!button.IsVisible)
@@ -221,7 +221,7 @@ namespace MonoTinker.Code.Components.UI
                     continue;
                 }
                 button.Over(mousePos);
-                button.Update();
+                button.Update(gameTime);
             }
         }
 

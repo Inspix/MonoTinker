@@ -1,8 +1,10 @@
-using System;
-using System.Linq;
+
 
 namespace MonoTinker.Code.Components.UI
 {
+    using System;
+    using System.Linq;
+
     using Elements;
 
     using Managers;
@@ -32,10 +34,12 @@ namespace MonoTinker.Code.Components.UI
         {
             this.Transitioning = true;
             this.OverrideDrawElements = true;
+
             Sprite handle = AssetManager.Instance.Get<Sprite>(Sn.Menu.SliderTop).DirectClone();
             Sprite handle2 = AssetManager.Instance.Get<Sprite>(Sn.Menu.SliderTop).DirectClone();
             handle.Position = Vector2.UnitX * 13;
             handle2.Position = Vector2.UnitX * 165;
+
             Height += handle.SourceHeight - 2;
             Elements.Add("Handle",handle);
             Elements.Add("Handle2",handle2);
@@ -120,7 +124,7 @@ namespace MonoTinker.Code.Components.UI
 
             if (!this.IsVisible) return;
            
-            Vector2 mousePos = InputHandler.MousePos() - this.Transform.Position;
+            Vector2 mousePos = InputHandler.MousePos() - this.Position;
             Vector2 delta = InputHandler.MouseDelta();
             closeButton.Over(mousePos);
             if (fadeIn || fadeOut)
@@ -165,7 +169,7 @@ namespace MonoTinker.Code.Components.UI
             var item = items.FirstOrDefault(s => s != null && s.Selected);
             if (item != null && !GameManager.ItemMoving)
             {
-                item.PositionOffset = this.Transform.Position + item.Position;
+                item.PositionOffset = this.Position + item.Position;
                 GameManager.GetItemFromInventory(this,Array.IndexOf(items,item));
             }
 
@@ -178,8 +182,8 @@ namespace MonoTinker.Code.Components.UI
                 } 
             }
 
-            closeButton.Update();
-            moveButton.Update();
+            closeButton.Update(gameTime);
+            moveButton.Update(gameTime);
 
             if (Keys.Enter.DownOnce())
             {
@@ -190,10 +194,10 @@ namespace MonoTinker.Code.Components.UI
 
         private void Move(Vector2 delta)
         {
-            this.Transform.Position += delta;
+            this.Position += delta;
             foreach (var itemTile in items.Where(itemTile => itemTile != null))
             {
-                itemTile.PositionOffset = this.Transform.Position + Vector2.UnitX * 100;
+                itemTile.PositionOffset = this.Position + Vector2.UnitX * 100;
             }
 
         }
@@ -222,7 +226,7 @@ namespace MonoTinker.Code.Components.UI
             {
                 if (itemTile != null)
                 {
-                    itemTile.Tip.DrawAtPosition(spriteBatch,this.Transform.Position);
+                    itemTile.Tip.DrawAtPosition(spriteBatch,this.Position);
                 }
             }
         }

@@ -19,9 +19,9 @@ namespace MonoTinker.Code.Components.Elements
 
         public Projectile(Sprite sprite, Vector2 position, float rotation) : base(sprite.Texture,sprite.Source)
         {
-            this.Transform = new Transform(position);
-            this.Transform.Rotation = rotation;
-            this.Transform.Scale = Vector2.One; 
+            this.Position = position;
+            this.Rotation = rotation;
+            this.Scale = Vector2.One; 
             this.Speed = 500;
             this.life = 20;
             this.Active = true;
@@ -33,19 +33,19 @@ namespace MonoTinker.Code.Components.Elements
 
         public float RotationAngles
         {
-            get { return this.Transform.Rotation; }
-            set { this.Transform.Rotation = value; }
+            get { return this.Rotation; }
+            set { this.Rotation = value; }
         }
 
         public float RotationRadians
         {
-            get { return MathHelper.ToRadians(this.Transform.Rotation); }
-            set { this.Transform.Rotation = MathHelper.ToDegrees(value); }
+            get { return MathHelper.ToRadians(this.Rotation); }
+            set { this.Rotation = MathHelper.ToDegrees(value); }
         }
 
         public void Move(GameTime gametime)
         {
-            this.Transform.Position += Velocity*Speed* (float)gametime.ElapsedGameTime.TotalSeconds;
+            this.Position += Velocity*Speed* (float)gametime.ElapsedGameTime.TotalSeconds;
             timeElapsed += gametime.ElapsedGameTime.TotalSeconds;
             if (timeElapsed > timeToUpdate)
             {
@@ -55,7 +55,7 @@ namespace MonoTinker.Code.Components.Elements
                     this.Active = false;
                 }
             }
-            this.boudndingBox.Location = this.Transform.Position.ToPoint();
+            this.boudndingBox.Location = this.Position.ToPoint();
         }
 
         public Rectangle BoundingBox
