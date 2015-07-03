@@ -69,7 +69,7 @@ namespace MonoTinker.Code.GameScreens
 
             character = Factory.CharacterAnimation();
             character.Transform.Position = new Vector2(400,150);
-            characterBox.Position = character.Transform.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter;
+            characterBox.Position = character.Transform.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter; ;
 
             font = AssetManager.Instance.Get<SpriteFont>("Standart");
 

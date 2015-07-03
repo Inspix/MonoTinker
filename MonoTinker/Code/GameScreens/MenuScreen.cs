@@ -56,38 +56,38 @@ namespace MonoTinker.Code.GameScreens
             }
 
             logo = atlas["text"];
-            logo.Transform.Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY * 100) + Vector2.UnitX*50;
+            logo.Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY * 100) + Vector2.UnitX*50;
 
             logoGlow = atlas["textGlow"];
-            logoGlow.Transform.Position = logo.Transform.Position - new Vector2(45, -10);
+            logoGlow.Position = logo.Position - new Vector2(45, -10);
             logoGlow.Clr = Color.OrangeRed;
 
             play = atlas["play"];
-            play.Transform.Position = ScreenManager.ScreenCenter + Vector2.UnitY * 35;
-            play.Transform.Scale = Vector2.One*0.4f;
+            play.Position = ScreenManager.ScreenCenter + Vector2.UnitY * 35;
+            play.Scale = Vector2.One*0.4f;
 
             options = atlas["options"];
-            options.Transform.Position = play.Transform.Position + Vector2.UnitY * 100 - Vector2.UnitX * 15;
-            options.Transform.Scale = Vector2.One * 0.4f;
+            options.Position = play.Position + Vector2.UnitY * 100 - Vector2.UnitX * 15;
+            options.Scale = Vector2.One * 0.4f;
 
             exit = atlas["exit"];
-            exit.Transform.Position = options.Transform.Position + Vector2.UnitY * 70 + Vector2.UnitX * 15;
-            exit.Transform.Scale = Vector2.One * 0.5f;
+            exit.Position = options.Position + Vector2.UnitY * 70 + Vector2.UnitX * 15;
+            exit.Scale = Vector2.One * 0.5f;
 
             bigGear = atlas["bigGear"];
-            bigGear.Transform.Position = Vector2.One * 100;
+            bigGear.Position = Vector2.One * 100;
             bigGear.OriginCustom = bigGear.SpriteCenter + new Vector2(-1,2);
 
             smallGear = atlas["smallGear"];
-            smallGear.Transform.Position = bigGear.Transform.Position + Vector2.UnitY * 105 - Vector2.UnitX * 20;
+            smallGear.Position = bigGear.Position + Vector2.UnitY * 105 - Vector2.UnitX * 20;
 
             leds = atlas["leds"];
-            leds.Transform.Position = logo.Transform.Position + Vector2.UnitX * logo.Size.X/2f;
-            leds.Transform.Scale = Vector2.One * 0.7f;
+            leds.Position = logo.Position + Vector2.UnitX * logo.Size.X/2f;
+            leds.Scale = Vector2.One * 0.7f;
 
             belt = atlas["belt"];
             belt.Origin = Origin.Center;
-            belt.Transform.Position = bigGear.Transform.Position + new Vector2(-10,44);
+            belt.Position = bigGear.Position + new Vector2(-10,44);
         }
 
         public override void UnloadContent()
@@ -110,8 +110,8 @@ namespace MonoTinker.Code.GameScreens
                 time = 0;
             }
             MenuIndexCheck();
-            bigGear.Transform.Rotation = rotation;
-            smallGear.Transform.Rotation = rotation;
+            bigGear.Rotation = rotation;
+            smallGear.Rotation = rotation;
         }
 
         public void Input(GameTime gameTime)
@@ -138,7 +138,7 @@ namespace MonoTinker.Code.GameScreens
             }
             if (Keys.Q.Down())
             {
-                play.Transform.Scale(0.1f);
+                play.ScaleF += 0.1f;
             }
             if (InputHandler.DirectionDownOnce("up"))
             {
@@ -153,15 +153,15 @@ namespace MonoTinker.Code.GameScreens
 
         public void MenuIndexCheck()
         {
-            play.Transform.Scale = Index == 1
-                ? Vector2.One * (MathHelper.SmoothStep(play.Transform.Scale.X, 0.5f, 0.1f))
-                : Vector2.One * (MathHelper.SmoothStep(play.Transform.Scale.X, 0.4f, 0.1f));
-            options.Transform.Scale = Index == 2
-                ? Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.5f, 0.1f))
-                : Vector2.One * (MathHelper.SmoothStep(options.Transform.Scale.X, 0.4f, 0.1f));
-            exit.Transform.Scale = Index == 3
-                ? Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.6f, 0.1f))
-                : Vector2.One * (MathHelper.SmoothStep(exit.Transform.Scale.X, 0.5f, 0.1f));
+            play.Scale = Index == 1
+                ? Vector2.One * (MathHelper.SmoothStep(play.Scale.X, 0.5f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(play.Scale.X, 0.4f, 0.1f));
+            options.Scale = Index == 2
+                ? Vector2.One * (MathHelper.SmoothStep(options.Scale.X, 0.5f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(options.Scale.X, 0.4f, 0.1f));
+            exit.Scale = Index == 3
+                ? Vector2.One * (MathHelper.SmoothStep(exit.Scale.X, 0.6f, 0.1f))
+                : Vector2.One * (MathHelper.SmoothStep(exit.Scale.X, 0.5f, 0.1f));
 
             play.Clr = Index == 1 ? ColorHelper.SmoothTransition(play.Clr, Color.OrangeRed, 0.02f) 
                                     : ColorHelper.SmoothTransition(play.Clr, Color.White, 0.02f);

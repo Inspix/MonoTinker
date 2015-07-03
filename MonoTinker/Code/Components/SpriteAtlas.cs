@@ -105,11 +105,6 @@ namespace MonoTinker.Code.Components
                     Width = int.Parse(entry[4]),
                     Height = int.Parse(entry[5])
                 };
-                Vector2 size = new Vector2()
-                {
-                    X = int.Parse(entry[6]),
-                    Y = int.Parse(entry[7])
-                };
 
                 Vector2 center = new Vector2()
                 {
@@ -117,7 +112,7 @@ namespace MonoTinker.Code.Components
                     Y = float.Parse(entry[9])
                 };
 
-                Add(name,new Sprite(texture2D,source,center,size,isRotated));
+                Add(name,new Sprite(texture2D,source,center,isRotated));
 
             }
         }

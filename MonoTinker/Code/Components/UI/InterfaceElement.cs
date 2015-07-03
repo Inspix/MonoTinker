@@ -1,3 +1,5 @@
+using MonoTinker.Code.Components.Interfaces;
+
 namespace MonoTinker.Code.Components.UI
 {
     using System.Collections.Generic;
@@ -7,7 +9,7 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public abstract class InterfaceElement : Fadeable
+    public abstract class InterfaceElement : Fadeable, IElementDrawable
     {
         protected Transform Transform;
 

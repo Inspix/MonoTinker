@@ -60,6 +60,7 @@
     <Compile Include="Code\Components\GameObjects\Projectile.cs" />
     <Compile Include="Code\Components\Interfaces\IAdvancedDrawable.cs" />
     <Compile Include="Code\Components\Interfaces\ICollidable.cs" />
+    <Compile Include="Code\Components\Interfaces\IElementDrawable.cs" />
     <Compile Include="Code\Components\Interfaces\ISimpleDrawable.cs" />
     <Compile Include="Code\Components\SpriteAtlas.cs" />
     <Compile Include="Code\Components\Interfaces\IMovable.cs" />
