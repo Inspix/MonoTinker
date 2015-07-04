@@ -1,3 +1,5 @@
+using System.CodeDom;
+
 namespace MonoTinker.Code.Utils
 {
     public class Sn // Sprite names
@@ -169,11 +171,70 @@ namespace MonoTinker.Code.Utils
     {
         public class Walk
         {
-            public const string Human = "humanWalk";
-            public const string Skeleton = "skeletonWalk";
-            public const string Hair = "hairWalk";
-            public const string PlateHelm = "plateHelmWalk";
-            public const string ChainHelm = "chainHelmWalk";
+            public const string BodyHuman                   = "humanwalkbody";
+            public const string BodySkeleton                = "skeletonwalkbody";
+            public const string BehindQuiver                = "quiverwalkbehind";
+            public const string BeltLeather                 = "leatherwalkbelt";
+            public const string BeltRope                    = "ropewalkbelt";
+            public const string FeetPlateArmorShoes         = "plate_armor_shoeswalkfeet";
+            public const string FeetShoesBrown              = "shoes_brownwalkfeet";
+            public const string HandPlateArmorGloves        = "plate_armor_gloveswalkhands";
+            public const string HeadChainArmorHelm          = "chain_armor_helmetwalkhead";
+            public const string HeadChainArmorHood          = "chain_armor_hoodwalkhead";
+            public const string HeadHairBlonde              = "hair_blondewalkhead";
+            public const string HeadHairWhite               = "hair_whitewalkhead";
+            public const string HeadLeatherHat              = "leather_armor_hatwalkhead";
+            public const string HeadPlateArmorHelm          = "plate_armor_helmetwalkhead";
+            public const string HeadRobeHood                = "robe_hoodwalkhead";
+            public const string LegsPlateArmorPants         = "plate_armor_pantswalklegs";
+            public const string LegsRobeSkirt               = "robe_skirtwalklegs";
+            public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplewalktorso";
+            public const string TorsoChainArmor             = "chain_armor_torsowalktorso";
+            public const string TorsoLeatherBracers         = "leather_armor_bracerswalktorso";
+            public const string TorsoLeatherShirt           = "leather_armor_shirt_whitewalktorso";
+            public const string TorsoLeatherShouders        = "leather_armor_shouderswalktorso";
+            public const string TorsoLeatherArmor           = "leather_armor_torsowalktorso";
+            public const string TorsoPlateArmorShoulders    = "plate_armor_arms_shoulderswalktorso";
+            public const string TorsoPlateArmor             = "plate_armor_torsowalktorso";
+            public const string TorsoRobeShirt              = "robe_shirt_brownwalktorso";
+            public const string WeaponShieldBody            = "shield_cutout_bodywalkweapon";
+            public const string WeaponShieldChainArmor      = "shield_cutout_chain_armor_helmetwalkweapon";
+        }
+
+        public class Slash
+        {
+            public const string BodyHuman                    = "humanslashbody";
+            public const string BodySkeleton                 = "skeletonslashbody";
+            public const string BehindQuiver                 = "quiverslashbehind";
+            public const string BeltLeather                  = "leatherslashbelt";
+            public const string BeltRope                     = "ropeslashbelt";
+            public const string FeetPlateArmorShoes          = "plate_armor_shoesslashfeet";
+            public const string FeetShoesBrown               = "shoes_brownslashfeet";
+            public const string HandPlateArmorGloves         = "plate_armor_glovesslashhands";
+            public const string HeadChainArmorHelm           = "chain_armor_helmetslashhead";
+            public const string HeadChainArmorHood           = "chain_armor_hoodslashhead";
+            public const string HeadHairBlonde               = "hair_blondeslashhead";
+            public const string HeadHairWhite                = "hair_whiteslashhead";
+            public const string HeadLeatherHat               = "leather_armor_hatslashhead";
+            public const string HeadPlateArmorHelm           = "plate_armor_helmetslashhead";
+            public const string HeadRobeHood                 = "robe_hoodslashhead";
+            public const string LegsPlateArmorPants          = "plate_armor_pantsslashlegs";
+            public const string LegsPants                    = "pants_greenishslashlegs";
+            public const string LegsRobeSkirt                = "robe_skirtslashlegs";
+            public const string TorsoChainArmorJacket        = "chain_armor_jacket_purpleslashtorso";
+            public const string TorsoChainArmor              = "chain_armor_torsoslashtorso";
+            public const string TorsoLeatherBracers          = "leather_armor_bracersslashtorso";
+            public const string TorsoLeatherShirt            = "leather_armor_shirt_whiteslashtorso";
+            public const string TorsoLeatherShouders         = "leather_armor_shouldersslashtorso";
+            public const string TorsoLeatherArmor            = "leather_armor_torsoslashtorso";
+            public const string TorsoPlateArmorShoulders     = "plate_armor_arms_shouldersslashtorso";
+            public const string TorsoPlateArmor              = "plate_armor_torsoslashtorso";
+            public const string TorsoRobeShirt               = "robe_shirt_brownslashtorso";
+            public const string WeaponShieldBody             = "shield_cutout_bodyslashweapon";
+            public const string WeaponShieldChainArmor       = "shield_cutout_chain_armor_helmetslashweapon";
+            public const string WeaponLongSword              = "longswordslashweapon";
+            public const string WeaponRapier                 = "rapierslashweapon";
+            public const string WeaponDagger                 = "daggerslashweapon";
         }
 
         public class Thrust
@@ -185,3 +246,66 @@ namespace MonoTinker.Code.Utils
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

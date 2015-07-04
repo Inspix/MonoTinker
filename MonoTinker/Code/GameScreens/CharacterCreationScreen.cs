@@ -90,7 +90,7 @@ namespace MonoTinker.Code.GameScreens
             menuBox = new MenuBox(new Vector2(50, ScreenManager.ScreenCenter.Y), ScreenManager.Device,
                 new string[] {"Name", "Hair", "Hair color", "Skin color","Class","Bonus stat","Confirm"}, new Vector2(5, 15),Vector2.UnitY*50);
             menuBox.Label(6).Position += new Vector2(0, menuBox.Label(6).Size.Y + 25);
-            menuBox.OnIndexChange = OnIndexChange;
+            menuBox.OnIndexChange = this.OnIndexChange;
             menuBox.Position -= new Vector2(0, menuBox.Size.Y/2);
             menuBox[0] = () => this.enterName = true;
             menuBox[1] = ToggleHair;
@@ -102,11 +102,11 @@ namespace MonoTinker.Code.GameScreens
             switch (menuBox.SelectedIndex)
             {
                 case 2:
-                    if (character.ContainsLayerTag(An.Walk.Hair + "Down"))
+                    if (character.ContainsLayerTag(An.Walk.HeadHairWhite + "Down"))
                     {
                         Console.WriteLine(f);
                         selectedHairSaturation = f;
-                        this.character.Layer(An.Walk.Hair + "Down").Tint = ColorHelper.Saturation(selectedHairColor,f);
+                        this.character.Layer(An.Walk.HeadHairWhite + "Down").Tint = ColorHelper.Saturation(selectedHairColor,f);
                     }
                     break;
                 case 3:
@@ -156,9 +156,9 @@ namespace MonoTinker.Code.GameScreens
         private void OnColorPick(Color clr)
         {
             selectedHairColor = clr;
-            if (character.ContainsLayerTag(An.Walk.Hair + "Down"))
+            if (character.ContainsLayerTag(An.Walk.HeadHairWhite + "Down"))
             {
-                this.character.Layer(An.Walk.Hair + "Down").Tint = selectedHairColor;
+                this.character.Layer(An.Walk.HeadHairWhite + "Down").Tint = selectedHairColor;
             }
         }
 
@@ -205,22 +205,22 @@ namespace MonoTinker.Code.GameScreens
 
         private void ToggleHair()
         {
-            if (character.ContainsLayerTag(An.Walk.Hair + "Down"))
+            if (character.ContainsLayerTag(An.Walk.HeadHairWhite + "Down"))
             {
                 character.Reset();
-                character.RemoveLayer(An.Walk.Hair + "Down");
+                character.RemoveLayer(An.Walk.HeadHairWhite + "Down");
             }
             else
             {
                 character.Reset();
-                Factory.AddLayer(ref character, An.Walk.Hair + "Down",selectedHairColor);
+                Factory.AddLayer(ref character, An.Walk.HeadHairWhite + "Down",selectedHairColor);
             }
         }
 
         private void OnIndexChange(int index)
         {
             slider.Reset();
-            bool pickerCheck = menuBox.SelectedIndex == 2 && character.ContainsLayerTag(An.Walk.Hair + "Down");
+            bool pickerCheck = menuBox.SelectedIndex == 2 && character.ContainsLayerTag(An.Walk.HeadHairWhite + "Down");
             menuBox.Label(1).Contents = menuBox.SelectedIndex == 1 ? "<Hair>" : "Hair";
             picker.IsVisible = pickerCheck;
             skinTonePicker.IsVisible = menuBox.SelectedIndex == 3;

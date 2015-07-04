@@ -1,4 +1,6 @@
 
+using System.IO;
+using System.Threading;
 using MonoTinker.Code.Components.Extensions;
 
 namespace MonoTinker.Code.Managers
@@ -68,13 +70,47 @@ namespace MonoTinker.Code.Managers
 
         private void LoadAnimationFrames()
         {
-            this.AddWalking(spriteAtlas.PopulateFromSpriteSheet(
-                content.Load<Texture2D>("Sprites/Character/body/walk/human"),new Vector2(64,64),An.Walk.Human),An.Walk.Human);
-            this.AddWalking(spriteAtlas.PopulateFromSpriteSheet(
-                content.Load<Texture2D>("Sprites/Character/body/walk/skeleton"),new Vector2(64,64),An.Walk.Skeleton),An.Walk.Skeleton);
-            this.AddWalking(spriteAtlas.PopulateFromSpriteSheet(
-                content.Load<Texture2D>("Sprites/Character/equipment/head/walk/hair_white"), new Vector2(64, 64), An.Walk.Hair),An.Walk.Hair);
+            LoadSpriteSheets(content.RootDirectory + "/Sprites/");
         }
+
+        private void LoadSpriteSheets(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            foreach (var file in files)
+            {
+                LoadSheet(file);
+            }
+            string[] subdirs = Directory.GetDirectories(path);
+            foreach (var subdir in subdirs)
+            {
+                LoadSpriteSheets(subdir);
+            }
+        }
+
+        private void LoadSheet(string filename)
+        {
+            int sub = filename.IndexOf("/")+1;
+            filename = filename.Replace("\\", "/");
+            filename = filename.Substring(sub);
+            int rem = filename.LastIndexOf(".");
+            filename = filename.Remove(rem);
+            //Console.WriteLine(filename);
+            string[] tags = filename.Split('/');
+            string tag = tags[tags.Length - 1] + tags[tags.Length - 2] + tags[tags.Length - 3];
+            if (filename.Contains("walk"))
+            {
+                AddWalking(spriteAtlas.PopulateFromSpriteSheet(
+                    content.Load<Texture2D>(filename),new Vector2(64), tag), tag);
+            }else if (filename.Contains("slash"))
+            {
+                Texture2D texture = content.Load<Texture2D>(filename);
+                float x = texture.Width/6f;
+                 float y = texture.Height/4f;
+                AddSlashing(spriteAtlas.PopulateFromSpriteSheet(
+                    texture,new Vector2(x,y), tag), tag,x > 64);
+            }
+        }
+
 
         public void UnloadContent()
         {
@@ -82,7 +118,8 @@ namespace MonoTinker.Code.Managers
         }
 
         private void AddWalking(string[] framenames,string tag)
-        {
+        { 
+            //Console.WriteLine(tag);
             Animation[] result = Factory.CreateWalking(framenames, ref spriteAtlas);
             this.animations.Add(tag + "idleUp", result[0]);
             this.animations.Add(tag + "idleDown", result[1]);
@@ -94,7 +131,24 @@ namespace MonoTinker.Code.Managers
             this.animations.Add(tag + "Right", result[7]);
         }
 
-        public AnimationController GetWalkingController(string tag)
+        private void AddSlashing(string[] framenames, string tag, bool offset = false)
+        {
+            Console.WriteLine(tag);
+
+            Animation[] result = Factory.CreateSlashing(framenames, ref spriteAtlas);
+            if (offset)
+            {
+                foreach (var animation in result)
+                {
+                    animation.Offset = new Vector2(-64);
+                }
+            }
+            this.animations.Add(tag + "slashUp", result[0]);
+            this.animations.Add(tag + "slashLeft", result[1]);
+            this.animations.Add(tag + "slashDown", result[2]);
+            this.animations.Add(tag + "slashRight", result[3]);
+        }
+        public AnimationController GetBaseWalkingController(string tag)
         {
             if (!this.animations.ContainsKey(tag + "Up"))
             {
@@ -103,8 +157,8 @@ namespace MonoTinker.Code.Managers
             }
             AnimationController result = new AnimationController();
             result.AddState("idleUp",new AnimationV2(this.animations[tag + "idleUp"].Copy()));
-            result.AddState("idleDown", new AnimationV2(this.animations[tag + "idleLeft"].Copy()));
-            result.AddState("idleLeft", new AnimationV2(this.animations[tag + "idleRight"].Copy()));
+            result.AddState("idleDown", new AnimationV2(this.animations[tag + "idleDown"].Copy()));
+            result.AddState("idleLeft", new AnimationV2(this.animations[tag + "idleLeft"].Copy()));
             result.AddState("idleRight", new AnimationV2(this.animations[tag + "idleRight"].Copy()));
             result.AddState("Up", new AnimationV2(this.animations[tag + "Up"].Copy()));
             result.AddState("Down", new AnimationV2(this.animations[tag + "Down"].Copy()));

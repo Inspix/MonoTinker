@@ -11,17 +11,17 @@ namespace MonoTinker.Code.Utils
         {
             Color[] colors = new Color[16];
 
-            colors[0] =  new Color(255, 255, 255);
-            colors[1] =  new Color(255, 229, 200);
-            colors[2] =  new Color(255, 218, 190);
-            colors[3] =  new Color(255, 206, 180);
-            colors[4] =  new Color(255, 195, 170);
-            colors[5] =  new Color(240, 184, 160);
-            colors[6] =  new Color(225, 172, 150);
-            colors[7] =  new Color(210, 161, 140);
-            colors[8] =  new Color(195, 149, 130);
-            colors[9] =  new Color(180, 138, 120);
-            colors[10] =  new Color(165, 126, 110);
+            colors[0] = new Color(255, 255, 255);
+            colors[1] = new Color(255, 229, 200);
+            colors[2] = new Color(255, 218, 190);
+            colors[3] = new Color(255, 206, 180);
+            colors[4] = new Color(255, 195, 170);
+            colors[5] = new Color(240, 184, 160);
+            colors[6] = new Color(225, 172, 150);
+            colors[7] = new Color(210, 161, 140);
+            colors[8] = new Color(195, 149, 130);
+            colors[9] = new Color(180, 138, 120);
+            colors[10] = new Color(165, 126, 110);
             colors[11] = new Color(150, 114, 100);
             colors[12] = new Color(135, 114, 90);
             colors[13] = new Color(120, 92, 80);

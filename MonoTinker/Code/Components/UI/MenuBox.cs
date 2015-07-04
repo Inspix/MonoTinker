@@ -88,15 +88,27 @@ namespace MonoTinker.Code.Components.UI
             set { this.onIndexChange = value; }
         }
 
+
+        /// <summary>
+        /// Get or set the on enter press action aswell as change callback of the given Index
+        /// </summary>
+        /// <param name="x">Index to set</param>
+        /// <param name="callback">True for index leave callback, False for on enter press</param>
+        /// <returns></returns>
         public Action this[int x, bool callback = false]
         {
             get
             {
-                if (!callback)
+                if (!callback && optionActions != null)
                 {
                     return this.optionActions[x];
                 }
-                return this.callbacks[x];
+                else if (callback && callbacks != null)
+                {
+                    return this.callbacks[x];
+                }
+                return null;
+
             }
 
             set
@@ -131,6 +143,10 @@ namespace MonoTinker.Code.Components.UI
                 if (value >= this.options.Length)
                 {
                     return;
+                }
+                if (this[SelectedIndex,true] != null)
+                {
+                    this[SelectedIndex, true].Invoke();
                 }
                 this.selectedIndex = value;
                 if (onIndexChange != null)

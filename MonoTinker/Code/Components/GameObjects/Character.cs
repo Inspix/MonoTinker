@@ -14,6 +14,12 @@ namespace MonoTinker.Code.Components.GameObjects
         NPC,
         Friendly
     }
+
+    public enum CharacterClass
+    {
+        Warrior,Wizard,Archer
+    }
+
     public abstract class Character : Entity
     {
         private Text name;
@@ -26,6 +32,7 @@ namespace MonoTinker.Code.Components.GameObjects
         protected Character(AnimationController animation, Vector2 position,Stats stats,CharacterType type = CharacterType.Player) : base(animation, position)
         {
             this.stats = stats;
+            this.type = type;
             this.health.Calculation = GameManager.CalculateHealth;
             this.mana.Calculation = GameManager.CalculateMana;
             this.spirit.Calculation = GameManager.CalculateSpirit;

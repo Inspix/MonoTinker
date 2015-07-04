@@ -53,6 +53,7 @@ namespace MonoTinker.Code.Components.Elements
         public AnimationController()
         {
             this.ScaleF = 1;
+            this.IsVisible = true;
             this.states = new Dictionary<string, AnimationV2>();
             this.ResetOnStateChange = true;
         }
@@ -66,6 +67,7 @@ namespace MonoTinker.Code.Components.Elements
         public AnimationController(Dictionary<string, AnimationV2> states)
         {
             this.ScaleF = 1;
+            this.IsVisible = true;
             this.ResetOnStateChange = true;
             this.States = states;
         } 
@@ -224,8 +226,7 @@ namespace MonoTinker.Code.Components.Elements
                 Debug.Error("The animation doesn't have state: {0} to overwrite to..", stateName);
                 return;
             }
-
-            this.states[stateName] = null;
+            
             this.states[stateName] = animation;
         }
 

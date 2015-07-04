@@ -1,9 +1,12 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code;
 using MonoTinker.Code.Components;
+using MonoTinker.Code.Components.Elements.DebugGraphics;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
 
@@ -21,6 +24,8 @@ namespace MonoTinker
         public static bool ShouldExit;
         private ScreenManager sm;
         public Vector2 CameraLookAt;
+        public static bool Isloading;
+        public static float percent;
 
         public MonoTinker(int width,int height)
         {
@@ -47,7 +52,7 @@ namespace MonoTinker
             IsMouseVisible = true;
             sm = new ScreenManager(Content,Window,GraphicsDevice);
             ScreenManager.View = graphics.GraphicsDevice.Viewport;
-            AssetManager.Instance.LoadContent(Content,GraphicsDevice);
+           
             base.Initialize();
         }
 
@@ -60,16 +65,16 @@ namespace MonoTinker
             // Create a new SpriteBatch, which can be used to draw textures.
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
+            
+            AssetManager.Instance.LoadContent(Content, GraphicsDevice);
         }
-
+        
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -97,10 +102,7 @@ namespace MonoTinker
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            
             sm.Draw(spriteBatch);
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }

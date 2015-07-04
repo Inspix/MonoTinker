@@ -18,30 +18,30 @@ namespace MonoTinker.Code.Components.Extensions
         private static Random rng = ScreenManager.Rng;
 
         public static AnimationV2 CreateAnimationWithLayers(SpriteAtlas atlas, List<string[]> layers, int startingIndex,
-            int count,int fps = 30)
+            int count, string tag, int fps = 30)
         {
             AnimationV2 result = new AnimationV2(layers[0].Skip(startingIndex).Take(count).ToArray(),atlas, fps);
             for (int i = 1; i < layers.Count; i++)
             {
 
-                result.AddLayer(new Animation(layers[i].Skip(startingIndex).Take(count).ToArray(), atlas, fps));
+                result.AddLayer(new Animation(layers[i].Skip(startingIndex).Take(count).ToArray(), atlas, fps),tag);
 
             }
             return result;
         }
-
+/*
         public static AnimationV2 CreateAnimationWithLayers(SpriteAtlas atlas, List<string[]> layers, int startingIndex,
-           int count, Vector2 offset, int fps = 30)
+           int count,string tag, int fps = 30)
         {
             AnimationV2 result = new AnimationV2(layers[0].Skip(startingIndex).Take(count).ToArray(), atlas, fps);
             for (int i = 1; i < layers.Count; i++)
             {
 
-                result.AddLayer(new Animation(layers[i].Skip(startingIndex).Take(count).ToArray(), atlas, fps),"",offset);
+                result.AddLayer(new Animation(layers[i].Skip(startingIndex).Take(count).ToArray(), atlas, fps),tag);
 
             }
             return result;
-        }
+        }*/
 
         public static Item CreateItem(string name, int maxStr, int maxAgi, int maxVit, int maxInt, int maxWis, ItemRarity itemRarity = ItemRarity.Common)
         {
@@ -72,17 +72,27 @@ namespace MonoTinker.Code.Components.Extensions
             return result;
         }
 
+        public static Animation[] CreateSlashing(string[] framenames, ref SpriteAtlas atlas)
+        {
+            Animation[] result = new Animation[4];
+            result[0] = CreateAnimation(ref atlas, framenames, 0, 5);  // Slash up
+            result[1] = CreateAnimation(ref atlas, framenames, 6, 11); // Slash left
+            result[2] = CreateAnimation(ref atlas, framenames, 12, 17);  // Slash down
+            result[3] = CreateAnimation(ref atlas, framenames, 18, 23); // Slash right
+            return result;
+        }
+
         public static AnimationV2 CharacterAnimation()
         {
-            AnimationV2 toReturn = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Walk.Human + "Down"));
+            AnimationV2 toReturn = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Walk.BodyHuman + "Down"));
             return toReturn;
         }
 
-        public static void AddLayer(ref AnimationV2 anim, string layertag,Color clr = default(Color),Vector2 offset = default(Vector2))
+        public static void AddLayer(ref AnimationV2 anim, string layertag,Color clr = default(Color))
         {
             Animation result = AssetManager.Instance.Get<Animation>(layertag).Copy();
             result.Tint = clr;
-            anim.AddLayer(result, layertag,offset);
+            anim.AddLayer(result, layertag);
         }
 
 

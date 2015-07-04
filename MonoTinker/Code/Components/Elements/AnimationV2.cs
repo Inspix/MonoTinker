@@ -61,6 +61,7 @@ namespace MonoTinker.Code.Components.Elements
             this.FramesPerSecond = fps;
             this.Looping = true;
             this.ScaleF = 1;
+            this.IsVisible = true;
         }
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace MonoTinker.Code.Components.Elements
             this.FramesPerSecond = baseAnim.FramesPerSecond;
             this.Looping = baseAnim.Looping;
             this.ScaleF = 1;
+            this.IsVisible = true;
         }
         #endregion
 
@@ -157,13 +159,12 @@ namespace MonoTinker.Code.Components.Elements
         /// </summary>
         /// <param name="animation">animation</param>
         /// <param name="offset">offset of the entire animation layer</param>
-        public void AddLayer(Animation animation, string tag = "", Vector2 offset = default(Vector2))
+        public void AddLayer(Animation animation, string tag)
         {
             if (layers == null)
             {
                 this.layers = new List<Animation>();
             }
-            animation.Offset = offset;
             layers.Add(animation);
             layerTags.Add(tag);
         }
@@ -304,7 +305,10 @@ namespace MonoTinker.Code.Components.Elements
         /// <param name="spriteBatch">SpriteBatch to draw with</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.Draw(spriteBatch, this.Position, this.Rotation, Vector2.Zero, this.Scale);
+            if (IsVisible)
+            {
+                this.Draw(spriteBatch, this.Position, this.Rotation, Vector2.Zero, this.Scale);
+            }
         }
 
         /// <summary>
@@ -314,7 +318,10 @@ namespace MonoTinker.Code.Components.Elements
         /// <param name="position">Position to draw at</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            this.Draw(spriteBatch, position, 0);
+            if (IsVisible)
+            {
+                this.Draw(spriteBatch, position, 0);
+            }
         }
 
         /// <summary>
@@ -329,12 +336,14 @@ namespace MonoTinker.Code.Components.Elements
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2? origin = null,
             Vector2? scale = null, SpriteEffects effect = SpriteEffects.None)
         {
-            for (int i = 0; i < layers.Count; i++)
+            if (IsVisible)
             {
-                layers[i].Draw(spriteBatch, position, rotation, origin ?? Vector2.Zero,
-                    scale ?? Vector2.One, effect);
+                for (int i = 0; i < layers.Count; i++)
+                {
+                    layers[i].Draw(spriteBatch, position, rotation, origin ?? Vector2.Zero,
+                        scale ?? Vector2.One, effect);
+                }
             }
-
         }
 
         /// <summary>
