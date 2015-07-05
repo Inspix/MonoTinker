@@ -94,7 +94,6 @@ namespace MonoTinker.Code.Managers
             filename = filename.Substring(sub);
             int rem = filename.LastIndexOf(".");
             filename = filename.Remove(rem);
-            //Console.WriteLine(filename);
             string[] tags = filename.Split('/');
             string tag = tags[tags.Length - 1] + tags[tags.Length - 2] + tags[tags.Length - 3];
             if (filename.Contains("walk"))
@@ -109,6 +108,7 @@ namespace MonoTinker.Code.Managers
                 AddSlashing(spriteAtlas.PopulateFromSpriteSheet(
                     texture,new Vector2(x,y), tag), tag,x > 64);
             }
+            //todo All other states and animation layers
         }
 
 
@@ -119,7 +119,6 @@ namespace MonoTinker.Code.Managers
 
         private void AddWalking(string[] framenames,string tag)
         { 
-            //Console.WriteLine(tag);
             Animation[] result = Factory.CreateWalking(framenames, ref spriteAtlas);
             this.animations.Add(tag + "idleUp", result[0]);
             this.animations.Add(tag + "idleDown", result[1]);
