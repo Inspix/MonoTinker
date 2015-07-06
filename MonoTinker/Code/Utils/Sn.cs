@@ -1,5 +1,3 @@
-using System.CodeDom;
-
 namespace MonoTinker.Code.Utils
 {
     public class Sn // Sprite names
@@ -169,6 +167,39 @@ namespace MonoTinker.Code.Utils
 
     public class An // Animation names
     {
+        public class Bow
+        {
+            public const string BodyHuman                   = "humanbowbody";
+            public const string BodySkeleton                = "skeletonbowbody";
+            public const string BehindQuiver                = "quiverbowbehind";
+            public const string BeltLeather                 = "leatherbowbelt";
+            public const string BeltRope                    = "ropebowbelt";
+            public const string FeetPlateArmorShoes         = "plate_armor_shoesbowfeet";
+            public const string FeetShoesBrown              = "shoes_brownbowfeet";
+            public const string HandPlateArmorGloves        = "plate_armor_glovesbowhands";
+            public const string HeadChainArmorHelm          = "chain_armor_helmetbowhead";
+            public const string HeadChainArmorHood          = "chain_armor_hoodbowhead";
+            public const string HeadHairBlonde              = "hair_blondebowhead";
+            public const string HeadHairWhite               = "hair_whitebowhead";
+            public const string HeadLeatherHat              = "leather_armor_hatbowhead";
+            public const string HeadPlateArmorHelm          = "plate_armor_helmetbowhead";
+            public const string HeadRobeHood                = "robe_hoodbowhead";
+            public const string LegsPants                   = "pants_greenishbowlegs";
+            public const string LegsPlateArmorPants         = "plate_armor_pantsbowlegs";
+            public const string LegsRobeSkirt               = "robe_skirtbowlegs";
+            public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplebowtorso";
+            public const string TorsoChainArmor             = "chain_armor_torsobowtorso";
+            public const string TorsoLeatherBracers         = "leather_armor_bracersbowtorso";
+            public const string TorsoLeatherShirt           = "leather_armor_shirt_whitebowtorso";
+            public const string TorsoLeatherShouders        = "leather_armor_shouldersbowtorso";
+            public const string TorsoLeatherArmor           = "leather_armor_torsobowtorso";
+            public const string TorsoPlateArmorShoulders    = "plate_armor_arms_shouldersbowtorso";
+            public const string TorsoPlateArmor             = "plate_armor_torsobowtorso";
+            public const string TorsoRobeShirt              = "robe_shirt_brownbowtorso";
+            public const string WeaponArrow                 = "arrowbowweapon";
+            public const string WeaponBow                   = "bowbowweapon";
+        }
+
         public class Walk
         {
             public const string BodyHuman                   = "humanwalkbody";
@@ -239,73 +270,71 @@ namespace MonoTinker.Code.Utils
 
         public class Thrust
         {
-            public const string Human = "humanThrust";
+            public const string BodyHuman                   = "humanthrustbody";
+            public const string BehindQuiver                = "quiverthrustbehind";
+            public const string BeltLeather                 = "leatherthrustbelt";
+            public const string BeltRope                    = "ropethrustbelt";
+            public const string FeetPlateArmorShoes         = "plate_armor_shoesthrustfeet";
+            public const string FeetShoesBrown              = "shoes_brownthrustfeet";
+            public const string HandPlateArmorGloves        = "plate_armor_glovesthrusthands";
+            public const string HeadChainArmorHelm          = "chain_armor_helmetthrusthead";
+            public const string HeadChainArmorHood          = "chain_armor_hoodthrusthead";
+            public const string HeadHairBlonde              = "hair_blondethrusthead";
+            public const string HeadHairWhite               = "hair_whitethrusthead";
+            public const string HeadLeatherHat              = "leather_armor_hatthrusthead";
+            public const string HeadPlateArmorHelm          = "plate_armor_helmetthrusthead";
+            public const string HeadRobeHood                = "robe_hoodthrusthead";
+            public const string LegsPants                   = "pants_greenishthrustlegs";
+            public const string LegsPlateArmorPants         = "plate_armor_pantsthrustlegs";
+            public const string LegsRobeSkirt               = "robe_skirtthrustlegs";
+            public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplethrusttorso";
+            public const string TorsoChainArmor             = "chain_armor_torsothrusttorso";
+            public const string TorsoLeatherBracers         = "leather_armor_bracersthrusttorso";
+            public const string TorsoLeatherShirt           = "leather_armor_shirt_whitethrusttorso";
+            public const string TorsoLeatherShouders        = "leather_armor_shouldersthrusttorso";
+            public const string TorsoLeatherArmor           = "leather_armor_torsothrusttorso";
+            public const string TorsoPlateArmorShoulders    = "plate_armor_arms_shouldersthrusttorso";
+            public const string TorsoPlateArmor             = "plate_armor_torsothrusttorso";
+            public const string TorsoRobeShirt              = "robe_shirt_brownthrusttorso";
+            public const string WeaponLongSpear             = "long_spearthrustweapon";
+            public const string WeaponShield                = "shield_cutout_bodythrustweapon";
+            public const string WeaponShieldChainArmor      = "shield_cutout_chain_armor_helmetthrustweapon";
+            public const string WeaponSpear                 = "spearthrustweapon";
+            public const string WeaponStaff                 = "staffthrustweapon";
         }
 
+        public class Hurt
+        {                                                       
+            public const string BodyHuman                   = "humanhurtbody";
+            public const string BodySkeleton                = "skeletonhurtbody";
+            public const string BehindQuiver                = "quiverhurtbehind";
+            public const string BeltLeather                 = "leatherhurtbelt";
+            public const string BeltRope                    = "ropehurtbelt";
+            public const string FeetPlateArmorShoes         = "plate_armor_shoeshurtfeet";
+            public const string FeetShoesBrown              = "shoes_brownhurtfeet";
+            public const string HandPlateArmorGloves        = "plate_armor_gloveshurthands";
+            public const string HeadChainArmorHelm          = "chain_armor_helmethurthead";
+            public const string HeadChainArmorHood          = "chain_armor_hoodhurthead";
+            public const string HeadHairBlonde              = "hair_blondehurthead";
+            public const string HeadHairWhite               = "hair_whitehurthead";
+            public const string HeadLeatherHat              = "leather_armor_hathurthead";
+            public const string HeadPlateArmorHelm          = "plate_armor_helmethurthead";
+            public const string HeadRobeHood                = "robe_hoodhurthead";
+            public const string LegsPants                   = "pants_greenishhurtlegs";
+            public const string LegsPlateArmorPants         = "plate_armor_pantshurtlegs";
+            public const string LegsRobeSkirt               = "robe_skirthurtlegs";
+            public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplehurttorso";
+            public const string TorsoChainArmor             = "chain_armor_torsohurttorso";
+            public const string TorsoLeatherBracers         = "leather_armor_bracershurttorso";
+            public const string TorsoLeatherShirt           = "leather_armor_shirt_whitehurttorso";
+            public const string TorsoLeatherShouders        = "leather_armor_shouldershurttorso";
+            public const string TorsoLeatherArmor           = "leather_armor_torsohurttorso";
+            public const string TorsoPlateArmorShoulders    = "plate_armor_arms_shouldershurttorso";
+            public const string TorsoPlateArmor             = "plate_armor_torsohurttorso";
+            public const string TorsoRobeShirt              = "robe_shirt_brownhurttorso";
+            
+        }
         // TODO add more constants
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

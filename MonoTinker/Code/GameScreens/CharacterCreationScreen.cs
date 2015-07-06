@@ -67,7 +67,7 @@ namespace MonoTinker.Code.GameScreens
             slider.Transitioning = true;
             slider.OnValueChangeCallback = OnValueChangeCallback;
 
-            character = Factory.CharacterAnimation();
+            character = Factory.HumanDownWalk();
             character.Position = new Vector2(400,150);
             characterBox.Position = character.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter; ;
 

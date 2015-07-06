@@ -1,11 +1,9 @@
 
 
-using MonoTinker.Code.Components.GameComponents;
 
 namespace MonoTinker.Code.GameScreens
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -13,13 +11,14 @@ namespace MonoTinker.Code.GameScreens
     using Components;
     using Components.Elements;
     using Components.Extensions;
+    using Components.GameComponents;
+
     using Managers;
     using Utils;
     using Components.UI;
 
     public sealed class TestGround : Screen
     {
-        private SpriteAtlas atlas;
         private AnimationController controler;
 
         private StatusBar status;
@@ -48,7 +47,6 @@ namespace MonoTinker.Code.GameScreens
             inventory.FadeSpeed = 0.01f;
             inventory2 = new Inventory(Vector2.One * 300, ScreenManager.Device, 4);
             controler = new AnimationController();
-            atlas = new SpriteAtlas();
             Item x = Factory.CreateItem("Ashbringer", 50, 25, 50, 10, 10, ItemRarity.Legendary);
             Item y = Factory.CreateItem("Staff of Regrowth", 10, 5, 35, 50, 50, ItemRarity.Epic);
             fbox = new FancyTextBox(Vector2.UnitY* 300,ScreenManager.Device, @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",15,WriteEffect.CharacterByCharacter); 
@@ -65,35 +63,34 @@ namespace MonoTinker.Code.GameScreens
                 Console.WriteLine(animationV2.Key);
             }
 
-            var slashUp = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Slash.BodyHuman + "slashUp"));
-            slashUp.AddLayer(AssetManager.Instance.Get<Animation>(An.Slash.WeaponLongSword + "slashUp"),"slashup");
-            slashUp.ChangeLayerOffset(1,Vector2.One * -64);
+            var slashUp = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Thrust.BodyHuman + "Up"));
             slashUp.Looping = false;
-            /*var slashLeft = Factory.CreateAnimationWithLayers(atlas, slashLayers, 6, 6, "slashLeft", 10);
-           
+            slashUp.AddLayer(AssetManager.Instance.Get<Animation>(An.Thrust.WeaponLongSpear + "Up"),"slashup");
+            var slashLeft = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Thrust.BodyHuman + "Left"));
             slashLeft.Looping = false;
-            var slashDown = Factory.CreateAnimationWithLayers(atlas, slashLayers, 12, 6, "slashDown", 10);
-            
+            slashLeft.AddLayer(AssetManager.Instance.Get<Animation>(An.Thrust.WeaponLongSpear + "Left"), "slashleft");
+            var slashRight = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Thrust.BodyHuman + "Right"));
+            slashRight.Looping = false;
+            slashRight.AddLayer(AssetManager.Instance.Get<Animation>(An.Thrust.WeaponLongSpear + "Right"), "slashright");
+            var slashDown = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Thrust.BodyHuman + "Down"));
             slashDown.Looping = false;
-            var slashRight = Factory.CreateAnimationWithLayers(atlas, slashLayers, 18, 6, "slashRight", 10);*/
-            
-            //slashRight.Looping = false;
-            
+            slashDown.AddLayer(AssetManager.Instance.Get<Animation>(An.Thrust.WeaponLongSpear + "Down"), "slashdown");
+
             inventory.AddItemToSlot(item,1);
             inventory.AddItemToSlot(item2, 10);
             inventory2.AddItemToSlot(item,5);
             inventory2.AddItemToSlot(item2,3);
             controler.AddState("slashUp",slashUp);
-            //controler.AddState("slashLeft", slashLeft);
-            //controler.AddState("slashDown", slashDown);
-            //controler.AddState("slashRight", slashRight);
+            controler.AddState("slashLeft", slashLeft);
+            controler.AddState("slashDown", slashDown);
+            controler.AddState("slashRight", slashRight);
             controler.OnStateAnimationFinish += this.StateAnimationFinish;
 
         }
 
         private void StateAnimationFinish(string stateName)
         {
-            switch (stateName)
+             switch (stateName)
             {
                 case "slashUp":
                     controler.ChangeState("idleUp");
@@ -207,21 +204,25 @@ namespace MonoTinker.Code.GameScreens
                 {
                     controler.ChangeState("slashUp");
                     attacking = true;
+                    return;
                 }
                 if (state == "Down" || state == "idleDown")
                 {
                     controler.ChangeState("slashDown");
                     attacking = true;
+                    return;
                 }
                 if (state == "Left" || state == "idleLeft")
                 {
                     controler.ChangeState("slashLeft");
                     attacking = true;
+                    return;
                 }
                 if (state == "Right" || state == "idleRight")
                 {
                     controler.ChangeState("slashRight");
                     attacking = true;
+                    return;
                 }
             }
 

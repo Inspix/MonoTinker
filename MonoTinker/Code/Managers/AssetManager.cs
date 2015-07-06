@@ -96,24 +96,45 @@ namespace MonoTinker.Code.Managers
             filename = filename.Remove(rem);
             string[] tags = filename.Split('/');
             string tag = tags[tags.Length - 1] + tags[tags.Length - 2] + tags[tags.Length - 3];
-            if (filename.Contains("walk"))
+
+            Texture2D texture = content.Load<Texture2D>(filename);
+            float x, y;
+            switch (tags[tags.Length - 2])
             {
-                AddWalking(spriteAtlas.PopulateFromSpriteSheet(
-                    content.Load<Texture2D>(filename),new Vector2(64), tag), tag);
-            }else if (filename.Contains("slash"))
-            {
-                Texture2D texture = content.Load<Texture2D>(filename);
-                float x = texture.Width/6f;
-                float y = texture.Height/4f;
-                AddSlashing(spriteAtlas.PopulateFromSpriteSheet(
-                    texture,new Vector2(x,y), tag), tag,x > 64);
-            }else if (filename.Contains("bow"))
-            {
-                Texture2D texture = content.Load<Texture2D>(filename);
-                float x = texture.Width / 6f;
-                float y = texture.Height / 4f;
-                AddBowShoot(spriteAtlas.PopulateFromSpriteSheet(
-                    texture, new Vector2(x, y), tag), tag, x > 64);
+
+                case "walk":
+                    AddWalking(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(64), tag), tag);
+                    break;
+
+                case "slash":
+                    x = texture.Width / 6f;
+                    y = texture.Height / 4f;
+                    AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 6, x > 64);
+                    break;
+
+                case "bow":
+                    x = texture.Width / 13f;
+                    y = texture.Height / 4f;
+                    AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 13, x > 64);
+                    break;
+
+                case "spellcast":
+                    x = texture.Width / 7f;
+                    y = texture.Height / 4f;
+                    AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 7, x > 64);
+                    break;
+                case "thrust":
+                    x = texture.Width / 8f;
+                    y = texture.Height / 4f;
+                    AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 8, x > 64);
+                    break;
+                case "hurt":
+                    Console.WriteLine(tag);
+                    x = texture.Width / 6f;
+                    y = texture.Height;
+                    AddHurt(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag);
+                    break;
+
             }
             //todo All other states and animation layers
         }
@@ -137,12 +158,14 @@ namespace MonoTinker.Code.Managers
             this.animations.Add(tag + "Right", result[7]);
         }
 
-        private void AddSlashing(string[] framenames, string tag, bool offset = false)
+        private void AddHurt(string[] framenames, string tag)
         {
+            this.animations.Add(tag + "Hurt",Factory.CreateAnimation(ref spriteAtlas,framenames,0,6));
+        }
 
-            //Console.WriteLine(tag);
-
-            Animation[] result = Factory.CreateSlashing(framenames, ref spriteAtlas);
+        private void AddAnimationUDLR(string[] framenames, string tag, int perRow,bool offset = false)
+        {
+            Animation[] result = Factory.CreateUDLR(framenames, ref spriteAtlas, perRow);
             if (offset)
             {
                 foreach (var animation in result)
@@ -150,29 +173,12 @@ namespace MonoTinker.Code.Managers
                     animation.Offset = new Vector2(-64);
                 }
             }
-            this.animations.Add(tag + "slashUp", result[0]);
-            this.animations.Add(tag + "slashLeft", result[1]);
-            this.animations.Add(tag + "slashDown", result[2]);
-            this.animations.Add(tag + "slashRight", result[3]);
+            this.animations.Add(tag + "Up", result[0]);
+            this.animations.Add(tag + "Left", result[1]);
+            this.animations.Add(tag + "Down", result[2]);
+            this.animations.Add(tag + "Right", result[3]);
         }
-
-        private void AddBowShoot(string[] framenames, string tag, bool offset = false)
-        {
-            Console.WriteLine(tag);
-
-            Animation[] result = Factory.CreateBowShoot(framenames, ref spriteAtlas);
-            if (offset)
-            {
-                foreach (var animation in result)
-                {
-                    animation.Offset = new Vector2(-64);
-                }
-            }
-            this.animations.Add(tag + "bowshotUp", result[0]);
-            this.animations.Add(tag + "bowshotLeft", result[1]);
-            this.animations.Add(tag + "bowshotDown", result[2]);
-            this.animations.Add(tag + "bowshotRight", result[3]);
-        }
+        
 
         public AnimationController GetBaseWalkingController(string tag)
         {

@@ -72,36 +72,27 @@ namespace MonoTinker.Code.Components.Extensions
             return result;
         }
 
-        public static Animation[] CreateSlashing(string[] framenames, ref SpriteAtlas atlas)
+        public static Animation[] CreateUDLR(string[] framenames, ref SpriteAtlas atlas, int perRow)
         {
             Animation[] result = new Animation[4];
-            result[0] = CreateAnimation(ref atlas, framenames, 0, 5);  // Slash up
-            result[1] = CreateAnimation(ref atlas, framenames, 6, 11); // Slash left
-            result[2] = CreateAnimation(ref atlas, framenames, 12, 17);  // Slash down
-            result[3] = CreateAnimation(ref atlas, framenames, 18, 23); // Slash right
+            result[0] = CreateAnimation(ref atlas, framenames, 0, perRow);  //  up
+            result[1] = CreateAnimation(ref atlas, framenames, perRow, perRow); //  left
+            result[2] = CreateAnimation(ref atlas, framenames, perRow * 2, perRow);  //  down
+            result[3] = CreateAnimation(ref atlas, framenames, perRow * 3, perRow); //  right
             return result;
         }
+       
 
-        public static Animation[] CreateBowShoot(string[] framenames, ref SpriteAtlas atlas)
-        {
-            Animation[] result = new Animation[4];
-            result[0] = CreateAnimation(ref atlas, framenames, 0, 12);  // Bowshoot up
-            result[1] = CreateAnimation(ref atlas, framenames, 13, 25); // Bowshoot left
-            result[2] = CreateAnimation(ref atlas, framenames, 26, 38);  // Bowshoot down
-            result[3] = CreateAnimation(ref atlas, framenames, 39, 51); // Bowshoot right
-            return result;
-        }
-
-        public static AnimationV2 CharacterAnimation()
+        public static AnimationV2 HumanDownWalk()
         {
             AnimationV2 toReturn = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Walk.BodyHuman + "Down"));
             return toReturn;
         }
 
-        public static void AddLayer(ref AnimationV2 anim, string layertag,Color clr = default(Color))
+        public static void AddLayer(ref AnimationV2 anim, string layertag, Color clr = default(Color))
         {
             Animation result = AssetManager.Instance.Get<Animation>(layertag).Copy();
-            result.Tint = clr;
+            result.Tint = clr == default(Color) ? Color.White : clr;
             anim.AddLayer(result, layertag);
         }
 
