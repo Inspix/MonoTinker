@@ -210,9 +210,10 @@ namespace MonoTinker.Code.Components.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            
-
+            if (!IsVisible)
+            {
+                return;
+            }
             Vector2 mousePos = InputHandler.MousePos() - this.Position;
             foreach (var button in buttons)
             {

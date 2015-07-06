@@ -104,9 +104,16 @@ namespace MonoTinker.Code.Managers
             {
                 Texture2D texture = content.Load<Texture2D>(filename);
                 float x = texture.Width/6f;
-                 float y = texture.Height/4f;
+                float y = texture.Height/4f;
                 AddSlashing(spriteAtlas.PopulateFromSpriteSheet(
                     texture,new Vector2(x,y), tag), tag,x > 64);
+            }else if (filename.Contains("bow"))
+            {
+                Texture2D texture = content.Load<Texture2D>(filename);
+                float x = texture.Width / 6f;
+                float y = texture.Height / 4f;
+                AddBowShoot(spriteAtlas.PopulateFromSpriteSheet(
+                    texture, new Vector2(x, y), tag), tag, x > 64);
             }
             //todo All other states and animation layers
         }
@@ -132,7 +139,8 @@ namespace MonoTinker.Code.Managers
 
         private void AddSlashing(string[] framenames, string tag, bool offset = false)
         {
-            Console.WriteLine(tag);
+
+            //Console.WriteLine(tag);
 
             Animation[] result = Factory.CreateSlashing(framenames, ref spriteAtlas);
             if (offset)
@@ -147,6 +155,25 @@ namespace MonoTinker.Code.Managers
             this.animations.Add(tag + "slashDown", result[2]);
             this.animations.Add(tag + "slashRight", result[3]);
         }
+
+        private void AddBowShoot(string[] framenames, string tag, bool offset = false)
+        {
+            Console.WriteLine(tag);
+
+            Animation[] result = Factory.CreateBowShoot(framenames, ref spriteAtlas);
+            if (offset)
+            {
+                foreach (var animation in result)
+                {
+                    animation.Offset = new Vector2(-64);
+                }
+            }
+            this.animations.Add(tag + "bowshotUp", result[0]);
+            this.animations.Add(tag + "bowshotLeft", result[1]);
+            this.animations.Add(tag + "bowshotDown", result[2]);
+            this.animations.Add(tag + "bowshotRight", result[3]);
+        }
+
         public AnimationController GetBaseWalkingController(string tag)
         {
             if (!this.animations.ContainsKey(tag + "Up"))

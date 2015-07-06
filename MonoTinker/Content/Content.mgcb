@@ -517,17 +517,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Character/body/walk/skeleton.png
 
-#begin Sprites/Character/equipment/behind/bow/quiver.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Character/equipment/behind/bow/quiver.png
-
 #begin Sprites/Character/equipment/behind/slash/quiver.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2320,4 +2309,15 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Character/equipment/weapon/walk/shield_cutout_chain_armor_helmet.png
+
+#begin Sprites/Character/equipment/behind/hurt/quiver.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Character/equipment/behind/hurt/quiver.png
 

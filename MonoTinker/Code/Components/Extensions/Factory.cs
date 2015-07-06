@@ -82,6 +82,16 @@ namespace MonoTinker.Code.Components.Extensions
             return result;
         }
 
+        public static Animation[] CreateBowShoot(string[] framenames, ref SpriteAtlas atlas)
+        {
+            Animation[] result = new Animation[4];
+            result[0] = CreateAnimation(ref atlas, framenames, 0, 12);  // Bowshoot up
+            result[1] = CreateAnimation(ref atlas, framenames, 13, 25); // Bowshoot left
+            result[2] = CreateAnimation(ref atlas, framenames, 26, 38);  // Bowshoot down
+            result[3] = CreateAnimation(ref atlas, framenames, 39, 51); // Bowshoot right
+            return result;
+        }
+
         public static AnimationV2 CharacterAnimation()
         {
             AnimationV2 toReturn = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Walk.BodyHuman + "Down"));
