@@ -119,6 +119,7 @@ namespace MonoTinker.Code.Managers
                     break;
 
                 case "spellcast":
+                    Console.WriteLine(tag);
                     x = texture.Width / 7f;
                     y = texture.Height / 4f;
                     AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 7, x > 64);
@@ -129,7 +130,6 @@ namespace MonoTinker.Code.Managers
                     AddAnimationUDLR(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag, 8, x > 64);
                     break;
                 case "hurt":
-                    Console.WriteLine(tag);
                     x = texture.Width / 6f;
                     y = texture.Height;
                     AddHurt(spriteAtlas.PopulateFromSpriteSheet(texture, new Vector2(x, y), tag), tag);

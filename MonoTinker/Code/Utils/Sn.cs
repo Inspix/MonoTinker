@@ -334,7 +334,36 @@ namespace MonoTinker.Code.Utils
             public const string TorsoRobeShirt              = "robe_shirt_brownhurttorso";
             
         }
-        // TODO add more constants
 
+        public class SpellCast
+        {
+            public const string BodyHuman                   = "malespellcastbody";
+            public const string BodySkeleton                = "skeletonspellcastbody";
+            public const string BehindQuiver                = "quiverspellcastbehind";
+            public const string BeltLeather                 = "leatherspellcastbelt";
+            public const string BeltRope                    = "ropespellcastbelt";
+            public const string FeetPlateArmorShoes         = "plate_armor_shoesspellcastfeet";
+            public const string FeetShoesBrown              = "shoes_brownspellcastfeet";
+            public const string HandPlateArmorGloves        = "plate_armor_glovesspellcasthands";
+            public const string HeadChainArmorHelm          = "chain_armor_helmetspellcasthead";
+            public const string HeadChainArmorHood          = "chain_armor_hoodspellcasthead";
+            public const string HeadHairBlonde              = "hair_blondespellcasthead";
+            public const string HeadHairWhite               = "hair_whitespellcasthead";
+            public const string HeadLeatherHat              = "leather_armor_hatspellcasthead";
+            public const string HeadPlateArmorHelm          = "plate_armor_helmetspellcasthead";
+            public const string HeadRobeHood                = "robe_hoodspellcasthead";
+            public const string LegsPants                   = "pants_greenishspellcastlegs";
+            public const string LegsPlateArmorPants         = "plate_armor_pantsspellcastlegs";
+            public const string LegsRobeSkirt               = "robe_skirtspellcastlegs";
+            public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplespellcasttorso";
+            public const string TorsoChainArmor             = "chain_armor_torsospellcasttorso";
+            public const string TorsoLeatherBracers         = "leather_armor_bracersspellcasttorso";
+            public const string TorsoLeatherShirt           = "leather_armor_shirt_whitespellcasttorso";
+            public const string TorsoLeatherShouders        = "leather_armor_shouldersspellcasttorso";
+            public const string TorsoLeatherArmor           = "leather_armor_torsospellcasttorso";
+            public const string TorsoPlateArmorShoulders    = "plate_armor_arms_shouldersspellcasttorso";
+            public const string TorsoPlateArmor             = "plate_armor_torsospellcasttorso";
+            public const string TorsoRobeShirt              = "robe_shirt_brownspellcasttorso";
+        }
     }
 }
