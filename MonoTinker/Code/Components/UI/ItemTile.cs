@@ -11,7 +11,7 @@ namespace MonoTinker.Code.Components.UI
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class ItemTile : Sprite
+    public class ItemTile : InterfaceElement
     {
         private Item item;
         private ToolTip toolTip;
@@ -23,11 +23,9 @@ namespace MonoTinker.Code.Components.UI
         private double timeToUpdate;
         private bool toBeDeleted;
 
-        public ItemTile(Sprite itemSprite, Vector2 position, Item item)
-            : base(itemSprite.Texture, itemSprite.DefaultSource)
+        public ItemTile(Sprite itemSprite, Vector2 position, Item item, GraphicsDevice device) : base(position, device)
         {
-            base.Position = position;
-            base.Origin = Origin.TopLeft;
+            this.Elements.Add("base", itemSprite);
             this.item = item;
             this.Init();
         }
@@ -38,9 +36,10 @@ namespace MonoTinker.Code.Components.UI
             toolTip.IsVisible = false;
             toolTip.FadeSpeed = 0.5f;
             toolTip.Transitioning = true;
-            toolTipOffset = new Vector2(this.DefaultSource.Width, -this.toolTip.Size.Y);
+            toolTipOffset = new Vector2(this.Elements["base"].DefaultSource.Width, -this.toolTip.Size.Y);
             toolTip.Position = this.Position + this.toolTipOffset;
             timeToUpdate = TimeSpan.FromSeconds(0.2).TotalSeconds;
+            this.RenderTarget2D = new RenderTarget2D(Device,256,256);
         }
 
         public Vector2 PositionOffset
@@ -61,6 +60,8 @@ namespace MonoTinker.Code.Components.UI
             set { this.toBeDeleted = value; }
         }
 
+        public bool Clickable { get; set; } = true;
+
         public ToolTip Tip
         {
             get { return this.toolTip; }
@@ -68,7 +69,7 @@ namespace MonoTinker.Code.Components.UI
 
         public bool Over(Vector2 position)
         {
-            Rectangle rect = new Rectangle(this.Position.ToPoint(),this.DefaultSource.Size);
+            Rectangle rect = new Rectangle(this.Position.ToPoint(), this.Elements["base"].DefaultSource.Size);
             bool result = rect.Contains(position);
             if (result)
             {
@@ -78,8 +79,9 @@ namespace MonoTinker.Code.Components.UI
             return result;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             if (clicked)
             {
                 this.toolTip.IsVisible = false;
@@ -89,7 +91,7 @@ namespace MonoTinker.Code.Components.UI
             }
             if (hoverOver && !clicked)
             {
-                if (!GameManager.ItemMoving)
+                if (!GameManager.ItemMoving && Clickable)
                 {
                     clicked = InputHandler.MouseDownOnce("left");
                 }
@@ -117,6 +119,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void UpdateFromInventory(GameTime gameTime)
         {
+            base.Update(gameTime);
             if (clicked)
             {
                 this.toolTip.IsVisible = false;
@@ -126,7 +129,7 @@ namespace MonoTinker.Code.Components.UI
             }
             if (hoverOver && !clicked)
             {
-                if (!GameManager.ItemMoving)
+                if (!GameManager.ItemMoving && Clickable)
                 {
                     clicked = InputHandler.MouseDownOnce("left");
                 }
@@ -167,31 +170,40 @@ namespace MonoTinker.Code.Components.UI
             this.toolTip.Draw(spriteBatch);
         }
 
+        public override void DrawToRenderTarget(SpriteBatch spriteBatch,RenderTarget2D target)
+        {
+            base.Draw(spriteBatch);
+            this.toolTip.DrawToRenderTarget(spriteBatch,target);
+            this.toolTip.Draw(spriteBatch);
+
+
+        }
+
         public void DrawWithoutTip(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
         }
         
 
-        public new ItemTile DirectClone()
+        public ItemTile DirectClone(bool resetPosition = false)
         {
-            ItemTile clone = new ItemTile(base.DirectClone(),this.Position,new Item(this.item.Name,
+            ItemTile clone = new ItemTile(this.Elements["base"].DirectClone(),resetPosition? Vector2.Zero : this.Position,new Item(this.item.Name,
                 new Stats(this.item.Status.Strenght,
                             this.item.Status.Agility,
                             this.item.Status.Vitality,
                             this.item.Status.Intellect,
-                            this.item.Status.Wisdom),this.item.Rarity));
+                            this.item.Status.Wisdom),this.item.Rarity), Device);
             return clone;
         }
 
         public ItemTile DirectCloneFromInventory()
         {
-            ItemTile clone = new ItemTile(base.DirectClone(), this.PositionOffset, new Item(this.item.Name,
+            ItemTile clone = new ItemTile(this.Elements["base"].DirectClone(), this.PositionOffset, new Item(this.item.Name,
                 new Stats(this.item.Status.Strenght,
                             this.item.Status.Agility,
                             this.item.Status.Vitality,
                             this.item.Status.Intellect,
-                            this.item.Status.Wisdom),this.item.Rarity));
+                            this.item.Status.Wisdom),this.item.Rarity),Device);
             clone.Selected = true;
             return clone;
         }

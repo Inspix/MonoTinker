@@ -67,6 +67,7 @@ namespace MonoTinker.Code.Components.UI
 
         public virtual void DrawElements()
         {
+
             this.Device.SetRenderTarget(this.RenderTarget2D);
             this.Device.Clear(Color.FromNonPremultiplied(0,0,0,0));
             this.Batch.Begin();
@@ -92,20 +93,10 @@ namespace MonoTinker.Code.Components.UI
             this.Device.SetRenderTarget(null);
         }
 
-        public virtual void DrawToCurrentRenderTarget(SpriteBatch spriteBatch)
+        public virtual void DrawToRenderTarget(SpriteBatch spriteBatch, RenderTarget2D target)
         {
-
-            foreach (var element in Elements)
-            {
-                element.Value.Draw(spriteBatch);
-            }
-            foreach (var label in Labels)
-            {
-                if (label.IsVisible)
-                {
-                    label.Draw(spriteBatch);
-                }
-            }
+            DrawElements();
+            Device.SetRenderTarget(target);
         }
 
         public virtual void Update(GameTime gameTime)

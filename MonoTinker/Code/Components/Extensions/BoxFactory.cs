@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.Elements;
+using MonoTinker.Code.Components.GameObjects;
 using MonoTinker.Code.Components.UI;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
+using TextBox = MonoTinker.Code.Components.UI.TextBox;
 
 namespace MonoTinker.Code.Components.Extensions
 {
@@ -103,25 +106,31 @@ namespace MonoTinker.Code.Components.Extensions
         }
 
 
-        public static Sprite BoxSpriteWithText(SpriteBatch spriteBatch, string[] text, TextAlignment alignment = TextAlignment.Left, float scale = 1,bool spaceforHeader = false,bool spaceforFooter = false)
+        public static Sprite BoxSpriteWithText(SpriteBatch spriteBatch, string[] text, TextAlignment alignment = TextAlignment.Left, float textscale = 1,bool spaceforHeader = false,bool spaceforFooter = false,bool spaceontheleft = false,bool spaceontheright = false)
         {
             SpriteFont font = AssetManager.Instance.Get<SpriteFont>("Standart");
-            Vector2 fontSize = font.MeasureString("A") * scale;
+            Vector2 fontSize = font.MeasureString("A") * textscale;
             Vector2 boxSize = new Vector2((text.Select(s => s.Length).Max()*fontSize.X)/32, (text.Length*(fontSize.Y + 5))/32);
             boxSize.Y += spaceforFooter ? +1 : 0;
             boxSize.Y += spaceforHeader ? +1 : 0;
+            boxSize.X += spaceontheleft ? +1 : 0;
+            boxSize.X += spaceontheright ? +1 : 0;
             Sprite box = BoxSprite(ScreenManager.Batch, boxSize+Vector2.One);
             Vector2 textpos = Vector2.Zero;
             switch (alignment)
             {
                 case TextAlignment.Left:
-                    textpos = new Vector2(10,20);
+                    textpos = new Vector2(10 + (spaceontheleft ? box.SpriteCenter.X / boxSize.X : 0), 20);
                 break;
                 case TextAlignment.Right:
-                    textpos = new Vector2(box.SourceWidth - 20, 20);
+                    textpos = new Vector2(box.SourceWidth - 20
+                        + (spaceontheleft ? box.SpriteCenter.X / boxSize.X : 0)
+                        - (spaceontheright ? box.SpriteCenter.X / boxSize.X : 0), 20);
                     break;
                 case TextAlignment.Center:
-                    textpos = new Vector2(box.SpriteCenter.X,20);
+                    textpos = new Vector2(box.SpriteCenter.X 
+                        +(spaceontheleft ? box.SpriteCenter.X/boxSize.X : 0)
+                        -(spaceontheright ? box.SpriteCenter.X / boxSize.X : 0), 20);
                     break;
             }
             textpos.Y += spaceforHeader ? fontSize.Y + 15 : 0;
@@ -129,7 +138,7 @@ namespace MonoTinker.Code.Components.Extensions
             foreach (var s in text)
             {
                 Text toAdd = new Text(font,textpos,s);
-                toAdd.Scale = Vector2.One * scale;
+                toAdd.Scale = Vector2.One * textscale;
                 if (alignment == TextAlignment.Center)
                 {
                     toAdd.PosX -= toAdd.Size.X/2;
@@ -156,6 +165,29 @@ namespace MonoTinker.Code.Components.Extensions
             return new Sprite(target);
 
         }
+
+        public static TextBox CharacterInfoBox(Vector2 position,CharacterClass clClass = CharacterClass.Warrior)
+        {
+            string text = null;
+            switch (clClass)
+            {
+                case CharacterClass.Warrior:
+                    text = Txt.CharacterInfo.Warrior;
+                    break;
+                case CharacterClass.Archer:
+                    text = Txt.CharacterInfo.Archer;
+                    break;
+                case CharacterClass.Wizard:
+                    text = Txt.CharacterInfo.Wizard;
+                    break;
+            }
+            TextBox result = new TextBox(position,ScreenManager.Device, text,new Vector2(6,3));
+            result.AddImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device,clClass)),Origin.TopCenter);
+            return result;
+        }
+
+
+
         #endregion
     }
 }

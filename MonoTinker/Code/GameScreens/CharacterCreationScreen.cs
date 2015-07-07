@@ -59,8 +59,7 @@ namespace MonoTinker.Code.GameScreens
             statPicker.IsVisible = false;
             statPicker.Transitioning = true;
             statPicker.FadeSpeed = 0.03f;
-
-
+            
             slider = new Slider(new Vector2(550, 300),ScreenManager.Device,20);
             slider.IsVisible = false;
             slider.FadeSpeed = 0.03f;

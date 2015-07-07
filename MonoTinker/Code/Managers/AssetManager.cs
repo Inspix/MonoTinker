@@ -63,7 +63,9 @@ namespace MonoTinker.Code.Managers
         private void LoadSprites()
         {
             this.spriteAtlas.Add("BasicArrow",new Sprite(TextureMaker.Arrow(device,32,Color.Transparent,Color.White,Color.Transparent)));
+            this.spriteAtlas.Add("BigArrow", new Sprite(TextureMaker.Arrow(device, 128, Color.Transparent, Color.White, Color.Transparent)));
             this.AddSprite("UI/frame","UIFrame");
+            this.AddSprite("Other/Lighting","lighting");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "UI/hud");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "Items/weapons");
         }

@@ -1,5 +1,4 @@
-
-
+using MonoTinker.Code.Components.GameObjects;
 
 namespace MonoTinker.Code.GameScreens
 {
@@ -20,12 +19,12 @@ namespace MonoTinker.Code.GameScreens
     public sealed class TestGround : Screen
     {
         private AnimationController controler;
-
+        private ChoiceBox choicebox;
         private StatusBar status;
 
         private TextBox box;
         private FancyTextBox fbox;
-
+        private Texture2D splash;
         private Inventory inventory;
         private Inventory inventory2;
         
@@ -39,6 +38,8 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
+            choicebox = new ChoiceBox(new Vector2(500,220),ScreenManager.Device, ChoiceBoxType.CharacterInfo );
+            splash = TextureMaker.ClassSplash(ScreenManager.Device, CharacterClass.Archer);
             status = new StatusBar(Vector2.One, ScreenManager.Device);
             status.DefaultAlpha = 1;
             status.Transitioning = true;
@@ -52,10 +53,15 @@ namespace MonoTinker.Code.GameScreens
             fbox = new FancyTextBox(Vector2.UnitY* 300,ScreenManager.Device, @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",15,WriteEffect.CharacterByCharacter); 
 
 
-            ItemTile item = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.Ashbringer).DirectClone(),Vector2.One * 400,x);
-            ItemTile item2 = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.StaffOfRegrowth).DirectClone(), Vector2.One * 400, y);
+            ItemTile item = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.Ashbringer).DirectClone(),Vector2.One * 400,x,ScreenManager.Device);
+            ItemTile item2 = new ItemTile(AssetManager.Instance.Get<Sprite>(Sn.Items.StaffOfRegrowth).DirectClone(), Vector2.One * 400, y, ScreenManager.Device);
             box = new TextBox(Vector2.One * 100,ScreenManager.Device, "Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool! Once upon a time, there was a kid nameed Goshko..... He was very young and cool!", new Vector2(5,2),WriteEffect.CharacterByCharacter);
+            /*choicebox.AddItem(item.DirectClone(true),() => Console.WriteLine("blalba"));
+            choicebox.AddItem(item2.DirectClone(true), () => Console.WriteLine("blalba2"));*/
+            choicebox.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero),() => Console.WriteLine("Blablaba"));
             
+            choicebox.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero,CharacterClass.Archer));
+            choicebox.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero,CharacterClass.Wizard));
             controler = AssetManager.Instance.GetBaseWalkingController(An.Walk.BodyHuman);
             controler.IsVisible = true;
             foreach (var animationV2 in controler.States)
@@ -123,6 +129,7 @@ namespace MonoTinker.Code.GameScreens
             inventory2.DrawElements();
             inventory.DrawElements();
             status.DrawElements();
+            choicebox.DrawElements();
             fbox.DrawElements();
             spriteBatch.Begin();
             controler.Draw(spriteBatch,position);
@@ -132,6 +139,8 @@ namespace MonoTinker.Code.GameScreens
             box.Draw(spriteBatch);
             fbox.Draw(spriteBatch);
             GameManager.Draw(spriteBatch);
+            spriteBatch.Draw(splash,ScreenManager.ScreenCenter,splash.Bounds,Color.White,0,Vector2.Zero, Vector2.One*1.5f,SpriteEffects.None, 0 );
+            choicebox.Draw(spriteBatch);
             spriteBatch.End();
             
         }
@@ -142,6 +151,7 @@ namespace MonoTinker.Code.GameScreens
             fbox.Update(gameTime);
             inventory.Update(gameTime);
             inventory2.Update(gameTime);
+            choicebox.Update(gameTime);
             if (!attacking && Keys.A.Down())
             {
                 controler.ChangeState("Left");
@@ -228,18 +238,13 @@ namespace MonoTinker.Code.GameScreens
 
             if (Keys.Space.DownOnce())
             {
-                status.IsVisible = !status.IsVisible;
+                 status.IsVisible = !status.IsVisible;
             }
             status.Update(gameTime);
             if (Keys.Q.DownOnce())
             {
-                int r = ScreenManager.Rng.Next(0, 255);
-                int g = ScreenManager.Rng.Next(0, 255);
-                int b = ScreenManager.Rng.Next(0, 255);
-                foreach (var value in controler.States.Values)
-                {
-                    value.Layer(1).Tint = Color.FromNonPremultiplied(r, g, b, 255);
-                }
+                box.AddImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device, CharacterClass.Archer)),Origin.BottomCenter);
+                box.CycleableText = true;
             }
 
 

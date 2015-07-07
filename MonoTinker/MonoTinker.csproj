@@ -76,6 +76,7 @@
     <Compile Include="Code\Components\Tiles\Light.cs" />
     <Compile Include="Code\Components\Tiles\TileMap.cs" />
     <Compile Include="Code\Components\UI\Button.cs" />
+    <Compile Include="Code\Components\UI\ChoiceBox.cs" />
     <Compile Include="Code\Components\UI\ColorPicker.cs" />
     <Compile Include="Code\Components\UI\Fadeable.cs" />
     <Compile Include="Code\Components\UI\FancyTextBox.cs" />

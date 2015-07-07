@@ -29,19 +29,6 @@ namespace MonoTinker.Code.Components.Extensions
             }
             return result;
         }
-/*
-        public static AnimationV2 CreateAnimationWithLayers(SpriteAtlas atlas, List<string[]> layers, int startingIndex,
-           int count,string tag, int fps = 30)
-        {
-            AnimationV2 result = new AnimationV2(layers[0].Skip(startingIndex).Take(count).ToArray(), atlas, fps);
-            for (int i = 1; i < layers.Count; i++)
-            {
-
-                result.AddLayer(new Animation(layers[i].Skip(startingIndex).Take(count).ToArray(), atlas, fps),tag);
-
-            }
-            return result;
-        }*/
 
         public static Item CreateItem(string name, int maxStr, int maxAgi, int maxVit, int maxInt, int maxWis, ItemRarity itemRarity = ItemRarity.Common)
         {
@@ -166,9 +153,9 @@ namespace MonoTinker.Code.Components.Extensions
             return result;
         }
 
-        public static Button ArrowButton(SpriteBatch batch, Vector2 position, Color color, float scale, bool flip)
+        public static Button ArrowButton(SpriteBatch batch, Vector2 position, Color color, float scale, bool flip, string type = null)
         {
-            Sprite arrow = AssetManager.Instance.Get<Sprite>("BasicArrow").DirectClone();
+            Sprite arrow = AssetManager.Instance.Get<Sprite>(type ?? "BasicArrow").DirectClone();
             arrow.Effect = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Sprite arrowHover = arrow.DirectClone();
             Sprite arrowClick = arrow.DirectClone();
@@ -180,6 +167,7 @@ namespace MonoTinker.Code.Components.Extensions
 
             return new Button(position,arrow,arrowHover,arrowClick) { Scale = Vector2.One*scale};
         }
+
     }
    
 }

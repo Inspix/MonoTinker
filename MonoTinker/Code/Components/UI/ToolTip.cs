@@ -68,7 +68,7 @@ namespace MonoTinker.Code.Components.UI
         public void DrawFromInventory(SpriteBatch spriteBatch)
         {
             if (!IsVisible) return;
-            DrawToCurrentRenderTarget(spriteBatch);
+            DrawToRenderTarget(spriteBatch,RenderTarget2D);
             Draw(spriteBatch);
         }
 

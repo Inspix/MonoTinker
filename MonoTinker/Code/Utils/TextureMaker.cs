@@ -23,7 +23,6 @@ namespace MonoTinker.Code.Utils
             vertices[1].Color = tip ?? Color.White;
             vertices[2].Position = new Vector3(-size / 2f, -size / 2f, 0);
             vertices[2].Color = bottom ?? Color.Transparent;
-            
             device.SetRenderTarget(target);
             device.Clear(Color.Transparent);
             foreach (var pass in effect.CurrentTechnique.Passes)
@@ -35,45 +34,88 @@ namespace MonoTinker.Code.Utils
             return target;
         }
 
-        /*public static Texture2D ClassSplash(GraphicsDevice device, CharacterClass clClass)
+        public static Texture2D ClassSplash(GraphicsDevice device, CharacterClass clClass)
         {
-            Sprite body, head, torso, legs, feet, hands, weapon;
+            Sprite body, head, torso, legs, feet, shoulders = null, hands = null, weapon = null,arrow = null;
 
             switch (clClass)
             {
                 case CharacterClass.Archer:
-                    body = AssetManager.Instance.Get<Animation>(An.Slash.BodyHuman + "Left")[4].DirectClone();
-                    head = AssetManager.Instance.Get<Animation>(An.Slash.HeadPlateArmorHelm + "Left")[4].DirectClone();
-                    torso = AssetManager.Instance.Get<Animation>(An.Slash.TorsoPlateArmor + "Left")[4].DirectClone();
-                    legs = AssetManager.Instance.Get<Animation>(An.Slash.LegsPlateArmorPants + "Left")[4].DirectClone();
-                    feet = AssetManager.Instance.Get<Animation>(An.Slash.FeetPlateArmorShoes + "Left")[4].DirectClone();
-                    hands =
-                        AssetManager.Instance.Get<Animation>(An.Slash.HandPlateArmorGloves + "Left")[4].DirectClone();
-                    weapon = AssetManager.Instance.Get<Animation>(An.Slash.WeaponLongSword + "Left")[4].DirectClone();
+                    body = AssetManager.Instance.Get<Animation>(An.Bow.BodyHuman + "Left")[4].DirectClone();
+                    head = AssetManager.Instance.Get<Animation>(An.Bow.HeadLeatherHat + "Left")[4].DirectClone();
+                    torso = AssetManager.Instance.Get<Animation>(An.Bow.TorsoLeatherArmor + "Left")[4].DirectClone();
+                    legs = AssetManager.Instance.Get<Animation>(An.Bow.TorsoLeatherArmor + "Left")[4].DirectClone();
+                    feet = AssetManager.Instance.Get<Animation>(An.Bow.FeetShoesBrown + "Left")[4].DirectClone();
+                    weapon = AssetManager.Instance.Get<Animation>(An.Bow.WeaponBow + "Left")[4].DirectClone();
+                    arrow = AssetManager.Instance.Get<Animation>(An.Bow.WeaponArrow + "Left")[4].DirectClone();
+
                     break;
                 case CharacterClass.Wizard:
-                    body = AssetManager.Instance.Get<Animation>(An.Slash.BodyHuman + "Left")[4].DirectClone();
-                    head = AssetManager.Instance.Get<Animation>(An.Slash.HeadRobeHood + "Left")[4].DirectClone();
-                    torso = AssetManager.Instance.Get<Animation>(An.Slash.TorsoRobeShirt + "Left")[4].DirectClone();
-                    legs = AssetManager.Instance.Get<Animation>(An.Slash.LegsRobeSkirt + "Left")[4].DirectClone();
-                    feet = AssetManager.Instance.Get<Animation>(An.Slash.FeetShoesBrown + "Left")[4].DirectClone();
-                    hands =
-                        AssetManager.Instance.Get<Animation>(An.Slash.HandPlateArmorGloves + "Left")[4].DirectClone();
-                    weapon = AssetManager.Instance.Get<Animation>(An.Slash.WeaponLongSword + "Left")[4].DirectClone();
+                    body = AssetManager.Instance.Get<Animation>(An.SpellCast.BodyHuman + "Down")[4].DirectClone();
+                    head = AssetManager.Instance.Get<Animation>(An.SpellCast.HeadRobeHood + "Down")[4].DirectClone();
+                    torso = AssetManager.Instance.Get<Animation>(An.SpellCast.TorsoRobeShirt + "Down")[4].DirectClone();
+                    legs = AssetManager.Instance.Get<Animation>(An.SpellCast.LegsRobeSkirt + "Down")[4].DirectClone();
+                    feet = AssetManager.Instance.Get<Animation>(An.SpellCast.FeetShoesBrown + "Down")[4].DirectClone();
+                    hands = AssetManager.Instance.Get<Animation>(An.SpellCast.HandPlateArmorGloves + "Down")[4].DirectClone();
                     break;
                 default:
 
-                    body = AssetManager.Instance.Get<Animation>(An.Slash.BodyHuman + "Left")[4].DirectClone();
-                    head = AssetManager.Instance.Get<Animation>(An.Slash.HeadLeatherHat + "Left")[4].DirectClone();
-                    torso = AssetManager.Instance.Get<Animation>(An.Slash.TorsoLeatherArmor + "Left")[4].DirectClone();
-                    legs = AssetManager.Instance.Get<Animation>(An.Slash.LegsPants + "Left")[4].DirectClone();
-                    feet = AssetManager.Instance.Get<Animation>(An.Slash.FeetShoesBrown + "Left")[4].DirectClone();
-                    weapon = AssetManager.Instance.Get<Animation>(An.Slash.we + "Left")[4].DirectClone();
-
+                    body = AssetManager.Instance.Get<Animation>(An.Slash.BodyHuman + "Down")[1].DirectClone();
+                    head = AssetManager.Instance.Get<Animation>(An.Slash.HeadPlateArmorHelm + "Down")[1].DirectClone();
+                    torso = AssetManager.Instance.Get<Animation>(An.Slash.TorsoPlateArmor + "Down")[1].DirectClone();
+                    legs = AssetManager.Instance.Get<Animation>(An.Slash.LegsPlateArmorPants + "Down")[1].DirectClone();
+                    feet = AssetManager.Instance.Get<Animation>(An.Slash.FeetPlateArmorShoes + "Down")[1].DirectClone();
+                    shoulders = AssetManager.Instance.Get<Animation>(An.Slash.TorsoPlateArmorShoulders + "Down")[1].DirectClone();
+                    hands =
+                        AssetManager.Instance.Get<Animation>(An.Slash.HandPlateArmorGloves + "Down")[1].DirectClone();
+                    weapon = AssetManager.Instance.Get<Animation>(An.Slash.WeaponLongSword + "Down")[1].DirectClone();
                     break;
             }
+            int widht = 64, height = 64;
+            if (weapon != null)
+            {
+                if (weapon.SourceHeight > 64)
+                {
+                    weapon.Position -= new Vector2(64);
+                }
+            }
             SpriteBatch sb = new SpriteBatch(device);
-            RenderTarget2D result = new RenderTarget2D(device, body.DefaultSource.Width, body.DefaultSource.Height);
-        }*/
+            RenderTarget2D result = new RenderTarget2D(device, widht, height);
+            device.SetRenderTarget(result);
+            device.Clear(Color.TransparentBlack);
+            sb.Begin();
+            body.Draw(sb);
+            feet.Draw(sb);
+            legs.Draw(sb);
+            if (shoulders != null)
+            {
+                shoulders.Draw(sb);
+            }
+            torso.Draw(sb);
+            head.Draw(sb);
+            if (hands != null)
+            {
+                hands.Draw(sb);
+            }
+            if (weapon != null)
+            {
+                weapon.Draw(sb);
+            }
+            if (arrow != null)
+            {
+                arrow.Draw(sb);
+            }
+            if (clClass == CharacterClass.Wizard)
+            {
+                Sprite glow = AssetManager.Instance.Get<Sprite>("lighting").DirectClone(true);
+                glow.Clr = new Color(0,25,100,10);
+                glow.ScaleF = 0.25f;
+                glow.Position = new Vector2(0);
+                glow.Draw(sb);
+            }
+            sb.End();
+            device.SetRenderTarget(null);
+            return result;
+        }
     }
 }

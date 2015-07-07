@@ -366,4 +366,19 @@ namespace MonoTinker.Code.Utils
             public const string TorsoRobeShirt              = "robe_shirt_brownspellcasttorso";
         }
     }
+
+    public class Txt // Text constants
+    {
+        public class CharacterInfo
+        {
+            public const string Warrior =
+                "A fierce brute, always ready for battle, with his great strenght and big survival skills he is a perfect at the front line!";
+
+            public const string Archer =
+                "His bow and arrow are like his fork and spoon, deadly accurate , fast and agile, great for support dps from the backline";
+
+            public const string Wizard =
+                "Dark magic, White magic, Nature and many more, the wizard is most versitile character, that can fulfill almost any role, to bad he is abit to squishy";
+        }
+    }
 }

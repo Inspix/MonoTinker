@@ -12,7 +12,7 @@ namespace MonoTinker.Code.Components.Elements
 
     public enum Origin
     {
-        Center,TopLeft, TopRight,BottomLeft,BottomRight
+        Center, CenterLeft,CenterRight,TopLeft, TopRight,TopCenter,BottomLeft,BottomRight,BottomCenter,
     }
 
     public class Sprite : ISimpleDrawable,ITransformable
@@ -166,14 +166,26 @@ namespace MonoTinker.Code.Components.Elements
                     case Origin.TopRight:
                         this.origin = new Vector2(this.Size.X, 0);
                         break;
+                    case Origin.TopCenter:
+                            this.origin = new Vector2(this.Size.X/2f,0);
+                        break;
                     case Origin.BottomLeft:
                         this.origin = new Vector2(0, this.Size.Y);
                         break;
                     case Origin.BottomRight:
                         this.origin = this.Size;
                         break;
+                        case Origin.BottomCenter:
+                        this.origin = new Vector2(this.Size.X/2,this.Size.Y);
+                        break;
                     case Origin.Center:
                         this.origin = this.SpriteCenter;
+                        break;
+                    case Origin.CenterLeft:
+                        this.origin = new Vector2(0,this.SpriteCenter.Y);
+                        break;
+                    case Origin.CenterRight:
+                        this.origin = new Vector2(this.Size.X, this.SpriteCenter.Y);
                         break;
                 }
             }
@@ -202,12 +214,12 @@ namespace MonoTinker.Code.Components.Elements
             this.Source = this.DefaultSource;
         }
 
-        public Sprite DirectClone()
+        public Sprite DirectClone(bool zeroPosition = false)
         {
             var toReturn = new Sprite(this.Texture, new Rectangle(this.DefaultSource.Location, this.DefaultSource.Size));
             toReturn.Clr = this.Clr;
             toReturn.Effect = this.effect;
-            toReturn.Position = new Vector2(this.Position.X,this.Position.Y);
+            toReturn.Position = zeroPosition ? Vector2.Zero : new Vector2(this.Position.X,this.Position.Y);
             toReturn.SpriteCenter = this.SpriteCenter;
             toReturn.Scale = this.Scale;
             toReturn.Rotation = this.Rotation;

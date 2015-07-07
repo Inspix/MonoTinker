@@ -204,6 +204,14 @@ namespace MonoTinker.Code.Components.UI
 
         public override void DrawElements()
         {
+            foreach (var itemTile in items)
+            {
+                if (itemTile != null)
+                {
+                    itemTile.DrawElements();
+                }
+               
+            }
             base.DrawElements();
             closeButton.Draw(Batch);
             moveButton.Draw(Batch);

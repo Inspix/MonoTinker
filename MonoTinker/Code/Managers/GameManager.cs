@@ -47,6 +47,7 @@ namespace MonoTinker.Code.Managers
         {
             if (item != null)
             {
+                item.DrawElements();
                 item.Draw(spriteBatch);
             }
         }
