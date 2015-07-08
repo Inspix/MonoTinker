@@ -34,6 +34,40 @@ namespace MonoTinker.Code.Utils
             return target;
         }
 
+        public static Texture2D CheckBox(GraphicsDevice device, int size, Color? middle = null, Color? tip = null, Color? bottom = null)
+        {
+            
+            RenderTarget2D target = new RenderTarget2D(device, size, size);
+            VertexPositionColor[] vertices = new VertexPositionColor[6];
+           // device.RasterizerState = RasterizerState.CullNone;
+            BasicEffect effect = new BasicEffect(device);
+            effect.Projection = Matrix.CreateOrthographic(size, size, -1, 1);
+            effect.VertexColorEnabled = true;
+            vertices[0].Position = new Vector3(-size / 4f, size/4f,0);
+            vertices[0].Color = tip ?? Color.Transparent;
+            vertices[1].Position = new Vector3(size/32f, -size/32f, 0);
+            vertices[1].Color =  middle ?? Color.Transparent;
+            vertices[2].Position = new Vector3(size/10.66f, -size/2f, 0);
+            vertices[2].Color = bottom ??Color.White;
+
+            vertices[3].Position = new Vector3(size / 32f, -size / 32f, 0);
+            vertices[3].Color = middle ?? Color.Transparent;
+            vertices[4].Position = new Vector3(size/2.66f, size/2f, 0);
+            vertices[4].Color = tip ?? Color.White;
+            vertices[5].Position = new Vector3(size / 10.66f, -size / 2f, 0);
+            vertices[5].Color = bottom ?? Color.White;
+
+            device.SetRenderTarget(target);
+            device.Clear(Color.Transparent);
+            foreach (var pass in effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2, VertexPositionColor.VertexDeclaration);
+            }
+            device.SetRenderTarget(null);
+            return target;
+        }
+
         public static Texture2D ClassSplash(GraphicsDevice device, CharacterClass clClass)
         {
             Sprite body, head, torso, legs, feet, shoulders = null, hands = null, weapon = null,arrow = null;

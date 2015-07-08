@@ -1,4 +1,6 @@
 
+using MonoTinker.Code.Components.UI;
+
 namespace MonoTinker.Code.Components.Elements
 {
     using System;
@@ -15,7 +17,7 @@ namespace MonoTinker.Code.Components.Elements
         Center, CenterLeft,CenterRight,TopLeft, TopRight,TopCenter,BottomLeft,BottomRight,BottomCenter,
     }
 
-    public class Sprite : ISimpleDrawable,ITransformable
+    public class Sprite : Fadeable, ISimpleDrawable,ITransformable
     {
         protected const float NinetyDegreeRotation = (float)(Math.PI/2f);
         protected Texture2D _texture2D;
@@ -56,6 +58,8 @@ namespace MonoTinker.Code.Components.Elements
             this.isRotated = isrotated;
             this.Origin = Origin.Center;
             this.Clr = color;
+            this.IsVisible = true;
+            this.FadeSpeed = 0.1f;
         }
 
         #endregion
@@ -224,22 +228,47 @@ namespace MonoTinker.Code.Components.Elements
             toReturn.Scale = this.Scale;
             toReturn.Rotation = this.Rotation;
             toReturn.OriginCustom = this.origin;
+            toReturn.IsVisible = this.IsVisible;
             return toReturn;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            if (fadeIn || fadeOut)
+            {
+                this.Transition();
+            }
+            if (!IsVisible)
+            {
+                return;
+            }
             Draw(spriteBatch,this.Position,this.Rotation,this.Scale);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2 scale)
         {
+            if (fadeIn || fadeOut)
+            {
+                this.Transition();
+            }
+            if (!IsVisible)
+            {
+                return;
+            }
             Draw(spriteBatch,position,rotation,scale,this.Clr);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Vector2 scale, Color color)
         {
-            spriteBatch.Draw(this.Texture,position,this.Source,color, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
+            if (fadeIn || fadeOut)
+            {
+                this.Transition();
+            }
+            if (!IsVisible)
+            {
+                return;
+            }
+            spriteBatch.Draw(this.Texture,position,this.Source,color * Alpha, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
 #if DEBUG
             DebugShapes.DrawRectagnle(spriteBatch,position -  origin*scale,this.Size,1,Color.Red);
 #endif

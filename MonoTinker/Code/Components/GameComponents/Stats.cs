@@ -128,7 +128,7 @@ namespace MonoTinker.Code.Components.GameComponents
 
         public Stats DirectCopy()
         {
-            return new Stats(this.strength, this.agility, this.intelect, this.vitality, this.wisdom);
+            return new Stats(this.strength, this.agility, this.vitality, this.intelect, this.wisdom);
         }
     }
 }

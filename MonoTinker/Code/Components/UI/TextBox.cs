@@ -24,7 +24,7 @@ namespace MonoTinker.Code.Components.UI
     {
         private WriteEffect Effect;
         private Origin imageAligment;
-        private string[] Current;
+        private string[] current;
         private int passed;
         private double timeToUpdate;
         private double timeElapsed;
@@ -63,6 +63,12 @@ namespace MonoTinker.Code.Components.UI
 
         public bool CycleableText { get; set; } = false;
 
+        public Color BoxTint
+        {
+            get { return this.Elements["box"].Clr; }
+            set { this.Elements["box"].Clr = value; }
+        }
+        
         protected void Init(Vector2 size, string mesage)
         {
             this.Transitioning = true;
@@ -78,9 +84,9 @@ namespace MonoTinker.Code.Components.UI
 
             this.maxLines = (int)(this.Height / this.charSize.Y)-1;
             this.cPerLine = (int)(this.Width / this.charSize.X);
-            this.Current = mesage.SplitToPieces(this.cPerLine).ToArray();
+            this.current = mesage.SplitToPieces(this.cPerLine).ToArray();
 
-            if (this.maxLines < this.Current.Length)
+            if (this.maxLines < this.current.Length)
             {
                 this.nextPageBtn = new Button(new Vector2(this.Width -20, this.Height -20),
                     AssetManager.Instance.Get<Sprite>(Sn.Menu.DarkBall).DirectClone(),
@@ -113,21 +119,23 @@ namespace MonoTinker.Code.Components.UI
                     {
                         this.EffectSpeed = 1;
                     }
-                    TextHelper.LineByLineEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref Current);
+                    TextHelper.LineByLineEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref current);
+                    RealignText();
                     break;
                 case WriteEffect.WholeAtOnce:
                     if (timeToUpdate.Equals(default(double)))
                     {
                         this.EffectSpeed = 0.1;
                     }
-                    TextHelper.WholeAtOnceEffect(ref font,ref Labels,ref currentIndex,maxLines,ref Current);
+                    TextHelper.WholeAtOnceEffect(ref font,ref Labels,ref currentIndex,maxLines,ref current);
+                    RealignText();
                     break;
                 case WriteEffect.CharacterByCharacter:
                     if (timeToUpdate.Equals(default(double)))
                     {
                         this.EffectSpeed = 0.01d;
                     }
-                    TextHelper.CharacterByCharacterEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref Current);
+                    TextHelper.CharacterByCharacterEffect(ref font, ref this.Labels,ref this.currentIndex,maxLines,charSize,ref current);
                     break;
             }
             if (hasImage)
@@ -154,9 +162,17 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
-        public void AddImage(Sprite image, Origin aligment = Origin.CenterRight,Vector2 offset = default(Vector2))
+        private void RealignText()
         {
-            Sprite copy = image.DirectClone(true);
+            foreach (var label in Labels)
+            {
+                label.PosX = (int)(Width/2f - label.Size.X/2f);
+            }
+        }
+
+        public void SetImage(Sprite image, Origin aligment = Origin.CenterRight,Vector2 offset = default(Vector2))
+        {
+            Sprite imgCopy = image.DirectClone(true);
             Vector2 size = (this.Elements["box"].Size/64) + new Vector2(2,0);
             Vector2 imgSize = image.Size / 64;
             
@@ -172,34 +188,34 @@ namespace MonoTinker.Code.Components.UI
                 switch (aligment)
                 {
                     case Origin.CenterLeft:
-                        copy.Position = new Vector2(0 + 10 + offset.X, (0 + 10 + offset.Y));
+                        imgCopy.Position = new Vector2(0 + 10 + offset.X, (0 + 10 + offset.Y));
                         foreach (var label in Labels)
                         {
-                            label.PosX += copy.Size.X;
+                            label.PosX += imgCopy.Size.X;
                         }
                         break;
                     case Origin.BottomLeft:
-                        copy.Position = new Vector2(0 - 10 + offset.X, (Height - copy.SourceHeight + offset.Y));
+                        imgCopy.Position = new Vector2(0 - 10 + offset.X, (Height - imgCopy.SourceHeight + offset.Y));
                         foreach (var label in Labels)
                         {
-                            label.PosX += copy.Size.X;
+                            label.PosX += imgCopy.Size.X;
                         }
                         break;
                     case Origin.TopLeft:
-                        copy.Position = new Vector2(0 + 10 + offset.X, (0 + 10 + offset.Y));
+                        imgCopy.Position = new Vector2(0 + 10 + offset.X, (0 + 10 + offset.Y));
                         foreach (var label in Labels)
                         {
-                            label.PosX += copy.Size.X;
+                            label.PosX += imgCopy.Size.X;
                         }
                         break;
                     case Origin.CenterRight:
-                        copy.Position = new Vector2(Width - copy.SourceWidth + offset.X, (Height/2 - copy.SourceHeight/2 + offset.Y));
+                        imgCopy.Position = new Vector2(Width - imgCopy.SourceWidth + offset.X, (Height/2 - imgCopy.SourceHeight/2 + offset.Y));
                         break;
                     case Origin.BottomRight:
-                        copy.Position = new Vector2(Width - copy.SourceWidth + offset.X, (Height - copy.SourceHeight + offset.Y));
+                        imgCopy.Position = new Vector2(Width - imgCopy.SourceWidth + offset.X, (Height - imgCopy.SourceHeight + offset.Y));
                         break;
                     case Origin.TopRight:
-                        copy.Position = new Vector2(Width - copy.SourceWidth + offset.X, (0 + 10 + offset.Y));
+                        imgCopy.Position = new Vector2(Width - imgCopy.SourceWidth + offset.X, (0 + 10 + offset.Y));
                         break;
                 }
             }
@@ -210,17 +226,17 @@ namespace MonoTinker.Code.Components.UI
                     Elements["box"] = BoxFactory.BoxSprite(Batch, new Vector2(size.X < imgSize.X ? imgSize.X : size.X, size.Y < imgSize.Y ? imgSize.Y : size.Y));
                     this.Width = Elements["box"].SourceWidth;
                     this.Height = Elements["box"].SourceHeight;
-                    copy.Position = new Vector2((Width / 2 - copy.SourceWidth / 2) + offset.X, (Height / 2f - copy.SourceHeight / 2f) + offset.Y);
+                    imgCopy.Position = new Vector2((Width / 2 - imgCopy.SourceWidth / 2) + offset.X, (Height / 2f - imgCopy.SourceHeight / 2f) + offset.Y);
                     break;
                 case Origin.TopCenter:
                     size.Y += imgSize.Y+1;
                     Elements["box"] = BoxFactory.BoxSprite(Batch, new Vector2(size.X < imgSize.X ? imgSize.X : size.X, size.Y < imgSize.Y ? imgSize.Y : size.Y));
                     this.Width = Elements["box"].SourceWidth;
                     this.Height = Elements["box"].SourceHeight;
-                    copy.Position = new Vector2((Width/2 - copy.SourceWidth/2) + offset.X, 0 + 10 + offset.Y);
+                    imgCopy.Position = new Vector2((Width/2 - imgCopy.SourceWidth/2) + offset.X, 0 + 10 + offset.Y);
                     foreach (var label in Labels)
                     {
-                        label.PosY += copy.SourceHeight;
+                        label.PosY += imgCopy.SourceHeight+10;
                     }
                     break;
                 case Origin.BottomCenter:
@@ -228,7 +244,7 @@ namespace MonoTinker.Code.Components.UI
                     Elements["box"] = BoxFactory.BoxSprite(Batch, new Vector2(size.X < imgSize.X ? imgSize.X : size.X, size.Y < imgSize.Y ? imgSize.Y : size.Y));
                     this.Width = Elements["box"].SourceWidth;
                     this.Height = Elements["box"].SourceHeight;
-                    copy.Position = new Vector2((Width / 2 - copy.SourceWidth / 2) + offset.X, (Height - copy.SourceHeight - 10) + offset.Y);
+                    imgCopy.Position = new Vector2((Width / 2 - imgCopy.SourceWidth / 2) + offset.X, (Height - imgCopy.SourceHeight - 10) + offset.Y);
                     break;
             }
 
@@ -239,7 +255,14 @@ namespace MonoTinker.Code.Components.UI
                 this.nextPageBtn.Position = new Vector2(Width-20,Height-20);
             }
             bounds = new Rectangle(this.Position.ToPoint(),this.Size.ToPoint());
-            this.Elements.Add("image", copy);
+            if (this.Elements.ContainsKey("image"))
+            {
+                this.Elements["image"] = imgCopy;
+            }
+            else
+            {
+                this.Elements.Add("image", imgCopy);
+            }
             this.RenderTarget2D = new RenderTarget2D(Device,Width,Height);
             
         }
@@ -251,14 +274,15 @@ namespace MonoTinker.Code.Components.UI
 
         public override void Update(GameTime gameTime)
         {
-            //Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
 
             if (this.nextPageBtn != null)
             {
                 bool generating = false;
+                this.nextPageBtn.Over(mousePos);
                 if (this.nextPageBtn.Clicked)
                 {
-                    if (this.currentIndex >= this.Current.Length)
+                    if (this.currentIndex >= this.current.Length)
                     {
                         if (CycleableText)
                         {
@@ -314,10 +338,11 @@ namespace MonoTinker.Code.Components.UI
                 if (this.timeElapsed >= this.timeToUpdate)
                 {
                     this.timeElapsed -= this.timeToUpdate;
-                    this.Labels[this.index].Append(this.Current[this.index + mod][counter]);
+                    this.Labels[this.index].Append(this.current[this.index + mod][counter]);
+                    RealignText();
                     this.counter++;
                     this.passed = index + 1;
-                    if (this.counter >= this.Current[this.index + mod].Length)
+                    if (this.counter >= this.current[this.index + mod].Length)
                     {
 
                         this.counter = 0;

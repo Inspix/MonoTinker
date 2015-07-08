@@ -1,11 +1,14 @@
-using MonoTinker.Code.Components.Elements.DebugGraphics;
-using MonoTinker.Code.Components.GameComponents;
+
 
 namespace MonoTinker.Code.GameScreens
 {
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using Components.Elements.DebugGraphics;
+    using Components.GameComponents;
+    using Components.GameObjects;
     using Components.Elements;
     using Components.Extensions;
     using Components.UI;
@@ -19,12 +22,16 @@ namespace MonoTinker.Code.GameScreens
         private Color selectedHairColor = Color.White;
         private Color selectedSkinColor = Color.White;
         private Sprite arrow;
+        private CharacterClass classSelected;
+        private bool classPicked;
         private float selectedHairSaturation;
         private float selectedSkinSaturation;
         private Sprite characterBox;
         private StatPicker statPicker;
         private ColorPicker picker;
         private ColorPicker skinTonePicker;
+        private ChoiceBox classPicker;
+        private Sprite checkbox;
         private Slider slider;
         private SpriteFont font;
         private AnimationV2 character;
@@ -38,46 +45,74 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
+            font = AssetManager.Instance.Get<SpriteFont>("Standart");
             characterBox = BoxFactory.BoxSprite(ScreenManager.Batch, new Vector2(4, 2));
-            arrow = AssetManager.Instance.Get<Sprite>("BasicArrow").DirectClone();
-            arrow.Position = Vector2.One*150;
+            character = Factory.HumanDownWalk();
+            character.Position = new Vector2(400, 150);
+            characterBox.Position = character.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter;
+            checkbox = AssetManager.Instance.Get<Sprite>("BasicCheckbox").DirectClone(true);
+            checkbox.Transitioning = true;
+            classPicker = new ChoiceBox(new Vector2(290, 275), ScreenManager.Device, ChoiceBoxType.CharacterInfo);
+            statPicker = new StatPicker(new Vector2(325, classPicker.PosY + classPicker.Size.Y), ScreenManager.Device, Stats.Ten);
+            picker = new ColorPicker(new Vector2(332, 300), ScreenManager.Device, 4, true);
+            skinTonePicker = ColorPicker.SkinTonePicker(new Vector2(332, 300));
+            slider = new Slider(new Vector2(550, 300), ScreenManager.Device, 20);
+            name = new Text(font, character.Position - Vector2.UnitY * 20, "");
+            inputBox = new InputBox(new Vector2(ScreenManager.ScreenCenter.X / 3, ScreenManager.ScreenCenter.Y / 3),
+                ScreenManager.Device, (int)(ScreenManager.ScreenDimensions.X - (ScreenManager.ScreenDimensions.X / 3)),
+                (int)(ScreenManager.ScreenDimensions.Y - (ScreenManager.ScreenDimensions.Y / 3)));
+            menuBox = new MenuBox(new Vector2(50, ScreenManager.ScreenCenter.Y), ScreenManager.Device,
+                new string[] { "Name", "Hair", "Hair color", "Skin color", "Class", "Bonus stat", "Confirm" }, new Vector2(5, 15), Vector2.UnitY * 50);
 
-
-            picker = new ColorPicker(new Vector2(332, 300), ScreenManager.Device,4,true);
             picker.IsVisible = false;
             picker.FadeSpeed = 0.03f;
             picker.Transitioning = true;
             picker.PickCallback = OnColorPick;
-            
-            skinTonePicker = ColorPicker.SkinTonePicker(new Vector2(332, 300));
+
             skinTonePicker.IsVisible = false;
             skinTonePicker.FadeSpeed = 0.03f;
             skinTonePicker.Transitioning = true;
             skinTonePicker.PickCallback = OnSkinColorPick;
 
-            statPicker = new StatPicker(new Vector2(325, 300), ScreenManager.Device, Stats.Ten);
             statPicker.IsVisible = false;
             statPicker.Transitioning = true;
             statPicker.FadeSpeed = 0.03f;
-            
-            slider = new Slider(new Vector2(550, 300),ScreenManager.Device,20);
+
+            classPicker.IsVisible = false;
+            classPicker.FadeSpeed = 0.1f;
+            classPicker.Transitioning = true;
+            classPicker.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero), () =>
+            {
+                classPicked = true;
+                classSelected =CharacterClass.Warrior;
+                statPicker.ChangeStartingStats(Prefabs.BaseStats(CharacterClass.Warrior));
+                OnIndexChange(0);
+            });
+            classPicker.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero, CharacterClass.Archer), () =>
+            {
+                classPicked = true;
+                classSelected = CharacterClass.Archer;
+                statPicker.ChangeStartingStats(Prefabs.BaseStats(CharacterClass.Archer));
+                OnIndexChange(0);
+            });
+            classPicker.AddItem(BoxFactory.CharacterInfoBox(Vector2.Zero, CharacterClass.Wizard), () => 
+            {
+                classPicked = true;
+                classSelected = CharacterClass.Wizard;
+                statPicker.ChangeStartingStats(Prefabs.BaseStats(CharacterClass.Wizard));
+                OnIndexChange(0);
+            });
+            classPicker.OnIndexChange = () => OnIndexChange(0);
+            classPicker.LeftButtonCallback += () => checkbox.IsVisible = false;
+            classPicker.RightButtonCallback += () => checkbox.IsVisible = false;
+            checkbox.Position = classPicker.Position + classPicker.Size*new Vector2(1,0) + new Vector2(-64,16);
             slider.IsVisible = false;
             slider.FadeSpeed = 0.03f;
             slider.Transitioning = true;
             slider.OnValueChangeCallback = OnValueChangeCallback;
 
-            character = Factory.HumanDownWalk();
-            character.Position = new Vector2(400,150);
-            characterBox.Position = character.Position + character.Layer(0).CurrentFrame.SpriteCenter - characterBox.SpriteCenter; ;
-
-            font = AssetManager.Instance.Get<SpriteFont>("Standart");
-
-            name = new Text(font, character.Position - Vector2.UnitY*20, "");
             name.Scale = Vector2.One*0.5f;
-
-            inputBox = new InputBox(new Vector2(ScreenManager.ScreenCenter.X/3, ScreenManager.ScreenCenter.Y/3),
-                ScreenManager.Device, (int) (ScreenManager.ScreenDimensions.X - (ScreenManager.ScreenDimensions.X/3)),
-                (int) (ScreenManager.ScreenDimensions.Y - (ScreenManager.ScreenDimensions.Y/3)));
+            
             inputBox.Callback = (x) =>
             {
                 this.name.Contents = x;
@@ -86,8 +121,6 @@ namespace MonoTinker.Code.GameScreens
                 this.enterName = false;
             };
 
-            menuBox = new MenuBox(new Vector2(50, ScreenManager.ScreenCenter.Y), ScreenManager.Device,
-                new string[] {"Name", "Hair", "Hair color", "Skin color","Class","Bonus stat","Confirm"}, new Vector2(5, 15),Vector2.UnitY*50);
             menuBox.Label(6).Position += new Vector2(0, menuBox.Label(6).Size.Y + 25);
             menuBox.OnIndexChange = this.OnIndexChange;
             menuBox.Position -= new Vector2(0, menuBox.Size.Y/2);
@@ -133,12 +166,13 @@ namespace MonoTinker.Code.GameScreens
             slider.DrawElements();
             picker.DrawElements();
             skinTonePicker.DrawElements();
-
+            classPicker.DrawElements();
             spriteBatch.Begin();
 
             menuBox.Draw(spriteBatch);
             characterBox.Draw(spriteBatch);
             character.Draw(spriteBatch);
+            classPicker.Draw(spriteBatch);
             name.Draw(spriteBatch);
             picker.Draw(spriteBatch);
             skinTonePicker.Draw(spriteBatch);
@@ -147,8 +181,8 @@ namespace MonoTinker.Code.GameScreens
             {
                 inputBox.Draw(spriteBatch);
             }
-            arrow.Draw(spriteBatch);
             statPicker.Draw(spriteBatch);
+            checkbox.Draw(spriteBatch);
             spriteBatch.End();
         }
 
@@ -195,6 +229,7 @@ namespace MonoTinker.Code.GameScreens
             skinTonePicker.Update(gameTime);
             slider.Update(gameTime);
             character.Update(gameTime);
+            classPicker.Update(gameTime);
             name.Update(gameTime);
             menuBox.Update(gameTime);
             menuBox.MouseUpdate(gameTime);
@@ -223,7 +258,9 @@ namespace MonoTinker.Code.GameScreens
             menuBox.Label(1).Contents = menuBox.SelectedIndex == 1 ? "<Hair>" : "Hair";
             picker.IsVisible = pickerCheck;
             skinTonePicker.IsVisible = menuBox.SelectedIndex == 3;
-            statPicker.IsVisible = menuBox.SelectedIndex == 5;
+            statPicker.IsVisible = classPicked && menuBox.SelectedIndex == 5;
+            classPicker.IsVisible = menuBox.SelectedIndex == 4 || menuBox.SelectedIndex == 5;
+             checkbox.IsVisible = (menuBox.SelectedIndex == 4 || menuBox.SelectedIndex == 5) && classPicked && classPicker.CurrentItem == (int) classSelected;
             slider.IsVisible = pickerCheck; 
 
         }

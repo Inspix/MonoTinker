@@ -1,9 +1,10 @@
 using System;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using MonoTinker.Code.Components.GameComponents;
-using MonoTinker.Code.Components.UI;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
+using Button = MonoTinker.Code.Components.UI.Button;
 
 namespace MonoTinker.Code.Components.Extensions
 {
@@ -73,6 +74,9 @@ namespace MonoTinker.Code.Components.Extensions
         public static AnimationV2 HumanDownWalk()
         {
             AnimationV2 toReturn = new AnimationV2(AssetManager.Instance.Get<Animation>(An.Walk.BodyHuman + "Down"));
+            toReturn.AddLayer(AssetManager.Instance.Get<Animation>(An.Walk.TorsoLeatherShirt + "Down"),"shirt");
+            toReturn.AddLayer(AssetManager.Instance.Get<Animation>(An.Walk.LegsPants + "Down"), "legs");
+
             return toReturn;
         }
 
@@ -162,10 +166,11 @@ namespace MonoTinker.Code.Components.Extensions
 
 
             arrow.Clr = color;
-            arrowHover.Clr = Color.OrangeRed*0.6f;
-            arrowClick.Clr = color*0.5f;
-
-            return new Button(position,arrow,arrowHover,arrowClick) { Scale = Vector2.One*scale};
+            arrowHover.Clr = color*0.6f;
+            arrowClick.Clr = color*0.3f;
+            Button result = new Button(position, arrow, arrowHover, arrowClick);
+            result.ScaleF = scale;
+            return result;
         }
 
     }

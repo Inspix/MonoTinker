@@ -39,6 +39,7 @@ namespace MonoTinker.Code.GameScreens
         protected override void LoadContent()
         {
             choicebox = new ChoiceBox(new Vector2(500,220),ScreenManager.Device, ChoiceBoxType.CharacterInfo );
+            
             splash = TextureMaker.ClassSplash(ScreenManager.Device, CharacterClass.Archer);
             status = new StatusBar(Vector2.One, ScreenManager.Device);
             status.DefaultAlpha = 1;
@@ -243,7 +244,7 @@ namespace MonoTinker.Code.GameScreens
             status.Update(gameTime);
             if (Keys.Q.DownOnce())
             {
-                box.AddImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device, CharacterClass.Archer)),Origin.BottomCenter);
+                box.SetImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device, CharacterClass.Archer)),Origin.BottomCenter);
                 box.CycleableText = true;
             }
 

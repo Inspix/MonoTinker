@@ -42,13 +42,13 @@ namespace MonoTinker.Code.Components.Elements.DebugGraphics
             Color color)
         {
             float x1 = position.X+thickness;
-            float x2 = position.X + size.X-thickness/2;
-            float y1 = position.Y;
-            float y2 = position.Y + size.Y-thickness;
+            float x2 = x1 + size.X-thickness/2;
+            float y1 = position.Y+thickness;
+            float y2 = y1 + size.Y-thickness;
             DrawLine(spribaBatch, new Vector2(x1,y1), new Vector2(x2, y1),thickness,color);
-            DrawLine(spribaBatch, new Vector2(x1, y1), new Vector2(x1, y2+thickness/2), thickness, color);
+            DrawLine(spribaBatch, new Vector2(x1, y1), new Vector2(x1, y2), thickness, color);
             DrawLine(spribaBatch, new Vector2(x2,y1), new Vector2(x2, y2), thickness, color);
-            DrawLine(spribaBatch, new Vector2(x1,y2-thickness/2), new Vector2(x2, y2 - thickness / 2), thickness, color);
+            DrawLine(spribaBatch, new Vector2(x1,y2-thickness), new Vector2(x2, y2-thickness), thickness, color);
         }
 
         public static void DrawFilledRectangle(SpriteBatch spriteBatch, Vector2 position, Vector2 size,Color color)

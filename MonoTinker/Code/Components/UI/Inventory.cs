@@ -124,8 +124,7 @@ namespace MonoTinker.Code.Components.UI
 
             if (!this.IsVisible) return;
            
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
-            Vector2 delta = InputHandler.MouseDelta();
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
             closeButton.Over(mousePos);
             if (fadeIn || fadeOut)
             {
@@ -159,7 +158,7 @@ namespace MonoTinker.Code.Components.UI
 
             if (moveButton.Clicked)
             {
-                this.Move(delta);
+                this.Move(InputHandler.MouseDelta);
             }
 
             if (closeButton.Clicked)

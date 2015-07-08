@@ -15,7 +15,7 @@ namespace MonoTinker.Code.Components.UI
         protected float fadeSpeed = 0.1f;
 
         #region Properties
-        public bool Transitioning
+        public virtual bool Transitioning
         {
             set
             {
@@ -84,7 +84,7 @@ namespace MonoTinker.Code.Components.UI
             set { this.defaultAlpha = MathHelper.Clamp(value, 0f, 1f); }
         }
 
-        protected float Alpha
+        public virtual float Alpha
         {
             get
             {

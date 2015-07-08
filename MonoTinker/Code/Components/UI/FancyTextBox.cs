@@ -123,7 +123,7 @@ namespace MonoTinker.Code.Components.UI
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
 
             if (this.nextPage != null)
             {

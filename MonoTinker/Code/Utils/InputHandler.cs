@@ -105,16 +105,10 @@ namespace MonoTinker.Code.Utils
             }
             return false;
         }
+        
+        public static Vector2 MousePos { get; private set; }
 
-        public static Vector2 MousePos()
-        {
-            return currentMouseState.Position.ToVector2();
-        }
-
-        public static Vector2 MouseDelta()
-        {
-            return (currentMouseState.Position - lastMouseState.Position).ToVector2();
-        }
+        public static Vector2 MouseDelta { get; private set; }
 
         public static void Update(GameWindow win)
         {
@@ -122,6 +116,8 @@ namespace MonoTinker.Code.Utils
             currentKeyboardState = Keyboard.GetState();
             lastMouseState = currentMouseState;
             currentMouseState = Mouse.GetState(win);
+            MouseDelta = (currentMouseState.Position - lastMouseState.Position).ToVector2();
+            MousePos = currentMouseState.Position.ToVector2();
         }
     }
 }

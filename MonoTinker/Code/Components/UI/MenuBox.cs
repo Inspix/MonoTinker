@@ -195,11 +195,10 @@ namespace MonoTinker.Code.Components.UI
 
         public void MouseUpdate(GameTime gameTime)
         {
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
             for (int i = 0; i < Labels.Count; i++)
             {
-                Rectangle box = new Rectangle(Labels[i].Position.ToPoint(),Labels[i].Size.ToPoint());
-                if (box.Contains(mousePos))
+                if (Labels[i].Contains(mousePos))
                 {
                     
                     SelectedIndex = i;

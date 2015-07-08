@@ -1,15 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Extensions;
-using MonoTinker.Code.Managers;
-using MonoTinker.Code.Utils;
-
 namespace MonoTinker.Code.Components.UI
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Elements;
+    using Elements.DebugGraphics;
+    using Extensions;
+    using Managers;
+    using Utils;
+
     public enum ChoiceBoxType
     {
         Item, CharacterInfo
@@ -21,7 +23,9 @@ namespace MonoTinker.Code.Components.UI
         private List<ItemTile> items;
         private List<TextBox> textboxes; 
         private List<Action> callbacks;
+        private Sprite checkbox;
         private bool changing;
+        private int count;
         private int currentItem = 0;
         private int nextindex = 0;
         private Button leftButton;
@@ -49,31 +53,43 @@ namespace MonoTinker.Code.Components.UI
                 case ChoiceBoxType.CharacterInfo:
                     leftButton = Factory.ArrowButton(Batch, Vector2.Zero, Color.AntiqueWhite, 0.5f, true,"BigArrow");
                     rightButton = Factory.ArrowButton(Batch, Vector2.Zero, Color.AntiqueWhite, 0.5f, false,"BigArrow");
-                    this.Width = 384;
-                    this.Height = 384;
+                    leftButton.Scale = new Vector2(0.150f,1.5f);
+                    rightButton.Scale = new Vector2(0.15f, 1.5f);
+                    this.Width = 295;
+                    this.Height = 200;
                     leftButton.Position = new Vector2(0, Height/2f - leftButton.Size.Y/2f);
                     rightButton.Position = new Vector2(Width - rightButton.Size.X, Height / 2f - leftButton.Size.Y / 2f);
                     break;
                     
             }
             leftButton.ClickType = ClickType.Single;
+            leftButton.IsVisible = false;
             rightButton.ClickType = ClickType.Single;
             leftButton.ClickCallback = () => CurrentItem--;
             rightButton.ClickCallback = () => CurrentItem++;
             this.RenderTarget2D = new RenderTarget2D(Device,Width,Height);
         }
-        
+
+        public Action LeftButtonCallback
+        {
+            get { return this.leftButton.ClickCallback; }
+            set { this.leftButton.ClickCallback = value; }
+        }
+
+        public Action RightButtonCallback
+        {
+            get { return this.rightButton.ClickCallback; }
+            set { this.rightButton.ClickCallback = value; }
+        }
+
+        public Action OnIndexChange { get; set; }
+
         public int CurrentItem
         {
             get { return this.currentItem; }
             set
             {
-                if (items != null && (value < 0 || value >= items.Count))
-                {
-                    Debug.Message("Choicebox index out of range");
-                    return;
-                }
-                else if (textboxes != null && (value < 0 || value >= textboxes.Count))
+                if (value < 0 || value >= this.count)
                 {
                     Debug.Message("Choicebox index out of range");
                     return;
@@ -85,11 +101,22 @@ namespace MonoTinker.Code.Components.UI
                     return;
                 }
                 this.currentItem = value;
+                if (OnIndexChange != null)
+                {
+                    OnIndexChange.Invoke();
+                }
+                rightButton.IsVisible = currentItem < count-1;
+                leftButton.IsVisible = currentItem > 0;
             }
         }
 
         public void AddItem(ItemTile item, Action callback = null)
         {
+            if (textboxes != null)
+            {
+                Debug.Error("You can not add ItemTile to a choicebox containing ItemTile/s already");
+                return;
+            }
             if (items == null)
             {
                 items = new List<ItemTile>();
@@ -99,6 +126,7 @@ namespace MonoTinker.Code.Components.UI
             item.Transitioning = true;
             item.Clickable = false;
             items.Add(item);
+            count++;
             callbacks.Add(callback);
         }
 
@@ -117,6 +145,7 @@ namespace MonoTinker.Code.Components.UI
             item.Position = new Vector2(leftButton.Size.X, this.Height/2f- item.Size.Y/2);
             item.Transitioning = true;
             textboxes.Add(item);
+            count++;
             callbacks.Add(callback);
 
         }
@@ -203,12 +232,15 @@ namespace MonoTinker.Code.Components.UI
             {
                 items[currentItem].Tip.DrawAtPosition(spriteBatch,this.Position);
             }
+#if DEBUG
+            DebugShapes.DrawRectagnle(spriteBatch,this.Position,this.Size,1,Color.Red);
+#endif
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Vector2 mouse = InputHandler.MousePos() - (this.Position+this.Offset);
+            Vector2 mouse = InputHandler.MousePos - (this.Position+this.Offset);
             if (items != null)
             {
                 if (items[currentItem].Over(mouse) && InputHandler.MouseDownOnce("left") )
@@ -223,12 +255,23 @@ namespace MonoTinker.Code.Components.UI
             }
             else if (textboxes != null)
             {
-                if (textboxes[currentItem].Hover(mouse) && InputHandler.MouseDownOnce("left"))
+                bool hover = textboxes[currentItem].Hover(mouse);
+                if (hover)
                 {
-                    if (callbacks[currentItem] != null)
+                    bool callbackcheck = callbacks[currentItem] != null;
+                    if (InputHandler.MouseDownOnce("left"))
                     {
-                        callbacks[currentItem].Invoke();
+                        if (callbackcheck)
+                        {
+                            callbacks[currentItem].Invoke();
+                        }
                     }
+                    textboxes[currentItem].BoxTint = ColorHelper.SmoothTransition(textboxes[currentItem].BoxTint, Color.Bisque, 2);
+
+                }
+                else
+                {
+                    textboxes[currentItem].BoxTint = ColorHelper.SmoothTransition(textboxes[currentItem].BoxTint, Color.White, 2);
                 }
                 textboxes[currentItem].Update(gameTime);
 

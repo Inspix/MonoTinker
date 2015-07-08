@@ -100,7 +100,7 @@ namespace MonoTinker.Code.Components.UI
                 return;
             }
             
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
             if (hasRandomButton)
             {
                 rngButton.Over(mousePos);

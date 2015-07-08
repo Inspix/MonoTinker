@@ -218,6 +218,7 @@ namespace MonoTinker.Code.Utils
             public const string HeadPlateArmorHelm          = "plate_armor_helmetwalkhead";
             public const string HeadRobeHood                = "robe_hoodwalkhead";
             public const string LegsPlateArmorPants         = "plate_armor_pantswalklegs";
+            public const string LegsPants                    = "pants_greenishwalklegs";
             public const string LegsRobeSkirt               = "robe_skirtwalklegs";
             public const string TorsoChainArmorJacket       = "chain_armor_jacket_purplewalktorso";
             public const string TorsoChainArmor             = "chain_armor_torsowalktorso";
@@ -375,7 +376,7 @@ namespace MonoTinker.Code.Utils
                 "A fierce brute, always ready for battle, with his great strenght and big survival skills he is a perfect at the front line!";
 
             public const string Archer =
-                "His bow and arrow are like his fork and spoon, deadly accurate , fast and agile, great for support dps from the backline";
+                "His bow and arrow are like his fork and spoon, deadly accurate, fast and agile, great for support dps from the backline";
 
             public const string Wizard =
                 "Dark magic, White magic, Nature and many more, the wizard is most versitile character, that can fulfill almost any role, to bad he is abit to squishy";

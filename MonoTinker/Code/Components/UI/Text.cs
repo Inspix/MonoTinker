@@ -1,33 +1,37 @@
-using System;
-using System.Text;
-using MonoTinker.Code.Components.Elements;
-using MonoTinker.Code.Components.Interfaces;
-
 namespace MonoTinker.Code.Components.UI
 {
-    using Utils;
+    using System;
+    using System.Text;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using Utils;
+    using Components.Interfaces;
+    using Components.Elements.DebugGraphics;
+   
 
     public class Text : Fadeable , ITransformable
     {
         private SpriteFont font;
 
         public Color Clr;
-
+        private Rectangle bounds;
+        private Vector2 position;
+        private Vector2 scale;
         private StringBuilder contents;
 
         public Text(SpriteFont font, Vector2 position, string contents, float alpha = 1, bool isVisible = true)
         {
             this.font = font;
+            this.contents = new StringBuilder(contents);
+            this.ScaleF = 1;
             this.isVisible = isVisible;
             this.Position = position;
-            this.contents = new StringBuilder(contents);
+            this.bounds = new Rectangle(this.Position.ToPoint(),this.Size.ToPoint());
             this.Clr = Color.White;
             this.alpha = alpha;
             this.DefaultAlpha = 1;
-            this.ScaleF = 1;
         }
 
         public Vector2 Size
@@ -35,9 +39,30 @@ namespace MonoTinker.Code.Components.UI
             get { return this.font.MeasureString(this.Contents)*Scale; }
         }
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position
+        {
+            get { return this.position; }
+            set
+            {
+                this.position = value;
+                bounds.Location = position.ToPoint();
+                bounds.Size = Size.ToPoint();
+            }
+        }
 
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale
+        {
+            get
+            {
+                return this.scale;
+            }
+            set
+            {
+                this.scale = value;
+                bounds.Location = position.ToPoint();
+                bounds.Size = Size.ToPoint();
+            }
+        }
 
         public float Rotation { get; set; }
 
@@ -65,7 +90,10 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
-
+        public bool Contains(Vector2 pos)
+        {
+            return bounds.Contains(pos - new Vector2(0,5.5f));
+        }
 
         public Action<Text> OnLabelChange { get; set; }
 

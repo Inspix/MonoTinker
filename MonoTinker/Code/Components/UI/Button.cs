@@ -47,7 +47,7 @@ namespace MonoTinker.Code.Components.UI
             this.normal = normalState;
             this.hover = hoverState;
             this.click = clickState;
-            this.position = position;
+            this.Position = position;
             this.bounds = new Rectangle(position.ToPoint(), normalState.DefaultSource.Size);
             this.ScaleF = 1;
         }
@@ -60,6 +60,9 @@ namespace MonoTinker.Code.Components.UI
             set
             {
                 this.position = value;
+                click.Position = value;
+                hover.Position = value;
+                normal.Position = value;
                 RecalculateBounds();
             }
         }
@@ -98,13 +101,16 @@ namespace MonoTinker.Code.Components.UI
             set
             {
                 this.scale = value;
+                click.Scale = value;
+                hover.Scale = value;
+                normal.Scale = value;
                 RecalculateBounds();
             }
         }
 
         public Vector2 Size
         {
-            get { return this.normal.Size*this.Scale; }
+            get { return this.normal.Size; }
         }
 
         public Vector2 InflateBox
@@ -149,7 +155,7 @@ namespace MonoTinker.Code.Components.UI
 
         public Action ClickCallback
         {
-            private get { return this.simpleClickCallback; }
+            get { return this.simpleClickCallback; }
             set
             {
                 this.callbackOnClick = true;
@@ -163,6 +169,7 @@ namespace MonoTinker.Code.Components.UI
 
         public bool Over(Vector2 point)
         {
+            if (!IsVisible) return false;
             bool result = bounds.Contains(point);
             this.hovering = result;
             return result;
@@ -193,6 +200,7 @@ namespace MonoTinker.Code.Components.UI
             {
                 base.Transition();
             }
+            if (!IsVisible) return;
             if (type == ClickType.Toggle)
             {
                 if (Clicked)
@@ -229,17 +237,17 @@ namespace MonoTinker.Code.Components.UI
                 {
                     if (clicked)
                     {
-                        click.Draw(spriteBatch, Position, Rotation, Scale, click.Clr * Alpha);
+                        click.Draw(spriteBatch,click.Position,click.Rotation,click.Scale, click.Clr * Alpha);
                     }
                     else
                     {
-                        hover.Draw(spriteBatch, Position, Rotation, Scale, hover.Clr * Alpha);
+                        hover.Draw(spriteBatch, hover.Position, hover.Rotation, hover.Scale, hover.Clr * Alpha);
                     }
 
                 }
                 else
                 {
-                    normal.Draw(spriteBatch, Position, Rotation, Scale, normal.Clr * Alpha);
+                    normal.Draw(spriteBatch, normal.Position, normal.Rotation, normal.Scale, normal.Clr * Alpha);
                 }
             }
 

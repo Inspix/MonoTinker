@@ -103,11 +103,11 @@ namespace MonoTinker.Code.Components.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
             handle.Over(mousePos);
             if (handle.Clicked)
             {
-                Vector2 positionChange = new Vector2(0, InputHandler.MouseDelta().Y);
+                Vector2 positionChange = new Vector2(0, InputHandler.MouseDelta.Y);
                 if (positionChange != Vector2.Zero)
                 {
                     handle.Position += positionChange;

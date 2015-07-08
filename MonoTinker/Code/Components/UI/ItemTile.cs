@@ -158,7 +158,7 @@ namespace MonoTinker.Code.Components.UI
 
         public void Move()
         {
-            Vector2 movement = InputHandler.MouseDelta();
+            Vector2 movement = InputHandler.MouseDelta;
             this.Position += movement;
             this.toolTip.Position += movement;
         }

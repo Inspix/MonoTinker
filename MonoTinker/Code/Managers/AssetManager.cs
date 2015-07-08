@@ -64,6 +64,8 @@ namespace MonoTinker.Code.Managers
         {
             this.spriteAtlas.Add("BasicArrow",new Sprite(TextureMaker.Arrow(device,32,Color.Transparent,Color.White,Color.Transparent)));
             this.spriteAtlas.Add("BigArrow", new Sprite(TextureMaker.Arrow(device, 128, Color.Transparent, Color.White, Color.Transparent)));
+            this.spriteAtlas.Add("BasicCheckbox", new Sprite(TextureMaker.CheckBox(device, 32, Color.Transparent, Color.White, Color.White)));
+            this.spriteAtlas.Add("BigCheckbox", new Sprite(TextureMaker.Arrow(device, 128, Color.Transparent, Color.White, Color.White)));
             this.AddSprite("UI/frame","UIFrame");
             this.AddSprite("Other/Lighting","lighting");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "UI/hud");

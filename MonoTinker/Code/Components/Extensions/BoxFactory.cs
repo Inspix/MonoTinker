@@ -182,7 +182,7 @@ namespace MonoTinker.Code.Components.Extensions
                     break;
             }
             TextBox result = new TextBox(position,ScreenManager.Device, text,new Vector2(6,3));
-            result.AddImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device,clClass)),Origin.TopCenter);
+            result.SetImage(new Sprite(TextureMaker.ClassSplash(ScreenManager.Device,clClass)),Origin.TopCenter);
             return result;
         }
 

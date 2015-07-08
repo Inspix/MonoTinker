@@ -15,12 +15,13 @@ namespace MonoTinker.Code.Components.UI
         private Button[] buttons;
         private bool incButtons;
         private int pointsRemaining;
+        private int startingpoints;
 
         public StatPicker(Vector2 position, GraphicsDevice device,Stats startingStats, int pointsRemaining = 5) : base(position, device)
         {
             this.currentStats = startingStats;
             this.newStats = currentStats.DirectCopy();
-            this.pointsRemaining = pointsRemaining;
+            this.pointsRemaining = startingpoints = pointsRemaining;
             this.Init();
         }
 
@@ -195,6 +196,23 @@ namespace MonoTinker.Code.Components.UI
             }
         }
 
+        public void ChangeStartingStats(Stats stats)
+        {
+            Labels[0].Contents = stats.Strenght.ToString();
+            Labels[1].Contents = stats.Agility.ToString();
+            Labels[2].Contents = stats.Vitality.ToString();
+            Labels[3].Contents = stats.Intellect.ToString();
+            Labels[4].Contents = stats.Wisdom.ToString();
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].IsVisible = i%2 == 0;
+            }
+            this.pointsRemaining = startingpoints;
+            Labels[5].Contents = "Points left: " + pointsRemaining;
+            this.currentStats = stats;
+            this.newStats = stats.DirectCopy();
+        }
+
 
         public override void DrawElements()
         {
@@ -214,7 +232,7 @@ namespace MonoTinker.Code.Components.UI
             {
                 return;
             }
-            Vector2 mousePos = InputHandler.MousePos() - this.Position;
+            Vector2 mousePos = InputHandler.MousePos - this.Position;
             foreach (var button in buttons)
             {
                 if (!button.IsVisible)

@@ -17,7 +17,7 @@ namespace MonoTinker.Code.Components.GameObjects
 
     public enum CharacterClass
     {
-        Warrior,Wizard,Archer
+        Warrior, Archer, Wizard
     }
 
     public abstract class Character : Entity
