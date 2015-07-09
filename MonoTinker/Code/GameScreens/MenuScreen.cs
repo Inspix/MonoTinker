@@ -1,8 +1,4 @@
 
-
-using MonoTinker.Code.Components.Elements.DebugGraphics;
-using MonoTinker.Code.Components.Tiles;
-
 namespace MonoTinker.Code.GameScreens
 {
     using System;
@@ -10,10 +6,14 @@ namespace MonoTinker.Code.GameScreens
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
+
     using Components;
     using Components.Elements;
-    using Managers;
+    using Components.Elements.DebugGraphics;
     using Components.Extensions;
+    using Components.Tiles;
+    
+    using Managers;
     using Utils;
 
     public sealed class MenuScreen : Screen
@@ -33,22 +33,9 @@ namespace MonoTinker.Code.GameScreens
         private double time;
         private float rotation;
         private bool reverse;
-        private byte counter;
-
+        private bool reverseCamera;
         private int index;
-
-        private int Index
-        {
-            get { return index; }
-            set
-            {
-                if (value < 1 || value > 3)
-                {
-                    return;
-                }
-                this.index = value;
-            }
-        }
+        private byte counter;
 
         public MenuScreen(IServiceProvider service) : base(service, "Menu")
         {
@@ -63,6 +50,7 @@ namespace MonoTinker.Code.GameScreens
             maintarget = new RenderTarget2D(ScreenManager.Device, (int)ScreenManager.ScreenDimensions.X, (int)ScreenManager.ScreenDimensions.Y);
             effect = AssetManager.Instance.Get<Effect>("Lightmask");
             camera = Matrix.CreateScale(1, 1, 0);
+            campos = new Vector3(0,-18,0);
             map = new TileMap();
             map.LoadFromTiledJsonFile(ref atlas,ScreenManager.Content,"/Game/test.json");
             map.LightTiles[1].ScaleF = 0.4f;
@@ -110,8 +98,21 @@ namespace MonoTinker.Code.GameScreens
         {
             content.Unload();
         }
-        
-        private bool reverseCamera;
+
+        public bool Transition { get; set; }
+
+        private int Index
+        {
+            get { return index; }
+            set
+            {
+                if (value < 1 || value > 3)
+                {
+                    return;
+                }
+                this.index = value;
+            }
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -179,8 +180,6 @@ namespace MonoTinker.Code.GameScreens
             }
         }
 
-        public bool Transition { get; set; }
-
         private void CameraMovement()
         {
             if (ScreenManager.Transitioning)
@@ -211,7 +210,7 @@ namespace MonoTinker.Code.GameScreens
                 {
                     campos.X++;
                 }
-                if (campos.X * camscale.X >= map.Widht* camscale.X - 1030 *  camscale.X || campos.X* camscale.X <= 0)
+                if (campos.X * camscale.X >= map.Widht* camscale.X - 1050 *  camscale.X || campos.X* camscale.X <= 0)
                 {
                     reverseCamera = !reverseCamera;
                 }
@@ -245,8 +244,8 @@ namespace MonoTinker.Code.GameScreens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.SetRenderTarget(lightmask);
-            spriteBatch.GraphicsDevice.Clear(Color.DarkBlue.Alpha(100));
-
+            spriteBatch.GraphicsDevice.Clear(Color.FromNonPremultiplied(50,50,50,100));
+             
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive, null, null, null, null, camera);
             foreach (var lightTile in map.LightTiles)
             {
@@ -257,7 +256,7 @@ namespace MonoTinker.Code.GameScreens
 
 
             spriteBatch.GraphicsDevice.SetRenderTarget(maintarget);
-            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            spriteBatch.GraphicsDevice.Clear(Color.FromNonPremultiplied(100,100,100,255));
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera);
             foreach (var staticTile in map.StaticTiles)
             {
