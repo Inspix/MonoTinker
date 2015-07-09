@@ -105,7 +105,7 @@ namespace MonoTinker.Code.GameScreens
                 alphas[3] -= 1f * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (alphas[3]< 0f)
                 {
-                    ScreenManager.ChangeScreen("Menu");
+                    ScreenManager.ChangeScreen(Screens.Menu);
                 }
             }
         }

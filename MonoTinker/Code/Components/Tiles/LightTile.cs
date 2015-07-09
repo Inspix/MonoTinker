@@ -1,45 +1,46 @@
 
+
+using OpenTK.Graphics;
+
 namespace MonoTinker.Code.Components.Tiles
 {
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using Elements;
+
+
     public enum LightSimpleEffect
     {
         None, Shimmering, Puslating,Fading
     }
-    public class Light : Tile
+    public class LightTile : Tile
     {
         public bool Active;
-        private Vector2 center;
-        private Vector2 scale;
         private Random random;
         private double timeToUpdate;
         private bool[] triggers;
         private int[] counters;
         private int[] values;
-        private LightSimpleEffect effect;
-        public Light(Texture2D texture, Rectangle source, Vector2 position,LightSimpleEffect effect = LightSimpleEffect.None,
-            int opacity = 255,Vector2 scale = default(Vector2)) : base(texture, source, position)
+        private new LightSimpleEffect effect;
+
+        public LightTile(Sprite sprite, Vector2 position,LightSimpleEffect effect = LightSimpleEffect.None,
+            float opacity = 1) : base(sprite, position)
         {
-            this.center = source.Center.ToVector2();
-            this.scale = scale == default (Vector2) ? Vector2.One : scale;
-            this.Opacity = opacity;
+            base.Alpha = opacity;
             this.effect = effect;
-            Init();
+            this.Init();
             
         }
 
-        public int Opacity
+        public new LightSimpleEffect Effect
         {
-            get { return Clr.A; }
+            get { return this.effect; }
             set
             {
-                
-                Color newc = Clr;
-                newc.A = (byte)MathHelper.Clamp(value, 0, 255);
-                this.Clr = newc;
+                this.effect = value;
+                this.Init(); 
             }
         }
 
@@ -65,7 +66,7 @@ namespace MonoTinker.Code.Components.Tiles
                     timeToUpdate = TimeSpan.FromSeconds(0.2f).TotalSeconds;
                     break;
                 case LightSimpleEffect.Shimmering:
-                    this.Opacity = 10;
+                    this.Alpha = 10;
                     timeToUpdate = TimeSpan.FromSeconds(0.01f).TotalSeconds;
 
                     counters = new int[1];
@@ -75,13 +76,7 @@ namespace MonoTinker.Code.Components.Tiles
                     break;
             }
         }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture,Position,source,Clr,0,Vector2.Zero, scale,SpriteEffects.None, 0);
-        }
-
-
+        
         private void Shimmering(GameTime gameTime)
         {
             if (triggers[0])
@@ -98,7 +93,7 @@ namespace MonoTinker.Code.Components.Tiles
                 counters[0]++;
                 if (counters[0] >= values[0] && counters[0] <= values[1] && triggers[1])
                 {
-                    this.Opacity += 12;
+                    this.Alpha += 12;
                     
                 }
                 if (counters[0] > values[1] && triggers[1])
@@ -107,8 +102,8 @@ namespace MonoTinker.Code.Components.Tiles
                 }
                 if (!triggers[1])
                 {
-                    this.Opacity -= 6;
-                    if (this.Opacity == 0)
+                    this.Alpha -= 6;
+                    if (this.Alpha <= 0)
                     {
                         triggers[1] = true;
                         triggers[0] = true;
@@ -127,8 +122,8 @@ namespace MonoTinker.Code.Components.Tiles
             if (this.timeElapsed >= this.timeToUpdate)
             {
                 timeElapsed -= timeToUpdate;
-                this.Opacity -= 2;
-                if (Opacity <= 1)
+                this.Alpha -= 2;
+                if (Alpha <= 1)
                 {
                     Active = true;
                 }

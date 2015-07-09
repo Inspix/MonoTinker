@@ -12,7 +12,7 @@ namespace MonoTinker.Code.Components.Tiles
         private Rectangle boundingBox;
         public bool Active;
 
-        public CollisionTile(Texture2D texture, Rectangle source, Vector2 position) : base(texture, source, position)
+        public CollisionTile(Sprite sprite, Vector2 position) : base(sprite, position)
         {
             boundingBox = new Rectangle(position.ToPoint(),source.Size);
             Active = true;

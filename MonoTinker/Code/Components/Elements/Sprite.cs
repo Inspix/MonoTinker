@@ -28,6 +28,13 @@ namespace MonoTinker.Code.Components.Elements
 
         #region Constructors
 
+        protected Sprite(Sprite other) : this(other.Texture,other.Position,other.Source,new Vector2(0.5f,0.5f),other.Clr,other.isRotated)
+        {
+          
+            this.Rotation = other.Rotation;
+            this.IsVisible = other.IsVisible;
+        }
+
         public Sprite(Texture2D texture2D) : this(texture2D, texture2D.Bounds)
         {
 
@@ -268,9 +275,11 @@ namespace MonoTinker.Code.Components.Elements
             {
                 return;
             }
-            spriteBatch.Draw(this.Texture,position,this.Source,color * Alpha, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin,scale,effect,0);
+            spriteBatch.Draw(this.Texture,position,this.Source,color * Alpha, this.isRotated ? rotation - NinetyDegreeRotation : rotation, origin, scale,effect,0);
 #if DEBUG
-            DebugShapes.DrawRectagnle(spriteBatch,position -  origin*scale,this.Size,1,Color.Red);
+            //DebugShapes.DrawRectagnle(spriteBatch,position -  origin*scale,this.Size,1,Color.Red);
+            DebugShapes.DrawLine(spriteBatch,position,position + Size /2,1f,Color.Magenta);
+
 #endif
         }
 

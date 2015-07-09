@@ -73,8 +73,11 @@
     <Compile Include="Code\Components\Tiles\CollisionTile.cs" />
     <Compile Include="Code\Components\Tiles\StaticTile.cs" />
     <Compile Include="Code\Components\Tiles\Tile.cs" />
-    <Compile Include="Code\Components\Tiles\Light.cs" />
+    <Compile Include="Code\Components\Tiles\LightTile.cs" />
+    <Compile Include="Code\Components\Tiles\TileLayer.cs" />
     <Compile Include="Code\Components\Tiles\TileMap.cs" />
+    <Compile Include="Code\Components\Tiles\TileMapInfo.cs" />
+    <Compile Include="Code\Components\Tiles\TileMapObject.cs" />
     <Compile Include="Code\Components\UI\Button.cs" />
     <Compile Include="Code\Components\UI\ChoiceBox.cs" />
     <Compile Include="Code\Components\UI\ColorPicker.cs" />
@@ -117,6 +120,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NVorbis">
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\WindowsGL\NVorbis.dll</HintPath>
     </Reference>
@@ -128,6 +135,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -146,7 +154,10 @@
     <Content Include="Content\Game\bullet.png" />
     <Content Include="Content\Game\crosshair.png" />
     <Content Include="Content\Game\hyptosis_til-art-batch-2.png" />
+    <Content Include="Content\Game\hyptosis_tile-art-batch-1.png" />
     <Content Include="Content\Game\hyptosis_tile-art-batch-3.png" />
+    <Content Include="Content\Game\hyptosis_tile-art-batch-4.png" />
+    <Content Include="Content\Game\hyptosis_tile-art-batch-5.png" />
     <Content Include="Content\Game\laser.png" />
     <Content Include="Content\Game\light.png" />
     <Content Include="Content\Game\lighting.png" />
@@ -177,6 +188,7 @@
     <Content Include="Content\Shaders\SpriteGrayscale.fx" />
     <Content Include="Content\Shaders\SpriteInvert.fx" />
     <Content Include="Content\SplashScreen\logo.png" />
+    <Content Include="Content\Sprites\background.png" />
     <Content Include="Content\Sprites\Character\body\bow\human.png" />
     <Content Include="Content\Sprites\Character\body\bow\skeleton.png" />
     <Content Include="Content\Sprites\Character\body\dummy\dummy.png" />
@@ -367,9 +379,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Content\Game\test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Menu\test.json" />
     <None Include="Content\SplashScreen\SplashFont.spritefont" />
     <None Include="Content\UI\InterfaceFont.spritefont" />
     <None Include="Content\UI\Standart.spritefont" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Sprites\Character\equipment\behind\hurt\" />

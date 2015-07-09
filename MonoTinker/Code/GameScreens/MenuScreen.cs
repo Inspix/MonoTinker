@@ -1,5 +1,8 @@
 
 
+using MonoTinker.Code.Components.Elements.DebugGraphics;
+using MonoTinker.Code.Components.Tiles;
+
 namespace MonoTinker.Code.GameScreens
 {
     using System;
@@ -16,9 +19,17 @@ namespace MonoTinker.Code.GameScreens
     public sealed class MenuScreen : Screen
     {
 
-        private Sprite logo, logoGlow, play, options, exit, bigGear, smallGear, belt,leds;
+        private Sprite logo, logoGlow, play, options, exit, bigGear, smallGear, belt, leds;
         private SpriteAtlas atlas;
+        private RenderTarget2D lightmask;
+        private RenderTarget2D maintarget;
+        private Effect effect;
+        private TileMap map;
+        private Matrix camera;
         private Random rnd;
+        private Screens choice;
+        private Vector3 campos;
+        private Vector3 camscale;
         private double time;
         private float rotation;
         private bool reverse;
@@ -48,13 +59,18 @@ namespace MonoTinker.Code.GameScreens
 
         protected override void LoadContent()
         {
+            lightmask = new RenderTarget2D(ScreenManager.Device,(int)ScreenManager.ScreenDimensions.X,(int)ScreenManager.ScreenDimensions.Y);
+            maintarget = new RenderTarget2D(ScreenManager.Device, (int)ScreenManager.ScreenDimensions.X, (int)ScreenManager.ScreenDimensions.Y);
+            effect = AssetManager.Instance.Get<Effect>("Lightmask");
+            camera = Matrix.CreateScale(1, 1, 0);
+            map = new TileMap();
+            map.LoadFromTiledJsonFile(ref atlas,ScreenManager.Content,"/Game/test.json");
+            map.LightTiles[1].ScaleF = 0.4f;
+            map.LightTiles[1].Clr = Color.White.Alpha(100);
+            map.LightTiles[1].Effect = LightSimpleEffect.Shimmering;
+            map.LightTiles[1].Position -= Vector2.One* 5;
             atlas.PopulateFromSpriteSheet(content,"menu");
-
-            foreach (var spriteAtla in atlas)
-            {
-                Console.WriteLine(spriteAtla.Key);
-            }
-
+            camscale = Vector3.One;
             logo = atlas["text"];
             logo.Position = ((ScreenManager.ScreenCenter) - Vector2.UnitY * 100) + Vector2.UnitX*50;
 
@@ -94,6 +110,8 @@ namespace MonoTinker.Code.GameScreens
         {
             content.Unload();
         }
+        
+        private bool reverseCamera;
 
         public override void Update(GameTime gameTime)
         {
@@ -103,15 +121,24 @@ namespace MonoTinker.Code.GameScreens
             counter++;
             if (time > TimeSpan.FromSeconds(rnd.NextDouble() + rnd.Next(1,6)).TotalSeconds)
             {
+                
+
                 if (counter >= 200)
                 {
                     reverse = !reverse;
                 }
                 time = 0;
             }
+           
+            foreach (var lightTile in map.LightTiles)
+            {
+                lightTile.Update(gameTime);
+            }
             MenuIndexCheck();
             bigGear.Rotation = rotation;
             smallGear.Rotation = rotation;
+            CameraMovement();
+
         }
 
         public void Input(GameTime gameTime)
@@ -121,10 +148,11 @@ namespace MonoTinker.Code.GameScreens
                 switch (index)
                 {
                     case 1:
-                        ScreenManager.ChangeScreen("Other");
+                        Transition = true;
+                        choice = Screens.CharacterCreation;
                         break;
                     case 2:
-                        ScreenManager.ChangeScreen("CharacterCreation");
+                        ScreenManager.ChangeScreen(Screens.TestGround);
                         break;
                     case 3:
                         this.UnloadContent();
@@ -134,12 +162,13 @@ namespace MonoTinker.Code.GameScreens
             }
             if (Keys.Tab.Down() && !ScreenManager.Transitioning)
             {
-                ScreenManager.ChangeScreen("Other");
+                ScreenManager.ChangeScreen(Screens.Other);
             }
             if (Keys.Q.Down())
             {
                 play.ScaleF += 0.1f;
             }
+            campos += new Vector3(Keys.NumPad1.Down() ? 10 : 0,Keys.NumPad2.Down()?10:0,0);
             if (InputHandler.DirectionDownOnce("up"))
             {
                 Index--;
@@ -148,6 +177,48 @@ namespace MonoTinker.Code.GameScreens
             {
                 Index++;
             }
+        }
+
+        public bool Transition { get; set; }
+
+        private void CameraMovement()
+        {
+            if (ScreenManager.Transitioning)
+            {
+                camscale = new Vector3(MathHelper.Lerp(camscale.X, 10, 0.01f), MathHelper.Lerp(camscale.Y, 10, 0.01f), 0);
+                camera.Scale = camscale;
+                campos = new Vector3(MathHelper.SmoothStep(campos.X, 1880, .1f), MathHelper.SmoothStep(campos.Y, 640, .1f), 0);
+
+                camera.Translation = -campos * camscale;
+
+                return;
+            }
+            if (Transition)
+            {
+                camscale = new Vector3(MathHelper.Lerp(camscale.X,5,0.01f), MathHelper.Lerp(camscale.Y, 5, 0.01f),0);
+                camera.Scale = camscale;
+                campos = new Vector3(MathHelper.Lerp(campos.X,1800,.02f), MathHelper.Lerp(campos.Y, 580, .02f),0);
+                if(campos.X * camscale.X >= 1779*camscale.X && campos.Y * camscale.X > 579*camscale.Y) ScreenManager.ChangeScreen(choice);
+            }
+            else
+            {
+                if (reverseCamera)
+                {
+                    campos.X--;
+
+                }
+                else
+                {
+                    campos.X++;
+                }
+                if (campos.X * camscale.X >= map.Widht* camscale.X - 1030 *  camscale.X || campos.X* camscale.X <= 0)
+                {
+                    reverseCamera = !reverseCamera;
+                }
+            }
+            Console.WriteLine(campos);
+            camera.Translation = -campos * camscale;
+
         }
 
 
@@ -173,7 +244,40 @@ namespace MonoTinker.Code.GameScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.GraphicsDevice.SetRenderTarget(lightmask);
+            spriteBatch.GraphicsDevice.Clear(Color.DarkBlue.Alpha(100));
+
+            spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive, null, null, null, null, camera);
+            foreach (var lightTile in map.LightTiles)
+            {
+                lightTile.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.SetRenderTarget(null);
+
+
+            spriteBatch.GraphicsDevice.SetRenderTarget(maintarget);
+            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera);
+            foreach (var staticTile in map.StaticTiles)
+            {
+                staticTile.Draw(spriteBatch);
+            }
+            DebugShapes.DrawLine(spriteBatch,new Vector2(1941, 693), new Vector2(1943, 693),2f,Color.White * 0.2f);
+            DebugShapes.DrawLine(spriteBatch, new Vector2(1945, 693), new Vector2(1947, 693), 2f, Color.White * 0.2f);
+            DebugShapes.DrawLine(spriteBatch, new Vector2(1941, 697), new Vector2(1947, 697), 1f, Color.White * 0.2f);
+
+            spriteBatch.End();
+            
+            spriteBatch.GraphicsDevice.SetRenderTarget(null);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend);
+            effect.Parameters["LightMask"].SetValue(lightmask);
+            effect.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Draw(maintarget,Vector2.Zero,Color.White);
+            spriteBatch.End();
             spriteBatch.Begin();
+
             logo.Draw(spriteBatch);
             if ((time >= TimeSpan.FromSeconds(rnd.Next(1, 2) + rnd.NextDouble()).TotalSeconds) &&
                 (time <= TimeSpan.FromSeconds(rnd.Next(2, 2) + rnd.NextDouble()).TotalSeconds) ||
@@ -190,6 +294,7 @@ namespace MonoTinker.Code.GameScreens
             exit.Draw(spriteBatch);
             leds.Draw(spriteBatch);
             belt.Draw(spriteBatch);
+
             spriteBatch.End();
         }
     }

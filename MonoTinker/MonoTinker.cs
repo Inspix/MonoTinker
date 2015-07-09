@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoTinker.Code;
 using MonoTinker.Code.Components;
 using MonoTinker.Code.Components.Elements.DebugGraphics;
+using MonoTinker.Code.Components.Tiles;
 using MonoTinker.Code.Managers;
 using MonoTinker.Code.Utils;
 
@@ -50,8 +51,7 @@ namespace MonoTinker
             Window.Position = new Point(GraphicsDevice.DisplayMode.Width / 2 - Widht / 2,GraphicsDevice.DisplayMode.Height / 2 - Height / 2);
             Window.Title = "MonoTinker";
             IsMouseVisible = true;
-            sm = new ScreenManager(Content,Window,GraphicsDevice);
-            ScreenManager.View = graphics.GraphicsDevice.Viewport;
+            
            
             base.Initialize();
         }
@@ -65,8 +65,9 @@ namespace MonoTinker
             // Create a new SpriteBatch, which can be used to draw textures.
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
             AssetManager.Instance.LoadContent(Content, GraphicsDevice);
+            sm = new ScreenManager(Content, Window, GraphicsDevice);
+            ScreenManager.View = graphics.GraphicsDevice.Viewport;
         }
         
         /// <summary>

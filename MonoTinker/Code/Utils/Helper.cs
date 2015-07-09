@@ -1,4 +1,3 @@
-
 namespace MonoTinker.Code.Utils
 {
     using System;
@@ -19,7 +18,8 @@ namespace MonoTinker.Code.Utils
         {
             return v1.X*v2.X + v1.Y*v2.Y;
         }
-
+        
+        
         public static float Magnitude(this Vector2 v1)
         {
             return (float) Math.Sqrt(v1.X*v1.X + v1.Y*v1.Y);

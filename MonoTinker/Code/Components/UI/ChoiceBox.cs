@@ -200,6 +200,7 @@ namespace MonoTinker.Code.Components.UI
 
         public override void DrawElements()
         {
+            if (!IsVisible) return;
             if (items != null)
             {
                 items[currentItem].DrawElements();
@@ -227,6 +228,7 @@ namespace MonoTinker.Code.Components.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (!IsVisible) return;
             base.Draw(spriteBatch);
             if (items != null)
             {
@@ -240,6 +242,7 @@ namespace MonoTinker.Code.Components.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (!IsVisible) return;
             Vector2 mouse = InputHandler.MousePos - (this.Position+this.Offset);
             if (items != null)
             {

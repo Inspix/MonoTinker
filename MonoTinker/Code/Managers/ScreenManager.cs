@@ -8,7 +8,12 @@ namespace MonoTinker.Code.Managers
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
-    
+
+    public enum Screens
+    {
+        Splash,Menu,CharacterCreation,TestGround,Other
+    }
+
     public class ScreenManager
     {
         public static Viewport View;
@@ -65,23 +70,23 @@ namespace MonoTinker.Code.Managers
             get { return new Vector2(width/2f, height/2f); }
         }
 
-        public static void ChangeScreen(string id)
+        public static void ChangeScreen(Screens id)
         {
             switch (id)
             {
-                case "Menu":
+                case Screens.Menu:
                     newScreen = new MenuScreen(service);
                     break;
-                case "Other":
+                case Screens.CharacterCreation:
                     newScreen = new CharacterCreationScreen(service);
                     break;
-                case "Splash":
+                case Screens.Splash:
                     newScreen = new SplashScreen(service);
                     break;
-                case "Game":
+                case Screens.Other:
                     newScreen = new GameScreen(service);
                     break;
-                case "CharacterCreation":
+                case Screens.TestGround:
                     newScreen = new TestGround(service);
                     break;
             }

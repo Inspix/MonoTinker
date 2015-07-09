@@ -43,7 +43,7 @@ namespace MonoTinker.Code.GameScreens
             TileAtlas = new SpriteAtlas();
             TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("hyptosis_tile-art-batch-3"), new Vector2(32, 32), "TileSetOne");
             TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("hyptosis_til-art-batch-2"), new Vector2(32, 32), "TileSetTwo");
-            TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("light"), new Vector2(32, 32), "Light");
+            TileAtlas.PopulateFromSpriteSheet(content.Load<Texture2D>("light"), new Vector2(32, 32), "LightTile");
             TileAtlas.Add("LaserProjectile",new Sprite(content.Load<Texture2D>("laser")));
             TileAtlas.Add("ArrowProjectile", new Sprite(content.Load<Texture2D>("arrow")));
             projectiles = new List<Projectile>();

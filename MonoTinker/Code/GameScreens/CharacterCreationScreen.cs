@@ -260,7 +260,7 @@ namespace MonoTinker.Code.GameScreens
             skinTonePicker.IsVisible = menuBox.SelectedIndex == 3;
             statPicker.IsVisible = classPicked && menuBox.SelectedIndex == 5;
             classPicker.IsVisible = menuBox.SelectedIndex == 4 || menuBox.SelectedIndex == 5;
-             checkbox.IsVisible = (menuBox.SelectedIndex == 4 || menuBox.SelectedIndex == 5) && classPicked && classPicker.CurrentItem == (int) classSelected;
+            checkbox.IsVisible = (menuBox.SelectedIndex == 4 || menuBox.SelectedIndex == 5) && classPicked && classPicker.CurrentItem == (int) classSelected;
             slider.IsVisible = pickerCheck; 
 
         }

@@ -53,6 +53,7 @@ namespace MonoTinker.Code.Managers
             this.content = content;
             this.device = device;
             this.shaders.Add("Grayscale",content.Load<Effect>("Shaders/SpriteGrayscale"));
+            this.shaders.Add("Lightmask", content.Load<Effect>("Shaders/Lighting"));
             this.fonts.Add("UIFont",content.Load<SpriteFont>("UI/InterfaceFont"));
             this.fonts.Add("Standart", content.Load<SpriteFont>("UI/Standart"));
             this.fonts.Add("SplashScreenFont",content.Load<SpriteFont>("SplashScreen/SplashFont"));
@@ -66,6 +67,8 @@ namespace MonoTinker.Code.Managers
             this.spriteAtlas.Add("BigArrow", new Sprite(TextureMaker.Arrow(device, 128, Color.Transparent, Color.White, Color.Transparent)));
             this.spriteAtlas.Add("BasicCheckbox", new Sprite(TextureMaker.CheckBox(device, 32, Color.Transparent, Color.White, Color.White)));
             this.spriteAtlas.Add("BigCheckbox", new Sprite(TextureMaker.Arrow(device, 128, Color.Transparent, Color.White, Color.White)));
+            this.spriteAtlas.Add("Pixel", new Sprite(TextureMaker.WhitePixel(device)));
+            this.AddSprite("Sprites/background", "bg");
             this.AddSprite("UI/frame","UIFrame");
             this.AddSprite("Other/Lighting","lighting");
             this.spriteAtlas.PopulateFromSpriteSheetAlt(content, "UI/hud");
@@ -74,7 +77,7 @@ namespace MonoTinker.Code.Managers
 
         private void LoadAnimationFrames()
         {
-            LoadSpriteSheets(content.RootDirectory + "/Sprites/");
+            LoadSpriteSheets(content.RootDirectory + "/Sprites/Character/");
         }
 
         private void LoadSpriteSheets(string path)
@@ -100,6 +103,7 @@ namespace MonoTinker.Code.Managers
             filename = filename.Remove(rem);
             string[] tags = filename.Split('/');
             string tag = tags[tags.Length - 1] + tags[tags.Length - 2] + tags[tags.Length - 3];
+
 
             Texture2D texture = content.Load<Texture2D>(filename);
             float x, y;
@@ -247,7 +251,7 @@ namespace MonoTinker.Code.Managers
         }
 
         #region Add Sprites
-        public void AddSprite(string filename, string id = "")
+        public void AddSprite(string filename, string id = null)
         {
             try
             {

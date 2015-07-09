@@ -20,7 +20,7 @@ namespace MonoTinker.Code.GameScreens
     {
         private Texture2D bg;
         private Texture2D bg2;
-        private Texture2D light;
+        private Sprite light;
         private SpriteAtlas textures;
         private RenderTarget2D lightMask;
         private RenderTarget2D mainTarget;
@@ -59,10 +59,10 @@ namespace MonoTinker.Code.GameScreens
             fx3 = content.Load<Effect>("../Shaders/Lighting");
             bg = content.Load<Texture2D>("playerRun");
             bg2 = content.Load<Texture2D>("ghettoville1");
-            light = content.Load<Texture2D>("lighting");
-            lights.Add(new Light(light, light.Bounds, Vector2.One*100,LightSimpleEffect.Shimmering));
-            lights.Add(new Light(light, light.Bounds, Vector2.One * 200, LightSimpleEffect.Fading));
-            lights.Add(new Light(light, light.Bounds, Vector2.One * 400, LightSimpleEffect.Fading));
+            light = new Sprite(content.Load<Texture2D>("lighting"));
+            lights.Add(new LightTile(light, Vector2.One*100,LightSimpleEffect.Shimmering));
+            lights.Add(new LightTile(light, Vector2.One * 200, LightSimpleEffect.Fading));
+            lights.Add(new LightTile(light, Vector2.One * 400, LightSimpleEffect.Fading));
 
             string[] names = textures.PopulateFromSpriteSheet(bg, new Vector2(130, 150), "dude", 1);
             player = new PlayerOld(new Animation(names,textures));
@@ -79,7 +79,7 @@ namespace MonoTinker.Code.GameScreens
         public override void Update(GameTime gameTime)
         {
             hud.Update(gameTime);
-            foreach (var l in lights.OfType<Light>())
+            foreach (var l in lights.OfType<LightTile>())
             {
                 l.Update(gameTime);
             }
@@ -93,7 +93,7 @@ namespace MonoTinker.Code.GameScreens
 
             if (Keys.Tab.DownOnce() && !ScreenManager.Transitioning)
             {
-                ScreenManager.ChangeScreen("Menu");
+                ScreenManager.ChangeScreen(Screens.Menu);
             }
             if (Keys.Z.DownOnce())
             {
@@ -111,7 +111,7 @@ namespace MonoTinker.Code.GameScreens
             Device.SetRenderTarget(lightMask);
             Device.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
-            spriteBatch.Draw(light,player.Position,null,null,light.Bounds.Center.ToVector2() - Vector2.One * 20,0f,Vector2.One + Vector2.One *(float)rnd.NextDouble() * 0.5f);
+            spriteBatch.Draw(light.Texture,player.Position,null,null,light.Source.Center.ToVector2() - Vector2.One * 20,0f,Vector2.One + Vector2.One *(float)rnd.NextDouble() * 0.5f);
             foreach (var simpleDrawable in lights)
             {
                 simpleDrawable.Draw(spriteBatch);

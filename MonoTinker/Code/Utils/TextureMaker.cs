@@ -151,5 +151,12 @@ namespace MonoTinker.Code.Utils
             device.SetRenderTarget(null);
             return result;
         }
+
+        public static Texture2D WhitePixel(GraphicsDevice device)
+        {
+            Texture2D result = new Texture2D(device,1,1);
+            result.SetData(new Color[] {Color.White});
+            return result;
+        }
     }
 }
